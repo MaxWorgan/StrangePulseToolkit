@@ -1,0 +1,69 @@
+{
+	"pattrstorage" : 	{
+		"name" : "thomasAudio",
+		"slots" : 		{
+			"1" : 			{
+				"id" : 1,
+				"data" : 				{
+					"b" : [ "b", 0.203 ],
+					"dt" : [ "dt", 0.01 ],
+					"live.gain~" : [ -3.239873366344756 ],
+					"speed" : [ "speed_slow", 2061.0 ],
+					"speed[1]" : [ "speed_fast", 50.0 ]
+				}
+
+			}
+,
+			"2" : 			{
+				"id" : 2,
+				"data" : 				{
+					"b" : [ "b", 0.192 ],
+					"dt" : [ "dt", 0.01 ],
+					"live.gain~" : [ -3.239873366344756 ],
+					"speed" : [ "speed_slow", 5859.0 ],
+					"speed[1]" : [ "speed_fast", 50.0 ]
+				}
+
+			}
+,
+			"3" : 			{
+				"id" : 3,
+				"data" : 				{
+					"b" : [ "b", 0.094 ],
+					"dt" : [ "dt", 0.01 ],
+					"live.gain~" : [ -3.239873366344756 ],
+					"speed" : [ "speed_slow", 5541.0 ],
+					"speed[1]" : [ "speed_fast", 50.0 ]
+				}
+
+			}
+,
+			"4" : 			{
+				"id" : 4,
+				"data" : 				{
+					"b" : [ "b", 0.16 ],
+					"dt" : [ "dt", 0.01 ],
+					"live.gain~" : [ -3.239873366344756 ],
+					"speed" : [ "speed_slow", 6095.0 ],
+					"speed[1]" : [ "speed_fast", 50.0 ]
+				}
+
+			}
+,
+			"5" : 			{
+				"id" : 5,
+				"data" : 				{
+					"b" : [ "b", 0.23 ],
+					"dt" : [ "dt", 0.01 ],
+					"live.gain~" : [ -3.239873366344756 ],
+					"speed" : [ "speed_slow", 3963.0 ],
+					"speed[1]" : [ "speed_fast", 50 ]
+				}
+
+			}
+
+		}
+
+	}
+
+}
