@@ -2,11 +2,12 @@
 
 
 The Strange Pulse Toolkit (SPT) is a collection of Max/MSP externals, patchers, and snippets for embedding strange attractors into your patches. It emphasises exploration and experimentation and focuses mainly on the rhythmic potential of strange attractors.
-
+<p>
 <img src="images/sc1.png" width="200">
 <img src="images/sc2.png" width="200">
 <img src="images/sc3.png" width="200">
 <img src="images/sc4.png" width="200">
+</p>
 
 ---
 
