@@ -1,0 +1,201 @@
+{
+	"patcher" : 	{
+		"fileversion" : 1,
+		"appversion" : 		{
+			"major" : 8,
+			"minor" : 6,
+			"revision" : 3,
+			"architecture" : "x64",
+			"modernui" : 1
+		}
+,
+		"classnamespace" : "dsp.gen",
+		"rect" : [ 126.0, 100.0, 979.0, 848.0 ],
+		"bglocked" : 0,
+		"openinpresentation" : 0,
+		"default_fontsize" : 12.0,
+		"default_fontface" : 0,
+		"default_fontname" : "Arial",
+		"gridonopen" : 1,
+		"gridsize" : [ 15.0, 15.0 ],
+		"gridsnaponopen" : 1,
+		"objectsnaponopen" : 1,
+		"statusbarvisible" : 2,
+		"toolbarvisible" : 1,
+		"lefttoolbarpinned" : 0,
+		"toptoolbarpinned" : 0,
+		"righttoolbarpinned" : 0,
+		"bottomtoolbarpinned" : 0,
+		"toolbars_unpinned_last_save" : 0,
+		"tallnewobj" : 0,
+		"boxanimatetime" : 200,
+		"enablehscroll" : 1,
+		"enablevscroll" : 1,
+		"devicewidth" : 0.0,
+		"description" : "",
+		"digest" : "",
+		"tags" : "",
+		"style" : "",
+		"subpatcher_template" : "",
+		"assistshowspatchername" : 0,
+		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-7",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 97.0, 768.0, 150.0, 20.0 ],
+					"text" : "nth order bandpass filter"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-19",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 841.0, 42.0, 37.0, 20.0 ],
+					"text" : "order"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-17",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 831.0, 14.0, 28.0, 22.0 ],
+					"text" : "in 4"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-16",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 579.0, 42.0, 34.0, 20.0 ],
+					"text" : "hicut"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-15",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 323.0, 42.0, 34.0, 20.0 ],
+					"text" : "locut"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-3",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 570.666666666666629, 14.0, 28.0, 22.0 ],
+					"text" : "in 3"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"code" : "//order 1 lowpass filter. in1 = audio, in2=cutoff \r\n//taken from the gen~.filters examples\r\n//(unused)\r\nlp_o1 (x,freq) { \r\n\tHistory y0(0);\r\n\tres = mix(y0, x, clamp(\tsin(abs(freq)*2*PI/samplerate),\r\n \t\t\t\t\t\t\t0,\r\n \t\t\t\t\t\t\t1));\n\ty0_next = fixdenorm(res);\n\ty0 = y0_next; \r\n\treturn res; \r\n\t}\r\n\r\n//order 1 hipass filter. in1 = audio, in2=cutoff\r\n//(unused)\r\nhp_o1 (x,freq) {\r\n\tlopassed = lp_o1(x,freq);\r\n\thipassed = x - lopassed;\r\n\treturn hipassed;\r\n\t}\r\n\r\n//variable order lowpass filter\r\n//in1 = audio, in2=cutoff, in3=order, 4th argument is the order\r\n//this is a series of 1-order filters, combined linearly n times, where n is the order.\r\n//there is an array (Data) which will contain the single sample delays, \r\n//the array size must be the same as the order of the filter \r\n//because each single-sample-delay needs to be different\r\n//for each filter in this serie of n filters.\r\nlp_onth (x, freq, n, order=1 ) {\r\n\tData histories(32);//max order is set here to 32. \r\n\ti = 0;\r\n\ttolopass = x;\r\n\tlopassed = 0;\r\n\tclamp(order,1,32);//security clamp between 1 and dim(histories)\r\n\twhile (i < n){\r\n\t\tlopassed = mix(peek(histories,i), tolopass, clamp(\tsin(abs(freq)*2*PI/samplerate),\r\n \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t0,\r\n \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t1));\r\n\t\ttolopass = lopassed;\r\n\t\tpoke(histories,fixdenorm(lopassed), i);\r\n\t\ti += 1;\r\n\t\t}\r\n\treturn lopassed;\r\n\t}\r\n\r\n//nth-order hipass\r\nhp_onth (x, freq, n, order=1 ) {\r\n\tData hihistories(32);//max order is set here to 32. \r\n\ti = 0;\r\n\ttolopass = x;\r\n\tlopassed = 0;\r\n\tclamp(order,1,32);//security clamp between 1 and dim(hihistories)\r\n\twhile (i < n){\r\n\t\tlopassed = mix(peek(hihistories,i), tolopass, clamp(\tsin(abs(freq)*2*PI/samplerate),\r\n \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t0,\r\n \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t1));\r\n\t\ttolopass = lopassed;\r\n\t\tpoke(hihistories,fixdenorm(lopassed), i);\r\n\t\ti += 1;\r\n\t\t}\r\n\treturn x - lopassed;\r\n\t}\r\n\r\n\r\n\r\nout1 = lp_onth(hp_onth(in1, in2, in4),in3, in4);",
+					"fontface" : 0,
+					"fontname" : "<Monospaced>",
+					"fontsize" : 12.0,
+					"id" : "obj-6",
+					"maxclass" : "codebox",
+					"numinlets" : 4,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 50.0, 71.0, 800.0, 675.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"annotation" : "Audio In",
+					"hint" : "Audio In",
+					"id" : "obj-1",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 50.0, 14.0, 28.0, 22.0 ],
+					"text" : "in 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-2",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 310.333333333333314, 14.0, 28.0, 22.0 ],
+					"text" : "in 2"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-4",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 50.0, 771.0, 35.0, 22.0 ],
+					"text" : "out 1"
+				}
+
+			}
+ ],
+		"lines" : [ 			{
+				"patchline" : 				{
+					"destination" : [ "obj-6", 0 ],
+					"source" : [ "obj-1", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-6", 3 ],
+					"source" : [ "obj-17", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-6", 1 ],
+					"source" : [ "obj-2", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-6", 2 ],
+					"source" : [ "obj-3", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-4", 0 ],
+					"source" : [ "obj-6", 0 ]
+				}
+
+			}
+ ],
+		"autosave" : 0
+	}
+
+}

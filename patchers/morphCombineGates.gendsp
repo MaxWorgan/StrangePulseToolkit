@@ -1,0 +1,117 @@
+{
+	"patcher" : 	{
+		"fileversion" : 1,
+		"appversion" : 		{
+			"major" : 8,
+			"minor" : 6,
+			"revision" : 5,
+			"architecture" : "x64",
+			"modernui" : 1
+		}
+,
+		"classnamespace" : "dsp.gen",
+		"rect" : [ 59.0, 118.0, 998.0, 661.0 ],
+		"bglocked" : 0,
+		"openinpresentation" : 0,
+		"default_fontsize" : 12.0,
+		"default_fontface" : 0,
+		"default_fontname" : "Arial",
+		"gridonopen" : 1,
+		"gridsize" : [ 15.0, 15.0 ],
+		"gridsnaponopen" : 1,
+		"objectsnaponopen" : 1,
+		"statusbarvisible" : 2,
+		"toolbarvisible" : 1,
+		"lefttoolbarpinned" : 0,
+		"toptoolbarpinned" : 0,
+		"righttoolbarpinned" : 0,
+		"bottomtoolbarpinned" : 0,
+		"toolbars_unpinned_last_save" : 0,
+		"tallnewobj" : 0,
+		"boxanimatetime" : 200,
+		"enablehscroll" : 1,
+		"enablevscroll" : 1,
+		"devicewidth" : 0.0,
+		"description" : "",
+		"digest" : "",
+		"tags" : "",
+		"style" : "",
+		"subpatcher_template" : "",
+		"assistshowspatchername" : 0,
+		"boxes" : [ 			{
+				"box" : 				{
+					"code" : "\nParam op(0, min=0, max=5);\n\n\na = clamp(in1, 0, 1);\nb = clamp(in2, 0, 1);\n\n//  neighbor indices and crossfade amount\nop_clamped = clamp(op, 0, 5);\ni0 = floor(op_clamped);\ni1 = min(5, i0 + 1);\nt  = op_clamped - i0;\r\n\r\n//Thanks chatGPT\n// --- Coefficients k = [k0, k1, k2, k3] for each gate:\n// AND:  [0,  0,  0,  1]       -> a*b\n// OR:   [0,  1,  1, -1]       -> a + b - a*b\n// XOR:  [0,  1,  1, -2]       -> a + b - 2*a*b\n// NAND: [1,  0,  0, -1]       -> 1 - a*b\n// NOR:  [1, -1, -1,  1]       -> 1 - a - b + a*b\n// XNOR: [1, -1, -1,  2]       -> 1 - a - b + 2*a*b\n\n// Helper: set k-vector for a given integer gate index g ∈ {0..5}\nk0a = 0; k1a = 0; k2a = 0; k3a = 0;\nif (i0 == 0) { k0a = 0;  k1a =  0; k2a =  0; k3a =  1; }       // AND\nif (i0 == 1) { k0a = 0;  k1a =  1; k2a =  1; k3a = -1; }       // OR\nif (i0 == 2) { k0a = 0;  k1a =  1; k2a =  1; k3a = -2; }       // XOR\nif (i0 == 3) { k0a = 1;  k1a =  0; k2a =  0; k3a = -1; }       // NAND\nif (i0 == 4) { k0a = 1;  k1a = -1; k2a = -1; k3a =  1; }       // NOR\nif (i0 == 5) { k0a = 1;  k1a = -1; k2a = -1; k3a =  2; }       // XNOR\n\nk0b = 0; k1b = 0; k2b = 0; k3b = 0;\nif (i1 == 0) { k0b = 0;  k1b =  0; k2b =  0; k3b =  1; }       // AND\nif (i1 == 1) { k0b = 0;  k1b =  1; k2b =  1; k3b = -1; }       // OR\nif (i1 == 2) { k0b = 0;  k1b =  1; k2b =  1; k3b = -2; }       // XOR\nif (i1 == 3) { k0b = 1;  k1b =  0; k2b =  0; k3b = -1; }       // NAND\nif (i1 == 4) { k0b = 1;  k1b = -1; k2b = -1; k3b =  1; }       // NOR\nif (i1 == 5) { k0b = 1;  k1b = -1; k2b = -1; k3b =  2; }       // XNOR\n\n// Interpolate coefficient vectors between i0 and i1\nk0 = mix(k0a, k0b, t);\nk1 = mix(k1a, k1b, t);\nk2 = mix(k2a, k2b, t);\nk3 = mix(k3a, k3b, t);\n\ny = k0 + k1 * a + k2 * b + k3 * a * b;\n\nout1 = clamp(y, 0, 1);",
+					"fontface" : 0,
+					"fontname" : "<Monospaced>",
+					"fontsize" : 12.0,
+					"id" : "obj-5",
+					"maxclass" : "codebox",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 44.0, 68.0, 608.0, 504.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-1",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 50.0, 14.0, 28.0, 22.0 ],
+					"text" : "in 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-2",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 305.0, 14.0, 28.0, 22.0 ],
+					"text" : "in 2"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-4",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 44.0, 636.0, 35.0, 22.0 ],
+					"text" : "out 1"
+				}
+
+			}
+ ],
+		"lines" : [ 			{
+				"patchline" : 				{
+					"destination" : [ "obj-5", 0 ],
+					"source" : [ "obj-1", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-5", 1 ],
+					"source" : [ "obj-2", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-4", 0 ],
+					"source" : [ "obj-5", 0 ]
+				}
+
+			}
+ ],
+		"autosave" : 0
+	}
+
+}
