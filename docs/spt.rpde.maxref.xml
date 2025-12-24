@@ -62,6 +62,11 @@
 			<description>Time delay for embedding </description>
 		</attribute>
 
+		<attribute name='theiler' get='1' set='1' type='long' size='1' >
+			<digest>Theiler window (Δmin) in samples: ignore recurrences with lag ≤ Δmin</digest>
+			<description>Theiler window (Δmin) in samples: ignore recurrences with lag ≤ Δmin. If 0, a sensible default is used internally (dim*tau). </description>
+		</attribute>
+
 		<attribute name='tmax' get='1' set='1' type='long' size='1' >
 			<digest>Maximum return distance (-1 for no limit) </digest>
 			<description>Maximum return distance (-1 for no limit) </description>

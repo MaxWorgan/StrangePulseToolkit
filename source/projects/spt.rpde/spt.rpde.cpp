@@ -8,6 +8,8 @@
 #include <algorithm>
 #include <fstream>
 
+#define DEFAULT_SIZE 5000
+
 
 
 using namespace c74::min;
@@ -23,15 +25,16 @@ public:
     // Signal inlet and outlet.
     inlet<>  input  { this, "(signal) input" };
     outlet<> output { this, "(signal) RPDE output", "signal" };
+    outlet<> period_out { this, "(signal) estimated period (samples)", "signal" };
 
     // window_size is fixed once the object is created; we expose it read-only.
-    attribute<int> window_size_attr { this, "window_size", 2048,
+    attribute<int> window_size_attr { this, "window_size", 5000,
         description { "Fixed analysis window size (samples)" },
         readonly { true }
     };
 
     // The following attributes are modifiable at runtime.
-    attribute<int> hop_size { this, "hop_size", 512,
+    attribute<int> hop_size { this, "hop_size", 2500,
         description { "Hop size (samples) for overlapping windows. If > 0, overlap is retained." }
     };
 
@@ -39,7 +42,7 @@ public:
         description { "Embedding dimension" }
     };
 
-    attribute<int> tau { this, "tau", 50,
+    attribute<int> tau { this, "tau", 5,
         description { "Time delay for embedding" }
     };
 
@@ -58,15 +61,20 @@ public:
     attribute<number> subsample_factor { this, "subsample_factor", 5,
         description { "Subsampling rate" } };
     
+    attribute<int> theiler { this, "theiler", 0,
+        description { "Theiler window (Δmin) in samples: ignore recurrences with lag ≤ Δmin. "
+                      "If 0, a sensible default is used internally (dim*tau)." }
+    };
+    
     rpde(const atoms& args = {}) {
         if (!args.empty())
             fixed_window_size = static_cast<int>(args[0]);
         else
-            fixed_window_size = 2048;
+            fixed_window_size = DEFAULT_SIZE;
 
         if (fixed_window_size <= 0) {
-            error("window_size must be positive; defaulting to 2048");
-            fixed_window_size = 2048;
+            error("window_size must be positive; defaulting to DEFAULT_SIZE");
+            fixed_window_size = DEFAULT_SIZE;
         }
         // Update the read-only attribute so that the inspector shows the actual value.
         window_size_attr = fixed_window_size;
@@ -101,6 +109,7 @@ public:
     void operator()(audio_bundle input_bundle, audio_bundle output_bundle) {
         auto in = input_bundle.samples(0);
         auto out = output_bundle.samples(0);
+        auto p_out = output_bundle.samples(1);
         size_t n = output_bundle.frame_count();
 
         // Append the incoming samples.
@@ -149,9 +158,11 @@ public:
             accum_buffer.erase(accum_buffer.begin(), accum_buffer.end() - fixed_window_size);
 
         // Fill the output block with the current RPDE value.
-        float out_val = current_rpde.load(std::memory_order_acquire);
+        float rdpe_val = current_rpde.load(std::memory_order_acquire);
+        float period_out_val = current_period.load(std::memory_order_acquire);
         for (size_t i = 0; i < n; i++) {
-            out[i] = out_val;
+            out[i] = rdpe_val;
+            p_out[i] = period_out_val;
         }
     }
 
@@ -159,7 +170,7 @@ private:
     // Fixed analysis window size (set at object creation; not modifiable thereafter).
     int fixed_window_size;
    
-    size_t counter;
+    size_t counter = 0;
 
     // The accumulation buffer holds incoming audio samples.
     std::vector<float> accum_buffer;
@@ -167,7 +178,9 @@ private:
     std::vector<float> processing_buffer;
 
     // The most recently computed RPDE value.
-    std::atomic<float> current_rpde;
+    std::atomic<float> current_rpde {0.0f};
+    // The most recently computed RPDE mode value
+    std::atomic<float> current_period {0.0f};
 
     // Worker thread control flags.
     std::atomic<bool> worker_busy;      // True while the worker is processing a window.
@@ -195,15 +208,17 @@ private:
 
             normalizeMinMax(processing_buffer);
             // Compute RPDE using the current parameters.
-            float rpde_value = compute_rpde(
+            auto [rpde_value, mode_value] = compute_rpde(
                 processing_buffer.data(),
                 fixed_window_size,
                 dim,          // Attribute: embedding dimension.
                 tau,          // Attribute: time delay.
                 epsilon,      // Attribute: recurrence ball radius.
-                tmax          // Attribute: maximum return distance.
+                tmax,          // Attribute: maximum return distance.
+                theiler
             );
             current_rpde.store(rpde_value, std::memory_order_release);
+            current_period.store(mode_value, std::memory_order_release);
 
             // Mark the worker as idle.
             worker_busy.store(false, std::memory_order_release);
@@ -232,87 +247,118 @@ private:
         );
     }
 
-    // Compute the RPDE value for a window of data using a recurrence histogram method.
-    static float compute_rpde(const float* window_data,
-                              int ws,    // window size (samples)
-                              int dim,   // embedding dimension
-                              int tau,   // time delay
-                              float epsilon,
-                              int tmax) {
-        int N = ws - (dim - 1) * tau;
+    static std::pair<float,float> compute_rpde(const float* window_data,
+                              int ws,          // window size (samples)
+                              int dim,         // embedding dimension
+                              int tau,         // time delay
+                              float epsilon,   // recurrence radius (on normalized data)
+                              int tmax,        // max lag (samples), -1 means no explicit cap
+                              int theiler)     // Theiler window Δmin (samples)
+    {
+        // Number of valid embedded vectors y_i = [x_i, x_{i+tau}, ...]
+        const int N = ws - (dim - 1) * tau;
         if (N <= 0)
-            return 0.0f;
+            return {0.0f, 0.0f};
+        
+        // --- Choose Δmin ---
+        // If user didn't set a value, pick a sensible default:
+        // use dim*tau (common rule of thumb), but at least 1.
+        int dmin = theiler > 0 ? theiler : dim * tau;
+        if (dmin < 1)
+            dmin = 1;
+        
+        // Effective Δmax (cap the search); cannot be less than dmin+1
+        int dmax = (tmax > 0) ? std::min(tmax, N - 1) : (N - 1);
+        if (dmax <= dmin)
+            return {0.0f, 0.0f};
+        
+        std::vector<int> histogram(dmax + 1, 0);
+        if (epsilon <= std::numeric_limits<float>::epsilon())
+            return {0.0f,0.0f};
+        const float eps2 = epsilon * epsilon;
 
-        std::vector<int> histogram(N, 0);
-        float epsilon_sq = epsilon * epsilon;
+        // For each embedded vector index i, find the FIRST
+        //   (1) 'exit' from epsilon-ball (distance > eps),
+        //   then (2) FIRST 'return' (distance < eps) AFTER that exit,
+        // while enforcing lag >= dmin
+        for (int i = 0; i < N; ++i) {
+            // Start j at i + dmin + 0 (we require j - i >= dmin+1 for returns anyway)
+            int jstart = i + dmin;
+            if (jstart + 1 >= N)
+                continue;
 
-        // For each embedded vector…
-        for (int i = 0; i < N; i++) {
-            int first_out = N;
-            // Find the first index j > i where the distance exceeds epsilon.
-            for (int j = i + 1; j < N; j++) {
-                if (tmax > 0 && (j - i) > tmax)
-                    break;
-                float dist_sq = 0.0f;
-                for (int k = 0; k < dim; k++) {
+            // 1) find first-out index (distance > eps) after jstart
+            int first_out = -1;
+            for (int j = jstart; j < N; ++j) {
+                int lag = j - i;
+                if (lag > dmax) break;
+
+                float dist2 = 0.0f;
+                // distance between embeddings y_i and y_j
+                // with Theiler exclusion already enforced via jstart
+                for (int k = 0; k < dim; ++k) {
                     float diff = window_data[i + k * tau] - window_data[j + k * tau];
-                    dist_sq += diff * diff;
+                    dist2 += diff * diff;
                 }
-                if (dist_sq > epsilon_sq) {
+                if (dist2 > eps2) {
                     first_out = j;
                     break;
                 }
             }
-            // Find the first index after first_out that returns inside the epsilon ball.
-            for (int j = first_out + 1; j < N; j++) {
-                if (tmax > 0 && (j - i) > tmax)
-                    break;
-                float dist_sq = 0.0f;
-                for (int k = 0; k < dim; k++) {
+            if (first_out < 0)
+                continue;
+
+            // 2) find first return (distance < eps) after 'first_out'
+            for (int j = first_out + 1; j < N; ++j) {
+                int lag = j - i;
+                if (lag > dmax) break;
+
+                float dist2 = 0.0f;
+                for (int k = 0; k < dim; ++k) {
                     float diff = window_data[i + k * tau] - window_data[j + k * tau];
-                    dist_sq += diff * diff;
+                    dist2 += diff * diff;
                 }
-                if (dist_sq < epsilon_sq) {
-                    int index = j - i;
-                    if (index < N)
-                        histogram[index] += 1;
+                if (dist2 < eps2) {
+                    // Only count returns with lag > dmin
+                    if (lag > dmin && lag <= dmax)
+                        histogram[lag] += 1;
                     break;
                 }
             }
         }
-
-        // Determine the number of histogram bins to use.
-        int hist_size = 0;
-        if (tmax > 0)
-            hist_size = std::min(tmax, N);
-        else {
-            for (int i = N - 1; i >= 1; i--) {
-                if (histogram[i] != 0) {
-                    hist_size = i;
-                    break;
-                }
+        // Mode: lag with max count
+        int mode_index = -1, max_count = 0;
+        for (int i = dmin + 1; i <= dmax; ++i) {
+            if (histogram[i] > max_count) {
+                max_count = histogram[i];
+                mode_index = i;
             }
         }
-        if (hist_size <= 1)
-            return 0.0f;  // No valid recurrence times recorded.
+        float T_est = (mode_index > 0) ? static_cast<float>(mode_index) : 0.0f;
 
-        // Sum the histogram counts (ignoring index 0).
+
+        // Build entropy over bins strictly greater than dmin
         int total = 0;
-        for (int i = 1; i < hist_size; i++) {
-            total += histogram[i];
-        }
-        if (total == 0)
-            return 0.0f;
+        for (int lag = dmin + 1; lag <= dmax; ++lag)
+            total += histogram[lag];
 
-        // Compute the normalized entropy.
-        double entropy = 0.0;
-        for (int i = 1; i < hist_size; i++) {
-            double p = histogram[i] / static_cast<double>(total);
-            if (p > 0)
-                entropy -= p * std::log(p);
+        if (total == 0)
+            return {0.0f, 0.0f};
+
+        double H = 0.0;
+        for (int lag = dmin + 1; lag <= dmax; ++lag) {
+            if (histogram[lag] == 0) continue;
+            double p = static_cast<double>(histogram[lag]) / static_cast<double>(total);
+            H -= p * std::log(p);
         }
-        double rpde_value = entropy / std::log(hist_size);
-        return static_cast<float>(rpde_value);
+
+        // Normalize by log(number_of_considered_bins)
+        const int considered = (dmax - (dmin + 1) + 1); // inclusive range
+        if (considered <= 1)
+            return {0.0f,0.0f};
+
+        const double rpde_value = H / std::log(static_cast<double>(considered));
+        return {static_cast<float>(rpde_value),T_est};
     }
 };
 

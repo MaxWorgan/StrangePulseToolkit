@@ -1,4 +1,4 @@
-// thomas.cpp
+// lorenz.cpp
 #include "attractor_base.h"
 #include <cmath>
 
@@ -6,7 +6,7 @@ using namespace c74::min;
 
 class lorenz : public attractor_base<lorenz> {
 public:
-    MIN_DESCRIPTION { "Thomas Attractor simulation" };
+    MIN_DESCRIPTION { "Lorenz Attractor simulation" };
     MIN_TAGS        { "chaos, simulation" };
     MIN_AUTHOR      { "Max Worgan" };
     MIN_RELATED     { "spt.attractor.dadras, spt.attractor.thomas"};
@@ -16,10 +16,10 @@ public:
     MAKE_ATTR(number, beta, 8.0/3.0, "Parameter beta");
 
     static constexpr double default_scale_factor = 0.03;
-    static constexpr double default_dt = 0.005;
+    static constexpr double default_dt = 1.0;
     static constexpr double default_position = 0.01;
-    static constexpr double default_speed_primary = 2.0;
-    static constexpr double default_speed_secondary = 10.0;
+    static constexpr double default_speed_primary = 0.01;
+    static constexpr double default_speed_secondary = 1.0;
 
 
     lorenz(const atoms& args = {})

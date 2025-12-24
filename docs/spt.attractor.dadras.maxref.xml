@@ -58,8 +58,8 @@
 		</attribute>
 
 		<attribute name='dt' get='1' set='1' type='float64' size='1' >
-			<digest>Time step </digest>
-			<description>Time step </description>
+			<digest>Base integrator time step </digest>
+			<description>Base integrator time step </description>
 		</attribute>
 
 		<attribute name='e' get='1' set='1' type='float64' size='1' >
@@ -77,14 +77,24 @@
 			<description>Scale outputs to ±1 </description>
 		</attribute>
 
+		<attribute name='smooth' get='1' set='1' type='float64' size='1' >
+			<digest>Output smoothing amount (0 = off, 1 = strong low-pass) </digest>
+			<description>Output smoothing amount (0 = off, 1 = strong low-pass) </description>
+		</attribute>
+
 		<attribute name='speed_primary' get='1' set='1' type='float64' size='1' >
-			<digest>Speed Factor of the primary attractor </digest>
-			<description>Speed Factor of the primary attractor </description>
+			<digest>Primary substep multiplier (≈ steps/sample) </digest>
+			<description>Primary substep multiplier (≈ steps/sample) </description>
 		</attribute>
 
 		<attribute name='speed_secondary' get='1' set='1' type='float64' size='1' >
-			<digest>Speed Factor of the secondary attractor </digest>
-			<description>Speed Factor of the secondary attractor </description>
+			<digest>Secondary substep multiplier (≈ steps/sample) </digest>
+			<description>Secondary substep multiplier (≈ steps/sample) </description>
+		</attribute>
+
+		<attribute name='use_rk4' get='1' set='1' type='long' size='1' >
+			<digest>Use the rk4 ingreator rather that euler </digest>
+			<description>Use the rk4 ingreator rather that euler </description>
 		</attribute>
 
 	</attributelist>

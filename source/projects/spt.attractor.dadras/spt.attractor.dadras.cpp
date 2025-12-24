@@ -19,7 +19,7 @@ public:
     MAKE_ATTR(number, e, 9.0, "Parameter e");
 
     static constexpr double default_scale_factor = 0.075;
-    static constexpr double default_dt = 0.01;
+    static constexpr double default_speed_primary = 0.05;
 
     dadras(const atoms& args = {})
     : attractor_base<dadras>(args) { }
