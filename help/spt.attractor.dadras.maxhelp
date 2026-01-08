@@ -9,7 +9,7 @@
             "modernui": 1
         },
         "classnamespace": "box",
-        "rect": [ 83.0, 99.0, 1019.0, 823.0 ],
+        "rect": [ 90.0, 99.0, 1019.0, 823.0 ],
         "showrootpatcherontab": 0,
         "showontab": 0,
         "boxes": [
@@ -29,7 +29,7 @@
                             "modernui": 1
                         },
                         "classnamespace": "box",
-                        "rect": [ 83.0, 125.0, 1019.0, 797.0 ],
+                        "rect": [ 0.0, 26.0, 1019.0, 797.0 ],
                         "showontab": 1,
                         "isolateaudio": 1,
                         "title": "Audio",
@@ -286,7 +286,7 @@
                                         "c": [ "c", 1.6424738830528098 ],
                                         "d": [ "d", 0.3097850488445655 ],
                                         "e": [ "e", 5.255487468880194 ],
-                                        "live.gain~": [ -9.619422572178582 ]
+                                        "live.gain~": [ -70.0 ]
                                     },
                                     "text": "autopattr",
                                     "varname": "u156007186"
@@ -841,22 +841,10 @@
                             "modernui": 1
                         },
                         "classnamespace": "box",
-                        "rect": [ 0.0, 26.0, 1019.0, 797.0 ],
+                        "rect": [ 90.0, 125.0, 1019.0, 797.0 ],
                         "showontab": 1,
                         "title": "Basic",
                         "boxes": [
-                            {
-                                "box": {
-                                    "hidden": 1,
-                                    "id": "obj-23",
-                                    "maxclass": "newobj",
-                                    "numinlets": 1,
-                                    "numoutlets": 1,
-                                    "outlettype": [ "" ],
-                                    "patching_rect": [ 30.0, 501.0, 169.0, 22.0 ],
-                                    "text": "loadmess speed_primary 0.05"
-                                }
-                            },
                             {
                                 "box": {
                                     "bgmode": 0,
@@ -872,7 +860,8 @@
                                     "numinlets": 3,
                                     "numoutlets": 0,
                                     "offset": [ 0.0, 0.0 ],
-                                    "patching_rect": [ 511.0, 191.0, 265.0, 203.0 ],
+                                    "patching_rect": [ 487.0, 173.0, 270.0, 198.0 ],
+                                    "varname": "AttractorDisplay",
                                     "viewvisibility": 1
                                 }
                             },
@@ -912,11 +901,12 @@
                             {
                                 "box": {
                                     "id": "obj-13",
+                                    "linecount": 2,
                                     "maxclass": "comment",
                                     "numinlets": 1,
                                     "numoutlets": 0,
-                                    "patching_rect": [ 684.0, 445.0, 205.0, 20.0 ],
-                                    "text": "Observe some different behaviours",
+                                    "patching_rect": [ 126.0, 347.0, 205.0, 33.0 ],
+                                    "text": "Observe some different behaviours saved in presets",
                                     "textcolor": [ 0.976470588235294, 0.780392156862745, 0.309803921568627, 1.0 ]
                                 }
                             },
@@ -927,7 +917,7 @@
                                     "maxclass": "comment",
                                     "numinlets": 1,
                                     "numoutlets": 0,
-                                    "patching_rect": [ 786.0, 266.0, 173.0, 33.0 ],
+                                    "patching_rect": [ 759.0, 261.0, 173.0, 33.0 ],
                                     "text": "Drag the AttractorDisplay to see the 3D space",
                                     "textcolor": [ 0.976470588235294, 0.780392156862745, 0.309803921568627, 1.0 ]
                                 }
@@ -940,7 +930,7 @@
                                     "numinlets": 1,
                                     "numoutlets": 5,
                                     "outlettype": [ "preset", "int", "preset", "int", "" ],
-                                    "patching_rect": [ 511.0, 439.0, 160.0, 32.0 ],
+                                    "patching_rect": [ 137.0, 388.0, 160.0, 32.0 ],
                                     "preset_data": [
                                         {
                                             "number": 1,
@@ -968,45 +958,6 @@
                                         }
                                     ],
                                     "style": "default"
-                                }
-                            },
-                            {
-                                "box": {
-                                    "autofit": 1,
-                                    "forceaspect": 1,
-                                    "id": "obj-12",
-                                    "maxclass": "fpic",
-                                    "numinlets": 1,
-                                    "numoutlets": 1,
-                                    "outlettype": [ "jit_matrix" ],
-                                    "patching_rect": [ 72.0, 252.0, 182.0, 42.1044776119403 ],
-                                    "pic": "dadraseq3.png"
-                                }
-                            },
-                            {
-                                "box": {
-                                    "autofit": 1,
-                                    "forceaspect": 1,
-                                    "id": "obj-11",
-                                    "maxclass": "fpic",
-                                    "numinlets": 1,
-                                    "numoutlets": 1,
-                                    "outlettype": [ "jit_matrix" ],
-                                    "patching_rect": [ 72.0, 198.0, 182.0, 41.03272727272727 ],
-                                    "pic": "dadraseq2.png"
-                                }
-                            },
-                            {
-                                "box": {
-                                    "autofit": 1,
-                                    "forceaspect": 1,
-                                    "id": "obj-10",
-                                    "maxclass": "fpic",
-                                    "numinlets": 1,
-                                    "numoutlets": 1,
-                                    "outlettype": [ "jit_matrix" ],
-                                    "patching_rect": [ 72.0, 146.0, 209.0, 40.49375 ],
-                                    "pic": "dadraseq1.png"
                                 }
                             },
                             {
@@ -1109,31 +1060,19 @@
                             },
                             {
                                 "box": {
-                                    "angle": 270.0,
-                                    "bgcolor": [ 0.976470588235294, 0.780392156862745, 0.309803921568627, 1.0 ],
-                                    "id": "obj-2",
-                                    "maxclass": "panel",
-                                    "mode": 0,
-                                    "numinlets": 1,
-                                    "numoutlets": 0,
-                                    "patching_rect": [ 53.0, 139.0, 291.0, 160.0 ],
-                                    "proportion": 0.5
-                                }
-                            },
-                            {
-                                "box": {
+                                    "fontsize": 14.0,
                                     "id": "obj-88",
-                                    "linecount": 23,
+                                    "linecount": 12,
                                     "maxclass": "comment",
                                     "numinlets": 1,
                                     "numoutlets": 0,
-                                    "patching_rect": [ 30.0, 105.0, 423.0, 328.0 ],
+                                    "patching_rect": [ 30.0, 105.0, 440.0, 210.0 ],
                                     "saved_attribute_attributes": {
                                         "textcolor": {
                                             "expression": "themecolor.theme_textcolor"
                                         }
                                     },
-                                    "text": "An object that implements the dadras strange attractor, defined by the following equations:\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe object contains two instances of the attractor, each outputing x, y and z coordinates. The slower instance is most suited for triggering/modulation whereas the faster instance is best suited for audio rate duties as well as for use in analysis. The instances are synced and represent the same trajectory.\n\nThe Euler integration method is used, and is a simple check in case the simulation 'blows up' that will reset the system to a customisable position.\n\n"
+                                    "text": "An implementation of the the dadras attractor, which can generate two, three and four-scroll chaotic attractors\n\nEquations:\ndx/dt = y - a * x + b * y * z\ndy/dt = c * y - x * z - z\ndz/dt = d * x * y - e * z\n\nReference:\nDadras, Sara, and Hamid Reza Momeni. \"A novel three-dimensional autonomous chaotic system generating two, three and four-scroll attractors.\" Physics Letters A 373.40 (2009): 3637-3642.\n"
                                 }
                             }
                         ],
@@ -1168,29 +1107,22 @@
                             },
                             {
                                 "patchline": {
-                                    "destination": [ "obj-5", 0 ],
-                                    "hidden": 1,
-                                    "source": [ "obj-23", 0 ]
-                                }
-                            },
-                            {
-                                "patchline": {
                                     "destination": [ "obj-19", 2 ],
-                                    "midpoints": [ 76.3, 603.0, 498.0, 603.0, 498.0, 177.0, 766.5, 177.0 ],
+                                    "midpoints": [ 76.3, 603.0, 748.56640625, 603.0, 748.56640625, 177.0, 747.5, 177.0 ],
                                     "source": [ "obj-5", 2 ]
                                 }
                             },
                             {
                                 "patchline": {
                                     "destination": [ "obj-19", 1 ],
-                                    "midpoints": [ 57.9, 603.0, 498.0, 603.0, 498.0, 177.0, 643.5, 177.0 ],
+                                    "midpoints": [ 57.9, 603.0, 623.08203125, 603.0, 623.08203125, 177.0, 622.0, 177.0 ],
                                     "source": [ "obj-5", 1 ]
                                 }
                             },
                             {
                                 "patchline": {
                                     "destination": [ "obj-19", 0 ],
-                                    "midpoints": [ 39.5, 603.0, 498.0, 603.0, 498.0, 186.0, 520.5, 186.0 ],
+                                    "midpoints": [ 39.5, 603.0, 498.3125, 603.0, 498.3125, 186.0, 496.5, 186.0 ],
                                     "source": [ "obj-5", 0 ]
                                 }
                             },
@@ -1233,14 +1165,6 @@
         "lines": [],
         "parameters": {
             "obj-4::obj-9": [ "live.gain~", "live.gain~", 0 ],
-            "parameterbanks": {
-                "0": {
-                    "index": 0,
-                    "name": "",
-                    "parameters": [ "-", "-", "-", "-", "-", "-", "-", "-" ],
-                    "buttons": [ "-", "-", "-", "-", "-", "-", "-", "-" ]
-                }
-            },
             "inherited_shortname": 1
         },
         "autosave": 0

@@ -16,10 +16,10 @@ public:
     MAKE_ATTR(number, beta, 8.0/3.0, "Parameter beta");
 
     static constexpr double default_scale_factor = 0.03;
-    static constexpr double default_dt = 1.0;
+    static constexpr double default_dt = 2.0;              // Higher dt = lower CPU
     static constexpr double default_position = 0.01;
     static constexpr double default_speed_primary = 0.01;
-    static constexpr double default_speed_secondary = 1.0;
+    static constexpr double default_speed_secondary = 0.5;
 
 
     lorenz(const atoms& args = {})

@@ -12,9 +12,9 @@ public:
     MIN_RELATED     { "spt.attractor.dadras, spt.attractor.lorenz"};
 
 
-    static constexpr double default_dt             = 1.0;
-    static constexpr double default_speed_primary  = 0.1;
-    static constexpr double default_speed_secondary= 10.0;
+    static constexpr double default_dt             = 5.0;
+    static constexpr double default_speed_primary  = 0.05;
+    static constexpr double default_speed_secondary= 3.0;
     static constexpr double default_scale_factor   = 0.2;
 
     MAKE_ATTR(number, b, 0.208186, "Parameter b");

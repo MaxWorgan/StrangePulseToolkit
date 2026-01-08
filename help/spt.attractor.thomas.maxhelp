@@ -9,7 +9,7 @@
             "modernui": 1
         },
         "classnamespace": "box",
-        "rect": [ 100.0, 99.0, 952.0, 823.0 ],
+        "rect": [ 79.0, 99.0, 952.0, 823.0 ],
         "showrootpatcherontab": 0,
         "showontab": 0,
         "boxes": [
@@ -29,7 +29,7 @@
                             "modernui": 1
                         },
                         "classnamespace": "box",
-                        "rect": [ 100.0, 125.0, 952.0, 797.0 ],
+                        "rect": [ 0.0, 26.0, 952.0, 797.0 ],
                         "showontab": 1,
                         "boxes": [
                             {
@@ -413,7 +413,7 @@
                                     "patching_rect": [ 501.0, 40.0, 100.0, 22.0 ],
                                     "restore": {
                                         "b": [ "b", 0.16 ],
-                                        "live.gain~": [ -3.239873366344756 ]
+                                        "live.gain~": [ -70.0 ]
                                     },
                                     "text": "autopattr",
                                     "varname": "u156007186"
@@ -938,7 +938,7 @@
                             "modernui": 1
                         },
                         "classnamespace": "box",
-                        "rect": [ 0.0, 26.0, 952.0, 797.0 ],
+                        "rect": [ 79.0, 125.0, 952.0, 797.0 ],
                         "showontab": 1,
                         "boxes": [
                             {
@@ -958,18 +958,6 @@
                                     "offset": [ 0.0, 0.0 ],
                                     "patching_rect": [ 471.0, 216.0, 265.0, 204.0 ],
                                     "viewvisibility": 1
-                                }
-                            },
-                            {
-                                "box": {
-                                    "hidden": 1,
-                                    "id": "obj-14",
-                                    "maxclass": "newobj",
-                                    "numinlets": 1,
-                                    "numoutlets": 1,
-                                    "outlettype": [ "" ],
-                                    "patching_rect": [ 211.5, 398.0, 159.0, 22.0 ],
-                                    "text": "loadmess speed_primary 10"
                                 }
                             },
                             {
@@ -1003,57 +991,6 @@
                                     "numoutlets": 1,
                                     "outlettype": [ "bang" ],
                                     "patching_rect": [ 17.0, 553.0, 184.0, 68.0 ]
-                                }
-                            },
-                            {
-                                "box": {
-                                    "autofit": 1,
-                                    "forceaspect": 1,
-                                    "id": "obj-13",
-                                    "maxclass": "fpic",
-                                    "numinlets": 1,
-                                    "numoutlets": 1,
-                                    "outlettype": [ "jit_matrix" ],
-                                    "patching_rect": [ 136.0, 262.0, 186.0, 54.91428571428572 ],
-                                    "pic": "thomasEq3.png"
-                                }
-                            },
-                            {
-                                "box": {
-                                    "autofit": 1,
-                                    "forceaspect": 1,
-                                    "id": "obj-12",
-                                    "maxclass": "fpic",
-                                    "numinlets": 1,
-                                    "numoutlets": 1,
-                                    "outlettype": [ "jit_matrix" ],
-                                    "patching_rect": [ 136.0, 205.0, 186.0, 55.177033492822964 ],
-                                    "pic": "thomasEq2.png"
-                                }
-                            },
-                            {
-                                "box": {
-                                    "autofit": 1,
-                                    "forceaspect": 1,
-                                    "id": "obj-10",
-                                    "maxclass": "fpic",
-                                    "numinlets": 1,
-                                    "numoutlets": 1,
-                                    "outlettype": [ "jit_matrix" ],
-                                    "patching_rect": [ 136.0, 149.0, 186.0, 54.14084507042253 ],
-                                    "pic": "thomasEq1.png"
-                                }
-                            },
-                            {
-                                "box": {
-                                    "hidden": 1,
-                                    "id": "obj-11",
-                                    "maxclass": "newobj",
-                                    "numinlets": 1,
-                                    "numoutlets": 1,
-                                    "outlettype": [ "" ],
-                                    "patching_rect": [ 17.0, 398.0, 181.0, 22.0 ],
-                                    "text": "loadmess speed_secondary 100"
                                 }
                             },
                             {
@@ -1119,7 +1056,7 @@
                             },
                             {
                                 "box": {
-                                    "attr": "speed_primary",
+                                    "attr": "b",
                                     "id": "obj-6",
                                     "maxclass": "attrui",
                                     "numinlets": 1,
@@ -1131,51 +1068,23 @@
                             },
                             {
                                 "box": {
-                                    "angle": 270.0,
-                                    "bgcolor": [ 0.976470588235294, 0.780392156862745, 0.309803921568627, 1.0 ],
-                                    "id": "obj-2",
-                                    "maxclass": "panel",
-                                    "mode": 0,
-                                    "numinlets": 1,
-                                    "numoutlets": 0,
-                                    "patching_rect": [ 68.0, 137.08851674641147, 326.0, 191.0 ],
-                                    "proportion": 0.5
-                                }
-                            },
-                            {
-                                "box": {
+                                    "fontsize": 14.0,
                                     "id": "obj-88",
-                                    "linecount": 20,
+                                    "linecount": 16,
                                     "maxclass": "comment",
                                     "numinlets": 1,
                                     "numoutlets": 0,
-                                    "patching_rect": [ 17.0, 105.0, 423.0, 288.0 ],
+                                    "patching_rect": [ 17.0, 105.0, 439.0, 272.0 ],
                                     "saved_attribute_attributes": {
                                         "textcolor": {
                                             "expression": "themecolor.live_control_fg"
                                         }
                                     },
-                                    "text": "An object that implements Thomas' cyclically symmetric attractor, defined by the following equations:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWith just a single parameter b, this is one of most simple strange attractors, making it a popular example. The attractor exibits chaotic behaviour around 0.2081\n"
+                                    "text": "Thomas' cyclically symmetric attractor, possibly the simplest form of a strange attractor:\n\nEquations:\ndx/dt = sin(y) - bx\ndy/dt = sin(z) - by\ndz/dt = sin(x) - bz\n\nWith just a single parameter b, this is one of most simple strange attractors, making it a popular example. The attractor exibits chaotic behaviour around 0.2081\n\nReference:\nThomas, René (1999). \"Deterministic chaos seen in terms of feedback circuits: Analysis, synthesis, 'labyrinth chaos'\". Int. J. Bifurc. Chaos. 9 (10): 1889–1905. doi:10.1142/S0218127499001383.\n"
                                 }
                             }
                         ],
                         "lines": [
-                            {
-                                "patchline": {
-                                    "destination": [ "obj-5", 0 ],
-                                    "hidden": 1,
-                                    "midpoints": [ 26.5, 435.0, 14.0, 435.0, 14.0, 465.0, 26.5, 465.0 ],
-                                    "source": [ "obj-11", 0 ]
-                                }
-                            },
-                            {
-                                "patchline": {
-                                    "destination": [ "obj-5", 0 ],
-                                    "hidden": 1,
-                                    "midpoints": [ 221.0, 430.5, 26.5, 430.5 ],
-                                    "source": [ "obj-14", 0 ]
-                                }
-                            },
                             {
                                 "patchline": {
                                     "destination": [ "obj-15", 2 ],
@@ -1234,6 +1143,14 @@
         "lines": [],
         "parameters": {
             "obj-18::obj-9": [ "live.gain~", "live.gain~", 0 ],
+            "parameterbanks": {
+                "0": {
+                    "index": 0,
+                    "name": "",
+                    "parameters": [ "-", "-", "-", "-", "-", "-", "-", "-" ],
+                    "buttons": [ "-", "-", "-", "-", "-", "-", "-", "-" ]
+                }
+            },
             "inherited_shortname": 1
         },
         "autosave": 0

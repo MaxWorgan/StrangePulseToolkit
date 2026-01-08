@@ -19,7 +19,9 @@ public:
     MAKE_ATTR(number, e, 9.0, "Parameter e");
 
     static constexpr double default_scale_factor = 0.075;
-    static constexpr double default_speed_primary = 0.05;
+    static constexpr double default_dt = 3.0;              // Higher dt = lower CPU
+    static constexpr double default_speed_primary = 0.01;   // ~2.3 Hz rhythm
+    static constexpr double default_speed_secondary = 1.0;  // ~29 Hz low audio
 
     dadras(const atoms& args = {})
     : attractor_base<dadras>(args) { }

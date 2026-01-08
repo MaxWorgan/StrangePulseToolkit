@@ -9,7 +9,7 @@
             "modernui": 1
         },
         "classnamespace": "box",
-        "rect": [ 100.0, 656.0, 640.0, 480.0 ],
+        "rect": [ 255.0, 208.0, 841.0, 569.0 ],
         "openinpresentation": 1,
         "boxes": [
             {
@@ -88,8 +88,8 @@
                     "numinlets": 1,
                     "numoutlets": 2,
                     "outlettype": [ "", "" ],
-                    "patching_rect": [ 38.0, 158.0, 601.0, 22.0 ],
-                    "text": "jit.gl.path #0-path @interpmode spline @segments 15 @pathstyle line @line_width 2 @color 0.976 0.78 0.31 1."
+                    "patching_rect": [ 38.0, 158.0, 624.0, 22.0 ],
+                    "text": "jit.gl.path #0-path @interpmode spline @segments 15 @pathstyle line @line_width 1.5 @color 0.976 0.78 0.31 1."
                 }
             },
             {
@@ -121,8 +121,8 @@
                     "numinlets": 1,
                     "numoutlets": 2,
                     "outlettype": [ "", "" ],
-                    "patching_rect": [ 326.0, 362.0, 162.0, 22.0 ],
-                    "text": "jit.gl.handle #0-screen"
+                    "patching_rect": [ 358.0, 242.0, 225.0, 22.0 ],
+                    "text": "jit.gl.handle #0-screen @auto_rotate 1"
                 }
             },
             {
@@ -132,7 +132,7 @@
                     "numinlets": 1,
                     "numoutlets": 2,
                     "outlettype": [ "", "" ],
-                    "patching_rect": [ 326.0, 428.0, 204.0, 22.0 ],
+                    "patching_rect": [ 358.0, 308.0, 204.0, 22.0 ],
                     "text": "jit.gl.videoplane @transform_reset 2"
                 }
             },
@@ -143,22 +143,24 @@
                     "numinlets": 1,
                     "numoutlets": 3,
                     "outlettype": [ "jit_gl_texture", "", "" ],
-                    "patching_rect": [ 326.0, 392.0, 243.5, 22.0 ],
+                    "patching_rect": [ 358.0, 272.0, 243.5, 22.0 ],
                     "text": "jit.gl.node @name #0-path @capture 1"
                 }
             },
             {
                 "box": {
                     "id": "obj-24",
+                    "interp": 1,
                     "maxclass": "jit.pwindow",
                     "name": "#0-screen",
                     "numinlets": 1,
                     "numoutlets": 2,
                     "outlettype": [ "jit_matrix", "" ],
-                    "patching_rect": [ 22.0, 238.0, 284.0, 219.0 ],
+                    "patching_rect": [ 38.0, 218.0, 221.0, 159.0 ],
                     "presentation": 1,
-                    "presentation_rect": [ 0.0, 0.0, 265.0, 204.0 ],
-                    "sync": 1
+                    "presentation_rect": [ 0.0, 0.0, 270.0, 202.0 ],
+                    "sync": 1,
+                    "varname": "screen"
                 }
             }
         ],

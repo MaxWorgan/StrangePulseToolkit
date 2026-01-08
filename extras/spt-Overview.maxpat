@@ -461,7 +461,7 @@
                     "mode": 1,
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "patching_rect": [ 574.0, 367.0, 397.0, 169.0 ],
+                    "patching_rect": [ 570.0, 367.0, 397.0, 169.0 ],
                     "presentation": 1,
                     "presentation_rect": [ 563.0, 370.0, 397.0, 169.0 ],
                     "proportion": 0.5
