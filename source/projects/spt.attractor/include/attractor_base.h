@@ -70,12 +70,10 @@ public:
 
         double sp1 = speed_primary.get();
         double sp2 = speed_secondary.get();
-
-        // Clamp to non-negative to avoid weirdness.
+        
         if (sp1 < 0.0) sp1 = 0.0;
         if (sp2 < 0.0) sp2 = 0.0;
 
-        // Runtime parameters for speed/skip behaviour.
         bool   skip_mode_1 = false;
         bool   skip_mode_2 = false;
         int    n1          = 0;    // substeps per sample (0 = frozen)
