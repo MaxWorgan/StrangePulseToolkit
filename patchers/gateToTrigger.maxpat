@@ -170,19 +170,7 @@
 					"basictuning" : 440,
 					"clipheight" : 99.0,
 					"data" : 					{
-						"clips" : [ 							{
-								"absolutepath" : "Macintosh HD:/Users/mw469/Downloads/WhatsApp Audio 2025-10-30 at 10.27.46.wav",
-								"filename" : "WhatsApp Audio 2025-10-30 at 10.27.46.wav",
-								"filekind" : "audiofile",
-								"id" : "u334001544",
-								"selection" : [ 0.063157894736842, 0.136842105263158 ],
-								"loop" : 1,
-								"content_state" : 								{
-									"loop" : 1
-								}
-
-							}
- ]
+						"clips" : [ ]
 					}
 ,
 					"followglobaltempo" : 0,
@@ -208,18 +196,7 @@
 					"basictuning" : 440,
 					"clipheight" : 69.886075019836426,
 					"data" : 					{
-						"clips" : [ 							{
-								"absolutepath" : "Macintosh HD:/Users/mw469/Library/Mobile Documents/com~apple~CloudDocs/Documents/PhD/EMS/2-Audio 0002 [2023-06-07 104838].wav",
-								"filename" : "2-Audio 0002 [2023-06-07 104838].wav",
-								"filekind" : "audiofile",
-								"id" : "u766011317",
-								"loop" : 0,
-								"content_state" : 								{
-
-								}
-
-							}
- ]
+						"clips" : [ ]
 					}
 ,
 					"followglobaltempo" : 0,
@@ -2046,13 +2023,6 @@
 			}
  ],
 		"dependency_cache" : [ 			{
-				"name" : "2-Audio 0002 [2023-06-07 104838].wav",
-				"bootpath" : "~/Library/Mobile Documents/com~apple~CloudDocs/Documents/PhD/EMS",
-				"patcherrelativepath" : "../../../../../Library/Mobile Documents/com~apple~CloudDocs/Documents/PhD/EMS",
-				"type" : "WAVE",
-				"implicit" : 1
-			}
-, 			{
 				"name" : "GateLogic.maxpat",
 				"bootpath" : "~/Documents/Max 8/Packages/spt/patchers",
 				"patcherrelativepath" : ".",
