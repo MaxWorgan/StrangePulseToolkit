@@ -43,7 +43,7 @@
                 "box": {
                     "comment": "Blend Amt (0..1)",
                     "id": "obj-5",
-                    "index": 4,
+                    "index": 0,
                     "maxclass": "inlet",
                     "numinlets": 0,
                     "numoutlets": 1,
@@ -163,7 +163,7 @@
                 "box": {
                     "comment": "Output Signal",
                     "id": "obj-6",
-                    "index": 1,
+                    "index": 0,
                     "maxclass": "outlet",
                     "numinlets": 1,
                     "numoutlets": 0,
@@ -174,11 +174,11 @@
                 "box": {
                     "comment": "Signal Input 3",
                     "id": "obj-4",
-                    "index": 3,
+                    "index": 0,
                     "maxclass": "inlet",
                     "numinlets": 0,
                     "numoutlets": 1,
-                    "outlettype": [ "signal" ],
+                    "outlettype": [ "" ],
                     "patching_rect": [ 312.0, 72.0, 30.0, 30.0 ]
                 }
             },
@@ -186,11 +186,11 @@
                 "box": {
                     "comment": "Signal Input 2",
                     "id": "obj-3",
-                    "index": 2,
+                    "index": 0,
                     "maxclass": "inlet",
                     "numinlets": 0,
                     "numoutlets": 1,
-                    "outlettype": [ "signal" ],
+                    "outlettype": [ "" ],
                     "patching_rect": [ 259.5, 72.0, 30.0, 30.0 ]
                 }
             },
@@ -198,11 +198,11 @@
                 "box": {
                     "comment": "Signal Input 1",
                     "id": "obj-2",
-                    "index": 1,
+                    "index": 0,
                     "maxclass": "inlet",
                     "numinlets": 0,
                     "numoutlets": 1,
-                    "outlettype": [ "signal" ],
+                    "outlettype": [ "" ],
                     "patching_rect": [ 207.0, 72.0, 30.0, 30.0 ]
                 }
             }
@@ -300,6 +300,7 @@
                     "source": [ "obj-9", 0 ]
                 }
             }
-        ]
+        ],
+        "autosave": 0
     }
 }

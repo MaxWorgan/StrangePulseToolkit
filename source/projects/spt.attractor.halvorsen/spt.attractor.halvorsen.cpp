@@ -1,8 +1,6 @@
 // halvorsen.cpp
 // Halvorsen Attractor - Striking cyclic attractor with 3-fold rotational symmetry
-// Creates beautiful intertwined lobes that spiral around each axis
 #include "attractor_base.h"
-#include <cmath>
 
 using namespace c74::min;
 
@@ -11,37 +9,24 @@ public:
     MIN_DESCRIPTION { "Halvorsen Attractor simulation - 3-fold symmetric chaos" };
     MIN_TAGS        { "chaos, simulation" };
     MIN_AUTHOR      { "Max Worgan" };
-    MIN_RELATED     { "spt.attractor.dadras, spt.attractor.aizawa, spt.attractor.rabinovich" };
+    MIN_RELATED     { "spt.attractor.lorenz, spt.attractor.thomas, spt.attractor.aizawa, spt.attractor.dadras, spt.attractor.tsucs1" };
 
-    // Halvorsen has elegant symmetry - same coupling for all three dimensions
-    // The parameter 'a' controls the damping/dissipation
     MAKE_ATTR(number, a, 1.89, "Parameter a - dissipation rate (try 1.3-2.0)");
 
     static constexpr double default_scale_factor = 0.06;
-    static constexpr double default_dt = 4.0;              // Higher dt = lower CPU
-    static constexpr double default_position = 0.1;
-    static constexpr double default_speed_primary = 0.01;   // ~2.7 Hz rhythm
-    static constexpr double default_speed_secondary = 0.1;  // ~32 Hz low audio
+    static constexpr double default_dt = 4.0;
+    static inline std::vector<double> default_position{-0.5, 0.1, -0.1};
+    static constexpr double default_speed_primary = 0.01;
+    static constexpr double default_speed_secondary = 0.1;
+    static constexpr double default_overflow_limit = 100.0;
 
-    halvorsen(const atoms& args = {})
-    : attractor_base<halvorsen>(args) { }
+    halvorsen(const atoms& args = {}) : attractor_base<halvorsen>(args) {}
 
-    void init_state(double p, double& x, double& y, double& z, double& x2, double& y2, double& z2) {
-        // Asymmetric start to break symmetry and explore all lobes
-        x = x2 = -5.0 * p;
-        y = y2 = p;
-        z = z2 = -p;
-    }
-
-    void compute(double& dx, double& dy, double& dz,
-                 double x, double y, double z) {
+    void compute(Vec3& vel, const Vec3& pos) {
         double a_val = a.get();
-
-        // Cyclic structure: each equation couples to the next two variables
-        // The quadratic terms create the characteristic folding
-        dx = -a_val * x - 4.0 * y - 4.0 * z - y * y;
-        dy = -a_val * y - 4.0 * z - 4.0 * x - z * z;
-        dz = -a_val * z - 4.0 * x - 4.0 * y - x * x;
+        vel(0) = -a_val * pos(0) - 4.0 * pos(1) - 4.0 * pos(2) - pos(1) * pos(1);
+        vel(1) = -a_val * pos(1) - 4.0 * pos(2) - 4.0 * pos(0) - pos(2) * pos(2);
+        vel(2) = -a_val * pos(2) - 4.0 * pos(0) - 4.0 * pos(1) - pos(0) * pos(0);
     }
 };
 

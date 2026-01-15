@@ -1,120 +1,85 @@
 {
-	"patcher" : 	{
-		"fileversion" : 1,
-		"appversion" : 		{
-			"major" : 8,
-			"minor" : 6,
-			"revision" : 5,
-			"architecture" : "x64",
-			"modernui" : 1
-		}
-,
-		"classnamespace" : "dsp.gen",
-		"rect" : [ 98.0, 162.0, 1338.0, 680.0 ],
-		"bglocked" : 0,
-		"openinpresentation" : 0,
-		"default_fontsize" : 12.0,
-		"default_fontface" : 0,
-		"default_fontname" : "Arial",
-		"gridonopen" : 1,
-		"gridsize" : [ 15.0, 15.0 ],
-		"gridsnaponopen" : 1,
-		"objectsnaponopen" : 1,
-		"statusbarvisible" : 2,
-		"toolbarvisible" : 1,
-		"lefttoolbarpinned" : 0,
-		"toptoolbarpinned" : 0,
-		"righttoolbarpinned" : 0,
-		"bottomtoolbarpinned" : 0,
-		"toolbars_unpinned_last_save" : 0,
-		"tallnewobj" : 0,
-		"boxanimatetime" : 200,
-		"enablehscroll" : 1,
-		"enablevscroll" : 1,
-		"devicewidth" : 0.0,
-		"description" : "",
-		"digest" : "",
-		"tags" : "",
-		"style" : "",
-		"subpatcher_template" : "",
-		"assistshowspatchername" : 0,
-		"boxes" : [ 			{
-				"box" : 				{
-					"annotation" : "Downward Transition Triggers",
-					"hint" : "Downward Transition Triggers",
-					"id" : "obj-12",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 856.0, 416.0, 35.0, 22.0 ],
-					"text" : "out 2"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"code" : "History prev(0);    \nHistory prev_dir(0);\r\n\ndiff = in1 - prev;   // Calculate the difference between the current and previous sample\r\n\r\ncurrent_dir = (diff > 0) ? 1 : (diff < 0) ? -1 : 0;\n\n// Detect when the direction changes upward (from decreasing to increasing)\nupward_change = (current_dir == 1 && prev_dir == -1) ? 1 : 0;\n\n// Detect when the direction changes downward (from increasing to decreasing)\ndownward_change = (current_dir == -1 && prev_dir == 1) ? 1 : 0;\r\n\n// Output the upward trigger (1) when conditions are met\nout1 = upward_change;\n\n// Output the downward trigger (1) when conditions are met\nout2 = downward_change;\n\n// Store the current sample as the previous sample for the next iteration\nprev = in1;\r\nprev_dir = (current_dir != 0) ? current_dir : prev_dir;  // Keep track of the last significant direction\n",
-					"fontface" : 0,
-					"fontname" : "<Monospaced>",
-					"fontsize" : 12.0,
-					"id" : "obj-10",
-					"maxclass" : "codebox",
-					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 56.0, 70.0, 819.0, 318.0 ]
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-1",
-					"maxclass" : "newobj",
-					"numinlets" : 0,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 56.0, 27.0, 28.0, 22.0 ],
-					"text" : "in 1"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"annotation" : "Upward Transition Triggers",
-					"hint" : "Upward Transition Triggers",
-					"id" : "obj-4",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 56.0, 416.0, 35.0, 22.0 ],
-					"text" : "out 1"
-				}
-
-			}
- ],
-		"lines" : [ 			{
-				"patchline" : 				{
-					"destination" : [ "obj-10", 0 ],
-					"source" : [ "obj-1", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-12", 0 ],
-					"source" : [ "obj-10", 1 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-4", 0 ],
-					"source" : [ "obj-10", 0 ]
-				}
-
-			}
- ],
-		"autosave" : 0
-	}
-
+    "patcher": {
+        "fileversion": 1,
+        "appversion": {
+            "major": 9,
+            "minor": 1,
+            "revision": 1,
+            "architecture": "x64",
+            "modernui": 1
+        },
+        "classnamespace": "dsp.gen",
+        "rect": [ 98.0, 242.0, 1338.0, 680.0 ],
+        "boxes": [
+            {
+                "box": {
+                    "annotation": "Downward Transition Triggers",
+                    "hint": "Downward Transition Triggers",
+                    "id": "obj-12",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 856.0, 416.0, 35.0, 22.0 ],
+                    "text": "out 2"
+                }
+            },
+            {
+                "box": {
+                    "code": "Param thresh(0.00001, min=0, max=0.1);  // Minimum change to register as movement\n\nHistory prev(0);    \nHistory prev_dir(0);\n\ndiff = in1 - prev;   // Calculate the difference between the current and previous sample\n\n// Only register direction if change exceeds threshold\ncurrent_dir = (diff > thresh) ? 1 : (diff < -thresh) ? -1 : 0;\n\n// Detect when the direction changes upward (from decreasing to increasing)\nupward_change = (current_dir == 1 && prev_dir == -1) ? 1 : 0;\n\n// Detect when the direction changes downward (from increasing to decreasing)\ndownward_change = (current_dir == -1 && prev_dir == 1) ? 1 : 0;\n\n// Output the upward trigger (1) when conditions are met\nout1 = upward_change;\n\n// Output the downward trigger (1) when conditions are met\nout2 = downward_change;\n\n// Store the current sample as the previous sample for the next iteration\nprev = in1;\nprev_dir = (current_dir != 0) ? current_dir : prev_dir;  // Keep track of the last significant direction\n",
+                    "fontface": 0,
+                    "fontname": "<Monospaced>",
+                    "fontsize": 12.0,
+                    "id": "obj-10",
+                    "maxclass": "codebox",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [ "", "" ],
+                    "patching_rect": [ 56.0, 70.0, 819.0, 318.0 ]
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-1",
+                    "maxclass": "newobj",
+                    "numinlets": 0,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 56.0, 27.0, 28.0, 22.0 ],
+                    "text": "in 1"
+                }
+            },
+            {
+                "box": {
+                    "annotation": "Upward Transition Triggers",
+                    "hint": "Upward Transition Triggers",
+                    "id": "obj-4",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 56.0, 416.0, 35.0, 22.0 ],
+                    "text": "out 1"
+                }
+            }
+        ],
+        "lines": [
+            {
+                "patchline": {
+                    "destination": [ "obj-10", 0 ],
+                    "source": [ "obj-1", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-12", 0 ],
+                    "source": [ "obj-10", 1 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-4", 0 ],
+                    "source": [ "obj-10", 0 ]
+                }
+            }
+        ]
+    }
 }

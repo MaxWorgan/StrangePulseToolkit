@@ -12,13 +12,13 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>spt.attractor.clorenz</string>
+	<string>spt.attractor.tsucs1</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.cycling74.spt-attractor-clorenz</string>
+	<string>com.cycling74.spt-attractor-tsucs1</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleLongVersionString</key>
-	<string>spt.attractor.clorenz 0.0.1 - Copyright (c) 2018 Cycling '74</string>
+	<string>spt.attractor.tsucs1 0.0.1 - Copyright (c) 2018 Cycling '74</string>
 	<key>CFBundlePackageType</key>
 	<string>iLaX</string>
 	<key>CFBundleShortVersionString</key>

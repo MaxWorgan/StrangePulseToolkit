@@ -24,7 +24,7 @@
             },
             {
                 "box": {
-                    "code": "Param mode(0, min=0, max=2);\r\nParam blend(0.5, min=0, max=1);\n\n\na = clamp(in1, -1, 1);\nb = clamp(in2, -1, 1);\n\n\ny = 0;\n\n// Linear mix\nif (mode == 0) {\n    y = mix(a, b, clamp(blend, 0, 1));\n}\n\n// AND/OR morph\nif (mode == 1) {\r\n    au = 0.5 * (a + 1);\n    bu = 0.5 * (b + 1);\n    andv = au * bu;\n    orv  = au + bu - au * bu;\n    yu   = mix(andv, orv, clamp(blend, 0, 1));  \n    y    = 2 * yu - 1;                          \n}\n\r\n// CHOP based on sig3\r\nif (mode == 2){\r\n    // pretent blend is bipolar\r\n    b = (blend * 2.0) - 1.0;\r\n    if(in3 > b){\r\n        y = in1;\r\n    } else{\r\n        y = in2;\r\n    }\r\n}\r\n    \r\n\n\nout1 = y;",
+                    "code": "Param mode(0, min=0, max=2);\r\nParam blend(0.5, min=0, max=1);\n\n// Smooth the blend parameter with one-pole lowpass\nHistory lastBlend(0.5);\nsmoothCoef = 0.0005;  // smaller = smoother\nblendS = lastBlend + smoothCoef * (blend - lastBlend);\nlastBlend = blendS;\nblendS = clamp(blendS, 0, 1);\n\na = clamp(in1, -1, 1);\nb = clamp(in2, -1, 1);\n\n\ny = 0;\n\n// Linear mix\nif (mode == 0) {\n    y = mix(a, b, blendS);\n}\n\n// AND/OR morph\nif (mode == 1) {\r\n    au = 0.5 * (a + 1);\n    bu = 0.5 * (b + 1);\n    andv = au * bu;\n    orv  = au + bu - au * bu;\n    yu   = mix(andv, orv, blendS);  \n    y    = 2 * yu - 1;                          \n}\n\r\n// CHOP based on sig3\r\nif (mode == 2){\r\n    // pretend blend is bipolar\r\n    bs = (blendS * 2.0) - 1.0;\r\n    if(in3 > bs){\r\n        y = in1;\r\n    } else{\r\n        y = in2;\r\n    }\r\n}\r\n    \r\n\n\nout1 = y;",
                     "fontface": 0,
                     "fontname": "<Monospaced>",
                     "fontsize": 12.0,
@@ -95,6 +95,7 @@
                 }
             }
         ],
+        "autosave": 0,
         "toolbarexclusions": [ "calendar" ]
     }
 }
