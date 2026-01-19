@@ -18,7 +18,7 @@ public:
     static constexpr double default_speed_secondary = 3.0;
     static constexpr double default_scale_factor = 0.2;
     static constexpr double default_overflow_limit = 100.0;
-    static inline std::vector<double> default_position{0.001, 0.001, 0.001};
+    static inline std::vector<double> default_position{0.001, 0.003, 0.001};
 
     thomas(const atoms& args = {}) : attractor_base<thomas>(args) {}
 

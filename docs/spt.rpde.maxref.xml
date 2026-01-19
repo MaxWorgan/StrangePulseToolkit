@@ -43,8 +43,8 @@
 		</attribute>
 
 		<attribute name='epsilon' get='1' set='1' type='float64' size='1' >
-			<digest>Recurrence ball radius (input should be normalized to [-1,1]) </digest>
-			<description>Recurrence ball radius (input should be normalized to [-1,1]) </description>
+			<digest>Recurrence ball radius (0</digest>
+			<description>Recurrence ball radius (0.08-0.12 works well for normalized data) </description>
 		</attribute>
 
 		<attribute name='hop_size' get='1' set='1' type='long' size='1' >
@@ -58,8 +58,8 @@
 		</attribute>
 
 		<attribute name='tau' get='1' set='1' type='long' size='1' >
-			<digest>Time delay for embedding </digest>
-			<description>Time delay for embedding </description>
+			<digest>Time delay for embedding</digest>
+			<description>Time delay for embedding. Rule of thumb: period/4 </description>
 		</attribute>
 
 		<attribute name='theiler' get='1' set='1' type='long' size='1' >
@@ -68,8 +68,13 @@
 		</attribute>
 
 		<attribute name='tmax' get='1' set='1' type='long' size='1' >
-			<digest>Maximum return distance (-1 for no limit) </digest>
-			<description>Maximum return distance (-1 for no limit) </description>
+			<digest>Maximum lag for recurrence search</digest>
+			<description>Maximum lag for recurrence search. Rule of thumb: period*3. Critical for good separation. </description>
+		</attribute>
+
+		<attribute name='verbose' get='1' set='1' type='long' size='1' >
+			<digest>When enabled, prints diagnostic info to Max console </digest>
+			<description>When enabled, prints diagnostic info to Max console </description>
 		</attribute>
 
 		<attribute name='window_size' get='1' set='0' type='long' size='1' >

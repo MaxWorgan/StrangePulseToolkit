@@ -9,7 +9,7 @@
             "modernui": 1
         },
         "classnamespace": "box",
-        "rect": [ 90.0, 99.0, 1019.0, 823.0 ],
+        "rect": [ 503.0, 438.0, 1339.0, 823.0 ],
         "showrootpatcherontab": 0,
         "showontab": 0,
         "boxes": [
@@ -29,7 +29,7 @@
                             "modernui": 1
                         },
                         "classnamespace": "box",
-                        "rect": [ 0.0, 26.0, 1019.0, 797.0 ],
+                        "rect": [ 503.0, 464.0, 1339.0, 797.0 ],
                         "showontab": 1,
                         "isolateaudio": 1,
                         "title": "Audio",
@@ -43,7 +43,7 @@
                                     "numoutlets": 1,
                                     "outlettype": [ "" ],
                                     "patching_rect": [ 172.0, 332.5, 153.0, 22.0 ],
-                                    "text": "loadmess speed_primary 5"
+                                    "text": "loadmess speed_primary 1"
                                 }
                             },
                             {
@@ -189,7 +189,7 @@
                                     "numoutlets": 5,
                                     "outlettype": [ "signal", "signal", "", "float", "list" ],
                                     "parameter_enable": 1,
-                                    "patching_rect": [ 807.0, 483.0, 48.0, 136.0 ],
+                                    "patching_rect": [ 814.25, 483.0, 48.0, 136.0 ],
                                     "saved_attribute_attributes": {
                                         "valueof": {
                                             "parameter_longname": "live.gain~",
@@ -281,12 +281,12 @@
                                     "outlettype": [ "", "", "", "" ],
                                     "patching_rect": [ 501.0, 40.0, 100.0, 22.0 ],
                                     "restore": {
-                                        "a": [ "a", 2.7094198073695948 ],
-                                        "b": [ "b", 8.598842514985959 ],
-                                        "c": [ "c", 1.6424738830528098 ],
-                                        "d": [ "d", 0.3097850488445655 ],
-                                        "e": [ "e", 5.255487468880194 ],
-                                        "live.gain~": [ -70.0 ]
+                                        "a": [ "a", 1.0 ],
+                                        "b": [ "b", 17.400000000000002 ],
+                                        "c": [ "c", 0.98 ],
+                                        "d": [ "d", 0.2 ],
+                                        "e": [ "e", 9.540000000000003 ],
+                                        "live.gain~": [ -25.94291338582682 ]
                                     },
                                     "text": "autopattr",
                                     "varname": "u156007186"
@@ -686,14 +686,14 @@
                             {
                                 "patchline": {
                                     "destination": [ "obj-9", 1 ],
-                                    "midpoints": [ 737.5, 579.265625, 803.1171875, 579.265625, 803.1171875, 474.0, 845.5, 474.0 ],
+                                    "midpoints": [ 737.5, 579.265625, 803.1171875, 579.265625, 803.1171875, 474.0, 852.75, 474.0 ],
                                     "source": [ "obj-37", 1 ]
                                 }
                             },
                             {
                                 "patchline": {
                                     "destination": [ "obj-9", 0 ],
-                                    "midpoints": [ 423.5, 578.91796875, 802.140625, 578.91796875, 802.140625, 480.4140625, 816.5, 480.4140625 ],
+                                    "midpoints": [ 423.5, 578.91796875, 802.140625, 578.91796875, 802.140625, 480.4140625, 823.75, 480.4140625 ],
                                     "source": [ "obj-37", 0 ]
                                 }
                             },
@@ -815,7 +815,7 @@
                             "modernui": 1
                         },
                         "classnamespace": "box",
-                        "rect": [ 0.0, 26.0, 1019.0, 797.0 ],
+                        "rect": [ 0.0, 26.0, 1339.0, 797.0 ],
                         "showontab": 1,
                         "boxes": [],
                         "lines": []
@@ -841,7 +841,7 @@
                             "modernui": 1
                         },
                         "classnamespace": "box",
-                        "rect": [ 90.0, 125.0, 1019.0, 797.0 ],
+                        "rect": [ 0.0, 26.0, 1339.0, 797.0 ],
                         "showontab": 1,
                         "title": "Basic",
                         "boxes": [
@@ -930,7 +930,7 @@
                                     "numinlets": 1,
                                     "numoutlets": 5,
                                     "outlettype": [ "preset", "int", "preset", "int", "" ],
-                                    "patching_rect": [ 137.0, 388.0, 160.0, 32.0 ],
+                                    "patching_rect": [ 137.0, 388.0, 188.0, 33.0 ],
                                     "preset_data": [
                                         {
                                             "number": 1,
@@ -955,6 +955,10 @@
                                         {
                                             "number": 6,
                                             "data": [ 5, "obj-18", "attrui", "attr", "e", 5, "obj-18", "attrui", "float", 11.592, 5, "obj-17", "attrui", "attr", "d", 5, "obj-17", "attrui", "float", 3.309, 5, "obj-16", "attrui", "attr", "c", 5, "obj-16", "attrui", "float", 1.733, 5, "obj-15", "attrui", "attr", "b", 5, "obj-15", "attrui", "float", 1.594, 5, "obj-8", "attrui", "attr", "a", 5, "obj-8", "attrui", "float", 0.53 ]
+                                        },
+                                        {
+                                            "number": 7,
+                                            "data": [ 5, "obj-1", "attrui", "attr", "speed_secondary", 5, "obj-1", "attrui", "float", 1.0, 5, "obj-18", "attrui", "attr", "e", 5, "obj-18", "attrui", "float", 5.0, 5, "obj-17", "attrui", "attr", "d", 5, "obj-17", "attrui", "float", 3.572000000000001, 5, "obj-16", "attrui", "attr", "c", 5, "obj-16", "attrui", "float", 1.733, 5, "obj-15", "attrui", "attr", "b", 5, "obj-15", "attrui", "float", 1.9200000000000004, 5, "obj-8", "attrui", "attr", "a", 5, "obj-8", "attrui", "float", 1.5600000000000003 ]
                                         }
                                     ],
                                     "style": "default"
@@ -1074,9 +1078,27 @@
                                     },
                                     "text": "An implementation of the the dadras attractor, which can generate two, three and four-scroll chaotic attractors\n\nEquations:\ndx/dt = y - a * x + b * y * z\ndy/dt = c * y - x * z - z\ndz/dt = d * x * y - e * z\n\nReference:\nDadras, Sara, and Hamid Reza Momeni. \"A novel three-dimensional autonomous chaotic system generating two, three and four-scroll attractors.\" Physics Letters A 373.40 (2009): 3637-3642.\n"
                                 }
+                            },
+                            {
+                                "box": {
+                                    "attr": "speed_secondary",
+                                    "id": "obj-1",
+                                    "maxclass": "attrui",
+                                    "numinlets": 1,
+                                    "numoutlets": 1,
+                                    "outlettype": [ "" ],
+                                    "parameter_enable": 0,
+                                    "patching_rect": [ 30.0, 540.0, 150.0, 22.0 ]
+                                }
                             }
                         ],
                         "lines": [
+                            {
+                                "patchline": {
+                                    "destination": [ "obj-5", 0 ],
+                                    "source": [ "obj-1", 0 ]
+                                }
+                            },
                             {
                                 "patchline": {
                                     "destination": [ "obj-5", 0 ],
@@ -1165,6 +1187,14 @@
         "lines": [],
         "parameters": {
             "obj-4::obj-9": [ "live.gain~", "live.gain~", 0 ],
+            "parameterbanks": {
+                "0": {
+                    "index": 0,
+                    "name": "",
+                    "parameters": [ "-", "-", "-", "-", "-", "-", "-", "-" ],
+                    "buttons": [ "-", "-", "-", "-", "-", "-", "-", "-" ]
+                }
+            },
             "inherited_shortname": 1
         },
         "autosave": 0

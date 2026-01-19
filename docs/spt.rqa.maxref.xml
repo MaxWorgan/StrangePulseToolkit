@@ -50,7 +50,7 @@
 			<description>Multiplier for dynamic threshold </description>
 		</attribute>
 
-		<attribute name='hop_size' get='1' set='1' type='float64' size='1' >
+		<attribute name='hop_size' get='1' set='0' type='float64' size='1' >
 			<digest>Hop size for overlapping windows </digest>
 			<description>Hop size for overlapping windows </description>
 		</attribute>

@@ -52,6 +52,11 @@
 			<description>Base integrator time step </description>
 		</attribute>
 
+		<attribute name='log_resets' get='1' set='1' type='long' size='1' >
+			<digest>Log resets to the console </digest>
+			<description>Log resets to the console </description>
+		</attribute>
+
 		<attribute name='position' get='1' set='1' type='float64' size='1' >
 			<digest>Reset position (x, y, z) </digest>
 			<description>Reset position (x, y, z) </description>
@@ -77,6 +82,11 @@
 			<description>Secondary substep multiplier </description>
 		</attribute>
 
+		<attribute name='sync_secondary' get='1' set='1' type='long' size='1' >
+			<digest>Reset secondary position to primary position on parameter change</digest>
+			<description>Reset secondary position to primary position on parameter change. If disabled the two attractors might diverge. </description>
+		</attribute>
+
 		<attribute name='use_rk4' get='1' set='1' type='long' size='1' >
 			<digest>Use RK4 integrator (more accurate, slower) </digest>
 			<description>Use RK4 integrator (more accurate, slower) </description>
@@ -88,8 +98,11 @@
 	<!--RELATED-->
 
 	<seealsolist>
-		<seealso name='spt.attractor.dadras' />
+		<seealso name='spt.attractor.lorenz' />
+		<seealso name='spt.attractor.thomas' />
 		<seealso name='spt.attractor.aizawa' />
+		<seealso name='spt.attractor.dadras' />
+		<seealso name='spt.attractor.tsucs1' />
 	</seealsolist>
 
 

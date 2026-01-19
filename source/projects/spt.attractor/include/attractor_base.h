@@ -68,6 +68,7 @@ public:
     attribute<vector<number>> position { this, "position",       Derived::default_position,        description{"Reset position (x, y, z)"} };
     attribute<bool>   use_rk4         { this, "use_rk4",         Derived::default_use_rk4,         description{"Use RK4 integrator (more accurate, slower)"} };
     attribute<bool>   log_resets      { this, "log_resets",      true,                             description{"Log resets to the console"} };
+    attribute<bool>   sync_secondary  { this, "sync_secondary",  true,                             description{"Reset secondary position to primary position on parameter change. If disabled the two attractors might diverge."} };
 
     attractor_base(const atoms& args = {}) {
         Vec3 pos = get_position();
@@ -166,7 +167,9 @@ protected:
     std::atomic<bool> _pending_reset{false};
 
     void request_secondary_sync() {
-        _pending_sync.store(true, std::memory_order_release);
+        if(sync_secondary.get()){
+            _pending_sync.store(true, std::memory_order_release);
+        }
     }
 
 private:
@@ -209,7 +212,7 @@ private:
         if (_pending_sync.exchange(false, std::memory_order_acq_rel)) {
             if (is_bad_state(_primary.pos) || is_stalled_check(_primary.pos)) {
                 reset_both(reset_pos);
-                log_reset();
+                log_reset("sync (bad state)");
             } else {
                 _secondary.pos = _primary.pos;
                 _secondary.smoothed = _secondary.pos;
@@ -219,7 +222,7 @@ private:
 
         if (_pending_reset.exchange(false, std::memory_order_acq_rel)) {
             reset_both(reset_pos);
-            log_reset();
+            log_reset("manual");
         }
     }
 
@@ -268,64 +271,76 @@ private:
     }
 
     void check_and_handle_bad_state(Derived& derived, const Vec3& reset_pos) {
-        bool reset_primary = false;
-        bool reset_secondary = false;
+        const char* reason_primary = nullptr;
+        const char* reason_secondary = nullptr;
 
+        // Check for NaN/Inf
         if (!_primary.pos.allFinite()) {
-            reset_primary = true;
+            reason_primary = "NaN/Inf";
         }
         if (!_secondary.pos.allFinite()) {
-            reset_secondary = true;
-        }
-        if (!reset_primary &&
-            _primary.pos.cwiseAbs().maxCoeff() > Derived::default_overflow_limit) {
-            reset_primary = true;
-        }
-        if (!reset_secondary &&
-            _secondary.pos.cwiseAbs().maxCoeff() > Derived::default_overflow_limit) {
-            reset_secondary = true;
-        }
-        if (!reset_primary &&
-            _primary.pos.squaredNorm() < Derived::default_collapse_threshold) {
-            reset_primary = true;
-        }
-        if (!reset_secondary &&
-            _secondary.pos.squaredNorm() < Derived::default_collapse_threshold) {
-            reset_secondary = true;
+            reason_secondary = "NaN/Inf";
         }
 
+        // Check overflow
+        if (!reason_primary &&
+            _primary.pos.cwiseAbs().maxCoeff() > Derived::default_overflow_limit) {
+            reason_primary = "overflow";
+        }
+        if (!reason_secondary &&
+            _secondary.pos.cwiseAbs().maxCoeff() > Derived::default_overflow_limit) {
+            reason_secondary = "overflow";
+        }
+
+        // Check collapse to origin
+        if (!reason_primary &&
+            _primary.pos.squaredNorm() < Derived::default_collapse_threshold) {
+            reason_primary = "collapse";
+        }
+        if (!reason_secondary &&
+            _secondary.pos.squaredNorm() < Derived::default_collapse_threshold) {
+            reason_secondary = "collapse";
+        }
+
+        // Compute velocities for stall checks
         Vec3 vel1 = Vec3::Zero(), vel2 = Vec3::Zero();
-        if (!reset_primary) {
+        if (!reason_primary) {
             derived.compute(vel1, _primary.pos);
         }
-        if (!reset_secondary) {
+        if (!reason_secondary) {
             derived.compute(vel2, _secondary.pos);
         }
 
         double vel1_sq = vel1.squaredNorm();
         double vel2_sq = vel2.squaredNorm();
 
-        if (!reset_primary && vel1_sq < Derived::default_stall_immediate_threshold) {
-            reset_primary = true;
+        // Immediate stall (essentially zero velocity)
+        if (!reason_primary && vel1_sq < Derived::default_stall_immediate_threshold) {
+            reason_primary = "stall (immediate)";
         }
-        if (!reset_secondary && vel2_sq < Derived::default_stall_immediate_threshold) {
-            reset_secondary = true;
-        }
-        if (!reset_primary && check_stall(_primary, vel1)) {
-            reset_primary = true;
-        }
-        if (!reset_secondary && check_stall(_secondary, vel2)) {
-            reset_secondary = true;
+        if (!reason_secondary && vel2_sq < Derived::default_stall_immediate_threshold) {
+            reason_secondary = "stall (immediate)";
         }
 
-        if (reset_primary) {
+        // Gradual stall detection
+        if (!reason_primary && check_stall(_primary, vel1)) {
+            reason_primary = "stall (gradual)";
+        }
+        if (!reason_secondary && check_stall(_secondary, vel2)) {
+            reason_secondary = "stall (gradual)";
+        }
+
+        // Apply resets
+        if (reason_primary) {
             reset_state(_primary, reset_pos);
         }
-        if (reset_secondary) {
+        if (reason_secondary) {
             reset_state(_secondary, reset_pos);
         }
-        if (reset_primary || reset_secondary) {
-            log_reset();
+
+        // Log with reason (prefer primary reason if both reset)
+        if (reason_primary || reason_secondary) {
+            log_reset(reason_primary ? reason_primary : reason_secondary);
         }
     }
 
@@ -370,14 +385,14 @@ private:
         outs[5][i] = static_cast<sample>(v2(2));
     }
 
-    void log_reset() {
+    void log_reset(const char* reason) {
         if (!log_resets.get()) return;
         if (_reset_log_interval_samples == 0) return;
         if (_sample_counter - _last_reset_log_sample < _reset_log_interval_samples)
             return;
         _last_reset_log_sample = _sample_counter;
 
-        this->cout << "Reset" << endl;
+        this->cout << "Reset: " << reason << endl;
     }
 
 };

@@ -13,13 +13,23 @@
         "boxes": [
             {
                 "box": {
+                    "id": "obj-3",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [ "signal", "signal" ],
+                    "patching_rect": [ 887.5, 513.0, 84.0, 22.0 ],
+                    "text": "mc.unpack~ 2"
+                }
+            },
+            {
+                "box": {
                     "id": "obj-51",
                     "linecount": 2,
                     "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [ 1109.5, 941.0, 155.0, 33.0 ],
-                    "presentation_linecount": 2,
                     "text": "An fft based panning effect for stereo signals"
                 }
             },
@@ -188,7 +198,6 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [ 1099.0, 699.0, 155.0, 33.0 ],
-                    "presentation_linecount": 2,
                     "text": "A filter based on a 64 band fixed filter bank"
                 }
             },
@@ -254,7 +263,6 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [ 1099.0, 422.0, 155.0, 60.0 ],
-                    "presentation_linecount": 4,
                     "text": "A very simple sample player. With gain and pan knob. Drag a drop audio files to change sample."
                 }
             },
@@ -299,8 +307,7 @@
                     "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "patching_rect": [ 1024.0, 255.5, 153.0, 47.0 ],
-                    "presentation_linecount": 3,
+                    "patching_rect": [ 1024.0, 255.5, 155.0, 47.0 ],
                     "text": "Trigger the MIDI Note, on the specified channel, from the specificed MIDI Device"
                 }
             },
@@ -675,6 +682,12 @@
             },
             {
                 "patchline": {
+                    "destination": [ "obj-3", 0 ],
+                    "source": [ "obj-19", 0 ]
+                }
+            },
+            {
+                "patchline": {
                     "destination": [ "obj-47", 1 ],
                     "source": [ "obj-23", 1 ]
                 }
@@ -689,6 +702,20 @@
                 "patchline": {
                     "destination": [ "obj-19", 0 ],
                     "source": [ "obj-25", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-50", 1 ],
+                    "midpoints": [ 962.0, 588.0, 873.0, 588.0, 873.0, 1092.0, 903.5, 1092.0 ],
+                    "source": [ "obj-3", 1 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-50", 0 ],
+                    "midpoints": [ 897.0, 588.0, 873.0, 588.0, 873.0, 1104.0, 877.5, 1104.0 ],
+                    "source": [ "obj-3", 0 ]
                 }
             },
             {
@@ -799,6 +826,14 @@
             "obj-8::obj-107": [ "live.dial", "Speed", 0 ],
             "obj-8::obj-108": [ "live.dial[1]", "Size", 0 ],
             "obj-8::obj-118": [ "live.dial[2]", "Distance", 0 ],
+            "parameterbanks": {
+                "0": {
+                    "index": 0,
+                    "name": "",
+                    "parameters": [ "-", "-", "-", "-", "-", "-", "-", "-" ],
+                    "buttons": [ "-", "-", "-", "-", "-", "-", "-", "-" ]
+                }
+            },
             "parameter_overrides": {
                 "obj-8::obj-107": {
                     "parameter_initial": 50,

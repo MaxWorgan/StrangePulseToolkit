@@ -20,7 +20,6 @@
                     "numoutlets": 1,
                     "outlettype": [ "" ],
                     "patching_rect": [ 1055.0, 492.0, 153.0, 22.0 ],
-                    "presentation_linecount": 2,
                     "text": "help spt.attractor.halvorsen"
                 }
             },
@@ -32,9 +31,8 @@
                     "numinlets": 2,
                     "numoutlets": 1,
                     "outlettype": [ "" ],
-                    "patching_rect": [ 1055.0, 450.0, 139.0, 22.0 ],
-                    "presentation_linecount": 2,
-                    "text": "help spt.attractor.clorenz"
+                    "patching_rect": [ 1055.0, 450.0, 135.0, 22.0 ],
+                    "text": "help spt.attractor.tsucs1"
                 }
             },
             {
@@ -46,7 +44,6 @@
                     "numoutlets": 1,
                     "outlettype": [ "" ],
                     "patching_rect": [ 1055.5, 405.0, 138.0, 22.0 ],
-                    "presentation_linecount": 2,
                     "text": "help spt.attractor.aizawa"
                 }
             },
@@ -195,8 +192,8 @@
                     "numinlets": 1,
                     "numoutlets": 6,
                     "outlettype": [ "signal", "signal", "signal", "signal", "signal", "signal" ],
-                    "patching_rect": [ 412.0, 607.0, 113.0, 22.0 ],
-                    "text": "spt.attractor.clorenz"
+                    "patching_rect": [ 412.0, 607.0, 109.0, 22.0 ],
+                    "text": "spt.attractor.tsucs1"
                 }
             },
             {
@@ -745,14 +742,14 @@
             {
                 "patchline": {
                     "destination": [ "obj-23", 2 ],
-                    "midpoints": [ 459.1, 637.0, 672.5, 637.0 ],
+                    "midpoints": [ 457.5, 637.0, 672.5, 637.0 ],
                     "source": [ "obj-26", 2 ]
                 }
             },
             {
                 "patchline": {
                     "destination": [ "obj-23", 1 ],
-                    "midpoints": [ 440.3, 637.0, 547.0, 637.0 ],
+                    "midpoints": [ 439.5, 637.0, 547.0, 637.0 ],
                     "source": [ "obj-26", 1 ]
                 }
             },

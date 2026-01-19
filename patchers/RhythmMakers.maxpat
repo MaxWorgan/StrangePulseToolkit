@@ -31,12 +31,12 @@
                     "numinlets": 1,
                     "numoutlets": 1,
                     "outlettype": [ "" ],
-                    "patching_rect": [ 404.0, 595.0, 226.0, 22.0 ],
+                    "patching_rect": [ 404.0, 593.0, 226.0, 22.0 ],
                     "saved_object_attributes": {
-                        "client_rect": [ 1057, 45, 1440, 407 ],
+                        "client_rect": [ 100, 171, 483, 533 ],
                         "parameter_enable": 0,
                         "parameter_mappable": 0,
-                        "storage_rect": [ 583, 69, 1034, 197 ]
+                        "storage_rect": [ 100, 171, 730, 466 ]
                     },
                     "text": "pattrstorage rythmmakers @savemode 2",
                     "varname": "rythmmakers"
@@ -363,6 +363,7 @@
             {
                 "patchline": {
                     "destination": [ "obj-24", 0 ],
+                    "hidden": 1,
                     "source": [ "obj-29", 0 ]
                 }
             },

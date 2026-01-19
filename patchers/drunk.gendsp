@@ -1,0 +1,65 @@
+{
+    "patcher": {
+        "fileversion": 1,
+        "appversion": {
+            "major": 9,
+            "minor": 1,
+            "revision": 1,
+            "architecture": "x64",
+            "modernui": 1
+        },
+        "classnamespace": "dsp.gen",
+        "rect": [ 84.0, 143.0, 988.0, 675.0 ],
+        "boxes": [
+            {
+                "box": {
+                    "code": "// Drunk walk with bounce-at-bounds\n// Output: y (signal), bounded [minv..maxv]\n//\n// Input:\n//  in1      : speed in Hz (steps per second, e.g. 0.5 .. 50)\n//\n// Params:\n//  step     : base step size per update (e.g. 0.0001 .. 0.1)\n//  minv     : lower bound\n//  maxv     : upper bound\n//  bias     : inward bias after bouncing (0=none, 1=always inward)\n//  seed     : (optional) changes random stream when changed\n//\n// Notes:\n// - Signal-rate output, but random walk updates at speed_hz.\n// - When bounds are hit, walk is biased to move inward.\n// - speed should be < samplerate for accurate timing.\n\nParam step(0.01);       // step size\nParam minv(0);\nParam maxv(1);\nParam bias(0.5);        // inward bias: 0=random, 1=always inward\nParam seed(0);          // change to perturb random\n\nHistory y(0.5);         // current value (start at midpoint)\nHistory dir(0);         // bias direction: +1=up, -1=down, 0=neutral\nHistory phase(0);       // accumulator for step timing\nHistory lastSeed(0);\n\n// Speed from input signal (Hz)\nspeed_hz = in1;\n\n// Ensure sane range\nlo = min(minv, maxv);\nhi = max(minv, maxv);\nrange = max(hi - lo, 1e-12);\n\n// If seed changes, re-randomize position\nseedChanged = (seed != lastSeed);\nlastSeed = seed;\nif (seedChanged) {\n    y = lo + (noise() + 1) * 0.5 * range; // random within range\n    dir = 0;\n}\n\n// Phase accumulator: triggers step when crossing 1\n// speed_hz=2 means incr=2/sr, so after sr/2 samples (0.5s) we trigger\nincr = max(speed_hz, 0) / samplerate;\nphase = phase + incr;\n\nif (phase >= 1) {\n    phase = phase - floor(phase); // wrap to [0,1)\n\n    // Random value in [-1, 1]\n    r = noise();\n    \n    // Apply bias: shift threshold based on dir\n    // dir=+1: threshold negative, more likely to get s=+1 (up)\n    // dir=-1: threshold positive, more likely to get s=-1 (down)\n    // dir=0: threshold=0, 50/50\n    b = clamp(bias, 0, 1);\n    threshold = -dir * b;\n    s = (r >= threshold) ? 1 : -1;\n\n    // Update position\n    y = y + step * s;\n\n    // Bounce at bounds and set bias direction\n    if (y <= lo) {\n        y = lo;\n        dir = 1;   // bias upward\n    } else if (y >= hi) {\n        y = hi;\n        dir = -1;  // bias downward\n    } else {\n        // Gradually decay bias when not at bounds\n        dir = dir * 0.9;\n    }\n}\n\nout1 = y;",
+                    "fontface": 0,
+                    "fontname": "<Monospaced>",
+                    "fontsize": 12.0,
+                    "id": "obj-5",
+                    "maxclass": "codebox",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 50.0, 43.0, 615.0, 1081.0 ]
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-1",
+                    "maxclass": "newobj",
+                    "numinlets": 0,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 50.0, 14.0, 28.0, 22.0 ],
+                    "text": "in 1"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-4",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 50.0, 1141.0, 35.0, 22.0 ],
+                    "text": "out 1"
+                }
+            }
+        ],
+        "lines": [
+            {
+                "patchline": {
+                    "destination": [ "obj-5", 0 ],
+                    "source": [ "obj-1", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-4", 0 ],
+                    "source": [ "obj-5", 0 ]
+                }
+            }
+        ]
+    }
+}
