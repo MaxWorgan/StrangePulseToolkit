@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>BuildMachineOSBuild</key>
-	<string>24E263</string>
+	<string>24G419</string>
 	<key>C74ObjectProperties</key>
 	<dict>
 		<key>c74excludefromcollectives</key>
@@ -18,11 +18,11 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleLongVersionString</key>
-	<string>spt.rqa 0.0.1 - Copyright (c) 2018 Cycling '74</string>
+	<string>spt.rqa 1.0.0 - Copyright (c) 2018 Cycling '74</string>
 	<key>CFBundlePackageType</key>
 	<string>iLaX</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.0.1</string>
+	<string>1.0.0</string>
 	<key>CFBundleSignature</key>
 	<string>max2</string>
 	<key>CFBundleSupportedPlatforms</key>
@@ -30,25 +30,25 @@
 		<string>MacOSX</string>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>0.0.1</string>
+	<string>1.0.0</string>
 	<key>CSResourcesFileMapped</key>
 	<true/>
 	<key>DTCompiler</key>
 	<string>com.apple.compilers.llvm.clang.1_0</string>
 	<key>DTPlatformBuild</key>
-	<string>24F74</string>
+	<string>25C57</string>
 	<key>DTPlatformName</key>
 	<string>macosx</string>
 	<key>DTPlatformVersion</key>
-	<string>15.5</string>
+	<string>26.2</string>
 	<key>DTSDKBuild</key>
-	<string>24F74</string>
+	<string>25C57</string>
 	<key>DTSDKName</key>
-	<string>macosx15.5</string>
+	<string>macosx26.2</string>
 	<key>DTXcode</key>
-	<string>1640</string>
+	<string>2620</string>
 	<key>DTXcodeBuild</key>
-	<string>16F6</string>
+	<string>17C52</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>10.11</string>
 	<key>LSRequiresCarbon</key>
