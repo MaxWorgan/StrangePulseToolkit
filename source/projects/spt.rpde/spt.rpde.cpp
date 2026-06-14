@@ -81,7 +81,10 @@ public:
         // Update the read-only attribute so that the inspector shows the actual value.
         window_size_attr = fixed_window_size;
 
-        accum_buffer.reserve(fixed_window_size * 2);
+        // Allocate the ring buffer once; capacity is fixed for the object's life.
+        ring_buffer.assign(static_cast<size_t>(fixed_window_size), 0.0f);
+        ring_head = 0;
+        ring_available = 0;
 
         // Double-buffering: two processing buffers
         processing_buffer_a.resize(fixed_window_size, 0.0f);
@@ -115,52 +118,44 @@ public:
         int subsamp = static_cast<int>(subsample_factor);
         if (subsamp < 1) subsamp = 1;  // Safety check
 
-        // Append the incoming samples.
+        // Append the incoming (subsampled) samples into the ring buffer.
+        // O(1) per sample: overwrite the oldest slot, never allocate or shift.
+        const size_t cap = ring_buffer.size();  // == fixed_window_size, fixed for the object's life
         for (size_t i = 0; i < n; i++) {
             counter++;
             if (counter % subsamp == 0) {
-                accum_buffer.push_back(static_cast<float>(in[i]));
+                ring_buffer[ring_head] = static_cast<float>(in[i]);
+                if (++ring_head == cap) ring_head = 0;
+                if (ring_available < static_cast<int>(cap)) ring_available++;
             }
         }
 
-        // When enough samples have been accumulated and the worker is idle…
-        if (accum_buffer.size() >= static_cast<size_t>(fixed_window_size) &&
+        // When a full window has accumulated and the worker is idle…
+        if (ring_available >= fixed_window_size &&
             !worker_busy.load(std::memory_order_acquire))
         {
-            // Use the most recent fixed_window_size samples.
-            auto start = (accum_buffer.size() > static_cast<size_t>(fixed_window_size))
-                         ? accum_buffer.end() - fixed_window_size
-                         : accum_buffer.begin();
-
-            // Write to the inactive buffer
+            // The ring is full, so ring_head points at the oldest sample. Copy the
+            // window oldest→newest into the inactive buffer as two contiguous spans.
             int active = active_buffer.load(std::memory_order_acquire);
             std::vector<float>& target_buffer = (active == 0) ? processing_buffer_b : processing_buffer_a;
-            std::copy(start, accum_buffer.end(), target_buffer.begin());
+            std::copy(ring_buffer.begin() + ring_head, ring_buffer.end(), target_buffer.begin());
+            std::copy(ring_buffer.begin(), ring_buffer.begin() + ring_head,
+                      target_buffer.begin() + (cap - ring_head));
 
             // Mark worker busy and signal new window ready.
             worker_busy.store(true, std::memory_order_release);
             new_window_ready.store(true, std::memory_order_release);
             worker_cv.notify_one();
 
-            // Advance the window by hop_size samples, retaining overlap = window_size - hop_size
+            // Advance the window by hop_size samples, retaining overlap = window_size - hop_size.
+            // The ring already holds the freshest window; we only adjust how many more
+            // fresh samples are required before the next window fires.
             int hs = static_cast<int>(hop_size);
-            if (hs > 0 && hs < fixed_window_size) {
-                size_t overlap = static_cast<size_t>(fixed_window_size - hs);
-                if (accum_buffer.size() > overlap)
-                    accum_buffer.erase(accum_buffer.begin(),
-                                       accum_buffer.end() - overlap);
-                else
-                    accum_buffer.clear();
-            }
-            else {
-                // No overlap or invalid hop_size: start fresh
-                accum_buffer.clear();
-            }
+            if (hs > 0 && hs < fixed_window_size)
+                ring_available = fixed_window_size - hs;  // retain overlap
+            else
+                ring_available = 0;  // no overlap or invalid hop_size: start fresh
         }
-
-        // Additionally, if the accumulation buffer grows too large, trim it.
-        if (accum_buffer.size() > static_cast<size_t>(fixed_window_size * 2))
-            accum_buffer.erase(accum_buffer.begin(), accum_buffer.end() - fixed_window_size);
 
         // Fill the output block with the current RPDE value.
         float rpde_val = current_rpde.load(std::memory_order_acquire);
@@ -180,8 +175,12 @@ private:
 
     size_t counter = 0;
 
-    // The accumulation buffer holds incoming audio samples.
-    std::vector<float> accum_buffer;
+    // Fixed-capacity ring buffer holding the most recent window_size incoming
+    // samples. Allocated once at construction (capacity == fixed_window_size),
+    // so the audio thread never reallocates or shifts memory.
+    std::vector<float> ring_buffer;
+    size_t ring_head = 0;    // index of the next write slot; when full, also the oldest sample
+    int    ring_available = 0;  // logical unconsumed sample count, clamped to [0, fixed_window_size]
 
     // Double-buffered processing buffers
     std::vector<float> processing_buffer_a;
