@@ -166,6 +166,21 @@ protected:
     std::atomic<bool> _pending_sync{false};
     std::atomic<bool> _pending_reset{false};
 
+    // Reset reasons are always string literals (static storage duration), so the
+    // pointer stashed here from the audio thread stays valid until read on the
+    // main thread by the deferred log queue below.
+    std::atomic<const char*> _pending_log_reason{nullptr};
+
+    // Console output must happen on Max's main thread, never on the audio or
+    // worker thread. queue::set() is thread-safe (qelem_set) and defers the
+    // actual printing to the next main-thread service tick.
+    queue<> _log_queue { this, MIN_FUNCTION {
+        const char* reason = _pending_log_reason.exchange(nullptr, std::memory_order_acq_rel);
+        if (reason)
+            this->cout << "Reset: " << reason << endl;
+        return {};
+    }};
+
     void request_secondary_sync() {
         if(sync_secondary.get()){
             _pending_sync.store(true, std::memory_order_release);
@@ -392,7 +407,10 @@ private:
             return;
         _last_reset_log_sample = _sample_counter;
 
-        this->cout << "Reset: " << reason << endl;
+        // Hand the reason off to the main thread; do NOT touch the console here
+        // (this runs on the audio thread).
+        _pending_log_reason.store(reason, std::memory_order_release);
+        _log_queue.set();
     }
 
 };
