@@ -205,6 +205,42 @@ private:
     std::condition_variable worker_cv;
     std::thread worker_thread;
 
+    // Deferred verbose logging. The worker thread must not call cout (Max console
+    // output is only safe on the main thread). It stashes a snapshot of the last
+    // computation here and asks the main thread to print it via diag_queue.set()
+    // (qelem_set is thread-safe).
+    struct DiagSnapshot {
+        int N{0}, dim{0}, tau{0}, tmax{0};
+        float epsilon{0.0f};
+        int total_recurrences{0}, nonzero_bins{0}, num_bins{0};
+        float raw_entropy{0.0f}, max_entropy{0.0f}, rpde{0.0f}, period{0.0f};
+    };
+    std::mutex diag_mutex;
+    DiagSnapshot diag_snapshot;
+    bool diag_pending{false};
+
+    queue<> diag_queue { this, MIN_FUNCTION {
+        DiagSnapshot s;
+        {
+            std::lock_guard<std::mutex> lk(diag_mutex);
+            if (!diag_pending)
+                return {};
+            diag_pending = false;
+            s = diag_snapshot;
+        }
+        cout << "spt.rpde: N=" << s.N
+             << " dim=" << s.dim
+             << " tau=" << s.tau
+             << " tmax=" << s.tmax
+             << " eps=" << s.epsilon
+             << " recurrences=" << s.total_recurrences
+             << " bins=" << s.nonzero_bins << "/" << s.num_bins
+             << " H=" << s.raw_entropy << "/" << s.max_entropy
+             << " RPDE=" << s.rpde
+             << " T=" << s.period << endl;
+        return {};
+    }};
+
     // The worker thread loop waits until new_window_ready is true, then processes
     // the samples in the inactive processing_buffer.
     void worker_loop() {
@@ -265,20 +301,22 @@ private:
                 theiler
             );
 
-            // Verbose logging if enabled
+            // Verbose logging if enabled. Stash a snapshot and defer the actual
+            // console print to the main thread (never call cout from here).
             if (verbose) {
                 int num_bins = result.dmax_used - result.dmin_used;
                 float max_entropy = (num_bins > 0) ? std::log(static_cast<float>(num_bins)) : 0.0f;
-                cout << "spt.rpde: N=" << result.N
-                     << " dim=" << current_dim
-                     << " tau=" << current_tau
-                     << " tmax=" << current_tmax
-                     << " eps=" << current_epsilon
-                     << " recurrences=" << result.total_recurrences
-                     << " bins=" << result.nonzero_bins << "/" << num_bins
-                     << " H=" << result.raw_entropy << "/" << max_entropy
-                     << " RPDE=" << result.rpde
-                     << " T=" << result.period << endl;
+                {
+                    std::lock_guard<std::mutex> lk(diag_mutex);
+                    diag_snapshot = DiagSnapshot{
+                        result.N, current_dim, current_tau, current_tmax,
+                        current_epsilon, result.total_recurrences,
+                        result.nonzero_bins, num_bins,
+                        result.raw_entropy, max_entropy, result.rpde, result.period
+                    };
+                    diag_pending = true;
+                }
+                diag_queue.set();
             }
 
             // Set diagnostic based on result
