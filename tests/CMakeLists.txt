@@ -15,6 +15,7 @@ find_package(Threads REQUIRED)
 set(SPT_STANDALONE_TESTS
     spt.attractor/test/deferred_log_test.cpp      # #1 deferred reset logging off the audio thread
     spt.attractor/test/secondary_sync_test.cpp    # #8 secondary-sync guard on value change
+    spt.attractor/test/bad_state_test.cpp         # bad-state detection (NaN/Inf/overflow/collapse/recovery)
     spt.rpde/deferred_diag_test.cpp               # #2 deferred verbose diagnostics off the worker thread
     spt.rpde/ring_buffer_test.cpp                 # #3 real-time-safe accumulation ring buffer
     spt.rqa/hop_size_test.cpp                     # #7 tunable, clamped hop_size

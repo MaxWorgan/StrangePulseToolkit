@@ -22,6 +22,7 @@ package-info.json
 # Compiled standalone test executables (keep the .cpp sources)
 *_test
 test_rpde
+*.dSYM/
 
 # Generated test output data
 test_output/
