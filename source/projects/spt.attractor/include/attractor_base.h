@@ -56,6 +56,12 @@ public:
     static constexpr bool   default_use_rk4         = false;
     static constexpr double default_overflow_limit  = 100.0;
 
+    // Output smoothing default: EMA weight kept from history (0 = off, 1 = max).
+    static constexpr double default_smooth          = 0.8;
+    // The dt attribute is expressed in a convenient user range; this scales it
+    // into the integrator's per-sample time step: dt_base = dt/sr * dt_time_scale.
+    static constexpr double dt_time_scale           = 100.0;
+
     inlet<>  input_signal  { this, "(signal) dummy input", "signal" };
     outlet<> output_x      { this, "(signal) primary x",   "signal" };
     outlet<> output_y      { this, "(signal) primary y",   "signal" };
@@ -68,14 +74,29 @@ public:
     attribute<number> speed_primary   { this, "speed_primary",   Derived::default_speed_primary,   description{"Primary substep multiplier"} };
     attribute<number> speed_secondary { this, "speed_secondary", Derived::default_speed_secondary, description{"Secondary substep multiplier"} };
     attribute<bool>   scale_outputs   { this, "scale_outputs",   Derived::default_scale_outputs,   description{"Scale outputs to +/-1"} };
-    attribute<number> smooth          { this, "smooth",          0.8,                              description{"Output smoothing (0=off, 1=max)"} };
-    attribute<vector<number>> position { this, "position",       Derived::default_position,        description{"Reset position (x, y, z)"} };
+    attribute<number> smooth          { this, "smooth",          default_smooth,                   description{"Output smoothing (0=off, 1=max)"} };
+
+    // Cached reset position. Declared before `position` so its setter can populate
+    // it during construction. Updated only when the position attribute changes,
+    // avoiding a std::vector copy on every audio buffer (it is read on the audio
+    // thread; a torn read during a rare position change is a benign reset target).
+    Vec3 _reset_position { Vec3::Zero() };
+    attribute<vector<number>> position { this, "position", Derived::default_position,
+        description{"Reset position (x, y, z)"},
+        setter{ MIN_FUNCTION {
+            _reset_position = vec3_from(args);
+            return args;
+        }}
+    };
     attribute<bool>   use_rk4         { this, "use_rk4",         Derived::default_use_rk4,         description{"Use RK4 integrator (more accurate, slower)"} };
     attribute<bool>   log_resets      { this, "log_resets",      true,                             description{"Log resets to the console"} };
     attribute<bool>   sync_secondary  { this, "sync_secondary",  true,                             description{"Reset secondary position to primary position on parameter change. If disabled the two attractors might diverge."} };
 
     attractor_base(const atoms& args = {}) {
-        Vec3 pos = get_position();
+        // Initialize the cache from the (possibly defaulted) attribute, in case the
+        // attribute default did not fire the position setter during construction.
+        _reset_position = vec3_from(position.get());
+        Vec3 pos = _reset_position;
         _primary.pos = pos;
         _secondary.pos = pos;
         reset_outputs();
@@ -89,7 +110,7 @@ public:
 
         // Cache attributes once per buffer
         const double sr = samplerate();
-        const double dt_base = (dt.get() / sr) * 100.0;
+        const double dt_base = (dt.get() / sr) * dt_time_scale;
         const double scale_factor = Derived::default_scale_factor;
         const bool   do_scale = scale_outputs.get();
         const bool   use_rk4_flag = use_rk4.get();
@@ -102,11 +123,12 @@ public:
             _reset_log_interval_samples = 0;
         }
 
-        // Smoothing coefficients
-        double smooth_amt = std::clamp(smooth.get(), 0.0, 1.0);
+        // Exponential moving average: smoothed = history_weight*previous + new_weight*sample.
+        // smooth (0..1) is how much of the previous smoothed value to retain.
+        const double smooth_amt = std::clamp(smooth.get(), 0.0, 1.0);
         const bool   use_smooth = (smooth_amt > 0.0);
-        const double alpha = 1.0 - smooth_amt;
-        const double one_minus_alpha = smooth_amt;
+        const double history_weight = smooth_amt;
+        const double new_weight     = 1.0 - smooth_amt;
 
         // Configure speed/stepping
         SpeedConfig sp1 = configure_speed(speed_primary.get());
@@ -130,8 +152,8 @@ public:
             Vec3 out2 = do_scale ? scale_vec(_secondary.pos, scale_factor) : _secondary.pos;
 
             if (use_smooth) {
-                _primary.smoothed = one_minus_alpha * _primary.smoothed + alpha * out1;
-                _secondary.smoothed = one_minus_alpha * _secondary.smoothed + alpha * out2;
+                _primary.smoothed = history_weight * _primary.smoothed + new_weight * out1;
+                _secondary.smoothed = history_weight * _secondary.smoothed + new_weight * out2;
                 write_outputs(outs, i, _primary.smoothed, _secondary.smoothed);
             } else {
                 write_outputs(outs, i, out1, out2);
@@ -218,13 +240,18 @@ private:
         return (counter % cfg.skip_interval) == 0;
     }
 
-    Vec3 get_position() {
-        auto pos = position.get();
-        const double x = pos.size() > 0 ? pos[0] : 0.0;
-        const double y = pos.size() > 1 ? pos[1] : 0.0;
-        const double z = pos.size() > 2 ? pos[2] : 0.0;
+    // Build a Vec3 from any size-and-index sequence (atoms or vector<number>),
+    // padding missing components with 0. Used to populate the cached reset position.
+    template <typename Seq>
+    static Vec3 vec3_from(const Seq& s) {
+        const double x = s.size() > 0 ? static_cast<double>(s[0]) : 0.0;
+        const double y = s.size() > 1 ? static_cast<double>(s[1]) : 0.0;
+        const double z = s.size() > 2 ? static_cast<double>(s[2]) : 0.0;
         return Vec3(x, y, z);
     }
+
+    // Returns the cached reset position (updated only when the attribute changes).
+    Vec3 get_position() const { return _reset_position; }
 
     void handle_pending_requests() {
         const Vec3 reset_pos = get_position();
