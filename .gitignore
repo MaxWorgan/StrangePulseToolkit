@@ -9,7 +9,9 @@ extensions
 support
 build/
 build-*/
-tests
+# Top-level tests dir: track its CMakeLists.txt; ignore any scratch/build output
+/tests/*
+!/tests/CMakeLists.txt
 *.o
 *.dylib
 tmp

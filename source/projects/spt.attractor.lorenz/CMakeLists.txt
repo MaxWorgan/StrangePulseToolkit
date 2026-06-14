@@ -40,4 +40,6 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/source/pr
 # UNIT TEST
 #############################################################
 
-#include(${C74_MIN_API_DIR}/test/min-object-unittest.cmake)
+# The min-api object unit-test harness does not fit these Eigen-dependent
+# externals. Tests are instead standalone programs registered with CTest in
+# the top-level tests/CMakeLists.txt (run with `ctest`).

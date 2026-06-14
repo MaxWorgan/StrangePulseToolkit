@@ -45,5 +45,8 @@ foreach (project_dir ${PROJECT_DIRS})
     endif ()
 endforeach ()
 
+# Standalone unit tests, registered with CTest (enable_testing() above).
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/tests)
+
 # Comment the line below if you want automatic cmake regneration enabled
 set(CMAKE_SUPPRESS_REGENERATION true)
