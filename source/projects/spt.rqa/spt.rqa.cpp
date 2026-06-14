@@ -53,7 +53,7 @@ typedef nanoflann::KDTreeSingleIndexAdaptor<
 class rqa : public c74::min::object<rqa>, public sample_operator<3,6> {
 private:
     MatrixXd ring_buffer;
-    size_t m_window_size;
+    size_t m_window_size = 0;  // 0 until the constructor runs; guards the hop_size setter that may fire earlier
     size_t write_index = 0;
     size_t samples_since_last_update = 0;
 
@@ -62,7 +62,9 @@ private:
     MatrixXd snapshot_buffer_b;
     std::atomic<int> active_snapshot_buffer { 0 };  // 0 = A, 1 = B
 
-    size_t hop_size_fixed;
+    // Cached, clamped hop size derived from hop_size_attr. Written from the main
+    // thread (constructor / attribute setter), read on the audio thread, so atomic.
+    std::atomic<size_t> hop_size_fixed { 256 };
 
     std::atomic<bool> snapshot_ready { false };
     std::mutex worker_mutex;
@@ -116,8 +118,17 @@ public:
         }}
     };
     attribute<number> hop_size_attr { this, "hop_size", 256,
-        description { "Hop size for overlapping windows" },
-        readonly { true }
+        description { "Hop size (samples) between successive analysis windows. Clamped to [1, window_size]." },
+        setter { MIN_FUNCTION {
+            double hs = args[0];
+            if (hs < 1.0) hs = 1.0;
+            // m_window_size is 0 until the constructor body runs; once known, clamp
+            // the cached value so the audio thread never gates on hop > window_size.
+            if (m_window_size > 0 && hs > static_cast<double>(m_window_size))
+                hs = static_cast<double>(m_window_size);
+            hop_size_fixed.store(static_cast<size_t>(hs), std::memory_order_relaxed);
+            return { hs };
+        }}
     };
     attribute<number> threshold { this, "threshold", 0.1,
         description { "Static recurrence threshold" } };
@@ -145,10 +156,12 @@ public:
         R_matrix_size = m_window_size * m_window_size;
         R_matrix.resize(R_matrix_size, 0);
 
+        // Now that m_window_size is known, re-clamp the cached hop size. The setter
+        // may have run earlier (with m_window_size == 0) and skipped the upper clamp.
         double hs = hop_size_attr;
         if (hs < 1.0) hs = 1.0;
         if (hs > static_cast<double>(m_window_size)) hs = static_cast<double>(m_window_size);
-        hop_size_fixed = static_cast<size_t>(hs);
+        hop_size_fixed.store(static_cast<size_t>(hs), std::memory_order_relaxed);
         worker_thread = std::thread([this]() { this->worker_function(); });
     }
 
@@ -168,7 +181,7 @@ public:
             write_index = (write_index + 1) % m_window_size;
             samples_since_last_update++;
 
-            if (samples_since_last_update >= hop_size_fixed) {
+            if (samples_since_last_update >= hop_size_fixed.load(std::memory_order_relaxed)) {
                 if (!snapshot_ready.load(std::memory_order_acquire)) {
                     // Write to the inactive buffer
                     int active = active_snapshot_buffer.load(std::memory_order_acquire);
