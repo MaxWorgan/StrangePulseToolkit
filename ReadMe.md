@@ -14,7 +14,7 @@ The Strange Pulse Toolkit (SPT) is a collection of Max/MSP externals, patchers, 
 ## Highlights
 
 
-- **Strange attractor generators:** Lorenz, Dadras, and Thomas attractors as MSP externals with dual, syncable trajectories and RK4/Euler integration.
+- **Strange attractor generators:** Lorenz, Dadras, Thomas, Aizawa, Halvorsen, and TSUCS1 attractors as MSP externals with dual, syncable trajectories and RK4/Euler integration.
 - **Recurrence analysis:** `spt.rqa` and `spt.rpde` provide real-time recurrence metrics for adaptive feedback or complexity measurement.
 - **Rhythm utilities:** Patchers for generating triggers or gates from signals, gate logic, Euclidean rhythms, and arithmetic/quantized rhythm modifiers.
 - **Signal shaping and display:** Scaling, inversion, folding, smoothing, band-pass filtering, recurrence plots, and attractor visualization helpers.
