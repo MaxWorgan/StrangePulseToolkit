@@ -21,11 +21,15 @@ inline double fast_tanh(double x) {
     return x * (27.0 + x2) / (27.0 + 9.0 * x2);
 }
 
-// Macro for subclass attributes that trigger secondary sync
+// Macro for subclass attributes that trigger secondary sync.
+// Only request a sync when the value actually changes: a setter also fires on
+// patch load and on no-op re-sends of the current value, and syncing then would
+// needlessly collapse the secondary trajectory back onto the primary.
 #define MAKE_ATTR(TYPE, NAME, DEFAULT, DESC)                        \
     attribute<TYPE> NAME{ this, #NAME, DEFAULT, description{DESC},  \
         setter{ MIN_FUNCTION{                                       \
-            this->request_secondary_sync();                         \
+            if (!args.empty() && static_cast<TYPE>(args[0]) != this->NAME.get()) \
+                this->request_secondary_sync();                     \
             return args;                                            \
         }}                                                          \
     }
