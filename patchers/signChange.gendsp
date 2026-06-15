@@ -1,86 +1,190 @@
 {
-    "patcher": {
-        "fileversion": 1,
-        "appversion": {
-            "major": 9,
-            "minor": 1,
-            "revision": 1,
-            "architecture": "x64",
-            "modernui": 1
-        },
-        "classnamespace": "dsp.gen",
-        "rect": [ 98.0, 242.0, 1338.0, 680.0 ],
-        "boxes": [
-            {
-                "box": {
-                    "annotation": "Downward Transition Triggers",
-                    "hint": "Downward Transition Triggers",
-                    "id": "obj-12",
-                    "maxclass": "newobj",
-                    "numinlets": 1,
-                    "numoutlets": 0,
-                    "patching_rect": [ 856.0, 416.0, 35.0, 22.0 ],
-                    "text": "out 2"
-                }
-            },
-            {
-                "box": {
-                    "code": "Param thresh(0.00001, min=0, max=0.1);\nParam gate_ms(10, min=1, max=1000);  // Gate duration in milliseconds\n\nHistory prev(0);    \nHistory prev_dir(0);\nHistory up_count(0);\nHistory down_count(0);\n\n// Convert ms to samples\ngate_samples = gate_ms * samplerate * 0.001;\n\ndiff = in1 - prev;\ncurrent_dir = (diff > thresh) ? 1 : (diff < -thresh) ? -1 : 0;\n\nupward_change = (current_dir == 1 && prev_dir == -1) ? 1 : 0;\ndownward_change = (current_dir == -1 && prev_dir == 1) ? 1 : 0;\n\n// Increment counters on trigger, otherwise decrement toward 0\nup_count = upward_change ? gate_samples : max(0, up_count - 1);\ndown_count = downward_change ? gate_samples : max(0, down_count - 1);\n\nout1 = up_count > 0;\nout2 = down_count > 0;\n\nprev = in1;\nprev_dir = (current_dir != 0) ? current_dir : prev_dir;",
-                    "fontface": 0,
-                    "fontname": "<Monospaced>",
-                    "fontsize": 12.0,
-                    "id": "obj-10",
-                    "maxclass": "codebox",
-                    "numinlets": 1,
-                    "numoutlets": 2,
-                    "outlettype": [ "", "" ],
-                    "patching_rect": [ 56.0, 70.0, 819.0, 318.0 ]
-                }
-            },
-            {
-                "box": {
-                    "id": "obj-1",
-                    "maxclass": "newobj",
-                    "numinlets": 0,
-                    "numoutlets": 1,
-                    "outlettype": [ "" ],
-                    "patching_rect": [ 56.0, 27.0, 28.0, 22.0 ],
-                    "text": "in 1"
-                }
-            },
-            {
-                "box": {
-                    "annotation": "Upward Transition Triggers",
-                    "hint": "Upward Transition Triggers",
-                    "id": "obj-4",
-                    "maxclass": "newobj",
-                    "numinlets": 1,
-                    "numoutlets": 0,
-                    "patching_rect": [ 56.0, 416.0, 35.0, 22.0 ],
-                    "text": "out 1"
-                }
-            }
-        ],
-        "lines": [
-            {
-                "patchline": {
-                    "destination": [ "obj-10", 0 ],
-                    "source": [ "obj-1", 0 ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [ "obj-12", 0 ],
-                    "source": [ "obj-10", 1 ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [ "obj-4", 0 ],
-                    "source": [ "obj-10", 0 ]
-                }
-            }
-        ],
-        "autosave": 0
+ "patcher": {
+  "fileversion": 1,
+  "appversion": {
+   "major": 9,
+   "minor": 1,
+   "revision": 1,
+   "architecture": "x64",
+   "modernui": 1
+  },
+  "classnamespace": "dsp.gen",
+  "rect": [
+   98.0,
+   242.0,
+   1338.0,
+   680.0
+  ],
+  "boxes": [
+   {
+    "box": {
+     "annotation": "Downward Transition Triggers",
+     "hint": "Downward Transition Triggers",
+     "id": "obj-12",
+     "maxclass": "newobj",
+     "numinlets": 1,
+     "numoutlets": 0,
+     "patching_rect": [
+      856.0,
+      416.0,
+      35.0,
+      22.0
+     ],
+     "text": "out 2"
     }
+   },
+   {
+    "box": {
+     "code": "Param thresh(0.00001, min=0, max=0.1);\nParam gate_ms(10, min=1, max=1000);  // Gate duration in milliseconds\nParam velmode(0, min=0, max=1);      // velocity source: 0 = raw height, 1 = swing amplitude\n\nHistory prev(0);\nHistory prev_dir(0);\nHistory up_count(0);\nHistory down_count(0);\nHistory last_turn(0.5);   // height at the previous turning point\nHistory up_vel(0);\nHistory down_vel(0);\n\ngate_samples = gate_ms * samplerate * 0.001;\n\ndiff = in1 - prev;\ncurrent_dir = (diff > thresh) ? 1 : (diff < -thresh) ? -1 : 0;\n\nupward_change = (current_dir == 1 && prev_dir == -1) ? 1 : 0;\ndownward_change = (current_dir == -1 && prev_dir == 1) ? 1 : 0;\nany_change = upward_change + downward_change;  // mutually exclusive -> 0 or 1\n\n// velocity payload: raw height (position) OR swing amplitude (|this turn - previous turn|)\nswing = abs(in1 - last_turn);\nv = (velmode < 0.5) ? in1 : swing;\n\nup_vel = upward_change ? v : up_vel;\ndown_vel = downward_change ? v : down_vel;\nlast_turn = any_change ? in1 : last_turn;\n\nup_count = upward_change ? gate_samples : max(0, up_count - 1);\ndown_count = downward_change ? gate_samples : max(0, down_count - 1);\n\nout1 = up_count > 0;\nout2 = down_count > 0;\nout3 = up_vel;\nout4 = down_vel;\n\nprev = in1;\nprev_dir = (current_dir != 0) ? current_dir : prev_dir;",
+     "fontface": 0,
+     "fontname": "<Monospaced>",
+     "fontsize": 12.0,
+     "id": "obj-10",
+     "maxclass": "codebox",
+     "numinlets": 1,
+     "numoutlets": 4,
+     "outlettype": [
+      "",
+      "",
+      "",
+      ""
+     ],
+     "patching_rect": [
+      56.0,
+      70.0,
+      819.0,
+      318.0
+     ]
+    }
+   },
+   {
+    "box": {
+     "id": "obj-1",
+     "maxclass": "newobj",
+     "numinlets": 0,
+     "numoutlets": 1,
+     "outlettype": [
+      ""
+     ],
+     "patching_rect": [
+      56.0,
+      27.0,
+      28.0,
+      22.0
+     ],
+     "text": "in 1"
+    }
+   },
+   {
+    "box": {
+     "annotation": "Upward Transition Triggers",
+     "hint": "Upward Transition Triggers",
+     "id": "obj-4",
+     "maxclass": "newobj",
+     "numinlets": 1,
+     "numoutlets": 0,
+     "patching_rect": [
+      56.0,
+      416.0,
+      35.0,
+      22.0
+     ],
+     "text": "out 1"
+    }
+   },
+   {
+    "box": {
+     "maxclass": "newobj",
+     "text": "out 3",
+     "id": "obj-out3",
+     "numinlets": 1,
+     "numoutlets": 0,
+     "patching_rect": [
+      120.0,
+      416.0,
+      35.0,
+      22.0
+     ]
+    }
+   },
+   {
+    "box": {
+     "maxclass": "newobj",
+     "text": "out 4",
+     "id": "obj-out4",
+     "numinlets": 1,
+     "numoutlets": 0,
+     "patching_rect": [
+      200.0,
+      416.0,
+      35.0,
+      22.0
+     ]
+    }
+   }
+  ],
+  "lines": [
+   {
+    "patchline": {
+     "destination": [
+      "obj-10",
+      0
+     ],
+     "source": [
+      "obj-1",
+      0
+     ]
+    }
+   },
+   {
+    "patchline": {
+     "destination": [
+      "obj-12",
+      0
+     ],
+     "source": [
+      "obj-10",
+      1
+     ]
+    }
+   },
+   {
+    "patchline": {
+     "destination": [
+      "obj-4",
+      0
+     ],
+     "source": [
+      "obj-10",
+      0
+     ]
+    }
+   },
+   {
+    "patchline": {
+     "source": [
+      "obj-10",
+      2
+     ],
+     "destination": [
+      "obj-out3",
+      0
+     ]
+    }
+   },
+   {
+    "patchline": {
+     "source": [
+      "obj-10",
+      3
+     ],
+     "destination": [
+      "obj-out4",
+      0
+     ]
+    }
+   }
+  ],
+  "autosave": 0
+ }
 }
