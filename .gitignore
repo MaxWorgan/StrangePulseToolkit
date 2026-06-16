@@ -27,3 +27,6 @@ test_rpde
 # Generated test output data
 test_output/
 
+# Max/Ableton waveform-analysis sidecar files
+*.asd
+
