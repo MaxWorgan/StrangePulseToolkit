@@ -51,7 +51,7 @@ function sum(a) { var s = 0; for (var i = 0; i < a.length; i++) s += a[i]; retur
 
 function freshStage() {
     var st = {
-        mode: 6,                 // start on "none" = bypass
+        mode: MODES.indexOf("none"),   // start on "none" = bypass
         modulo: 4,               // every N (1..16)
         prob: 100,               // 0..100 %
         euSteps: 8, euEvents: 5, euPattern: null,
@@ -68,22 +68,23 @@ function freshStage() {
 var stages, bpm = 120.0, tasks = [];
 
 // per-stage live FX + global output FX (never persisted)
-function freshFx() { return { pulse: 0, cursor: -1, roll: null, travels: [], burst: null, snap: null }; }
+function freshFx() { return { pulse: 0, cursor: -1, roll: null, travels: [], burst: null, snaps: [] }; }
 var fx = [freshFx(), freshFx(), freshFx()];
 var outFx = [0, 0];
 
-var openMenu = -1, drag = null;
+var openMenu = -1, menuHover = -1, drag = null;
 
 // ---------------------------------------------------------------- layout
-var W = 384, H = 396;
+// Compact: each stage is one ~22px row -> [ idx | mode chip | live viz | value ].
+var W = 384, H = 190;
 var PAD = 16;
-var CELLX = 14, CELLW = 356, CY0 = 46, CH = 98, CGAP = 6;   // bordered stage cells
-var DD_X = 50, DD_W = 120, DD_H = 24;
-var TX = 28, TW = 330, TH = 42;                              // control track within a cell
-var VALW = 92, VALX = CELLX + CELLW - 12 - VALW;            // recessed value well
+var IDX_X = PAD;                                 // I / II / III
+var DD_X = 36, DD_W = 100, DD_H = 22;            // mode chip
+var VIZ_X = 146, VIZ_W = 140;                    // live control display
+var ROW0 = 46, ROWH = 22, ROWP = 40;            // first row top, row height, row pitch
 
-function blkTop(i) { return CY0 + i * (CH + CGAP); }         // cell top
-function trackY(i) { return blkTop(i) + 48; }
+function rowTop(i) { return ROW0 + i * ROWP; }
+function blkTop(i) { return rowTop(i); }                     // alias (engine-agnostic)
 
 var regions = [];
 function region(stage, field, x, y, w, h) { regions.push({ stage: stage, field: field, x: x, y: y, w: w, h: h }); }
@@ -114,9 +115,9 @@ function lerp(a, b, t) { return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) 
 function clamp(v, lo, hi) { return v < lo ? lo : (v > hi ? hi : v); }
 function nowMs() { return (new Date()).getTime(); }
 
-// readout: passive accent number (right-aligned). the display below is the control.
-function readout(top, str) { txt(W - PAD, top + 20, str, COL.accent, 22, 2); }
-function readout2(top, str) { txt(W - PAD, top + 20, str, COL.accent, 18, 2); }
+// readout: passive accent value, right-aligned at the row's far right.
+function readout(top, str, size) { txt(W - PAD, top + 15, str, COL.accent, size || 14, 2); }
+function readsub(top, str) { txt(W - PAD, top + 24, trk(str), COL.faint, 7, 2); }   // small unit/aux line
 
 // ---------------------------------------------------------------- euclid math
 function bjorklund(pulses, steps) {
@@ -178,6 +179,7 @@ function fireStage(i, vel) {
     if (vel === undefined) vel = 1.0;
     var st = stages[i], f = fx[i];
     if (!f.travels) f.travels = [];
+    if (!f.snaps) f.snaps = [];
     switch (MODES[st.mode]) {
         case "threshold":                                         // velocity gate
             var pass = vel >= st.thresh;
@@ -223,7 +225,8 @@ function fireStage(i, vel) {
             var grid = noteMs(QUANT_DIVS[st.quantDiv]), nowt = nowMs();
             if (st.quantPending != null && nowt >= st.quantPending) st.quantPending = null;  // boundary passed
             var wait = grid - (nowt % grid), target = nowt + wait;
-            f.snap = { start: nowt, wait: wait, grid: grid, dup: st.quantPending != null };
+            f.snaps.push({ start: nowt, wait: wait, grid: grid, dup: st.quantPending != null });   // one particle per event
+            if (f.snaps.length > 24) f.snaps.shift();
             emit(i, 1, 0, vel);                                       // dry alt keeps its own velocity
             if (st.quantPending == null) {                            // schedule one fire per boundary
                 st.quantPending = target; st.quantVel = vel;
@@ -258,7 +261,7 @@ function anyAnim() {
         if (f.pulse > 0.03) return true;
         if (f.travels && f.travels.length) return true;
         if (f.burst && t - f.burst.start < (f.burst.n - 1) * f.burst.interval + 220) return true;
-        if (f.snap && t - f.snap.start < f.snap.wait + 220) return true;
+        if (f.snaps) for (var q = 0; q < f.snaps.length; q++) if (t - f.snaps[q].start < f.snaps[q].wait + 220) return true;
         if (f.roll && t - f.roll.t < 280) return true;
     }
     return false;
@@ -269,6 +272,8 @@ function animTick() {
         fx[i].pulse *= 0.84;
         var tv = fx[i].travels || (fx[i].travels = []);
         for (var p = tv.length - 1; p >= 0; p--) if (t - tv[p].start > tv[p].dur + 200) tv.splice(p, 1);
+        var sn = fx[i].snaps || (fx[i].snaps = []);
+        for (var q = sn.length - 1; q >= 0; q--) if (t - sn[q].start > sn[q].wait + 220) sn.splice(q, 1);
     }
     outFx[0] *= 0.84; outFx[1] *= 0.84;
     mgraphics.redraw();
@@ -284,212 +289,210 @@ function pump() {
 
 // ---------------------------------------------------------------- paint
 function trk(s) { return ("" + s).toUpperCase().split("").join(" "); }   // faux letter-spacing
-function heroVal(top, str, size) {                                       // recessed well + hero numeral
-    rect(VALX, top + 8, VALW, 28, COL.surf2);
-    txt(VALX + VALW - 10, top + 30, str, COL.accent, size || 22, 2);
-}
-function unit(top, s) { txt(VALX - 8, top + 29, trk(s), COL.faint, 8, 2); }
 
 function paint() {
     regions = [];
     rect(0, 0, W, H, COL.base);
-    txt(PAD, 26, trk("MULTIMOD"), COL.dim, 9);
-    txt(W - PAD, 26, "trigger modulator", COL.faint, 9, 2);
-    line(PAD, 35, W - PAD, 35, COL.hair, 1);
+    txt(PAD, 24, trk("MULTIMOD"), COL.dim, 9);
+    txt(W - PAD, 24, "in \u2192 I \u2192 II \u2192 III \u2192 out", COL.faint, 8, 2);   // serial flow (no arrows between rows)
+    line(PAD, 33, W - PAD, 33, COL.hair, 1);
     for (var i = 0; i < 3; i++) drawStage(i);
     drawOutputs();
     if (openMenu >= 0) drawMenu(openMenu);
 }
 
 function drawStage(i) {
-    var st = stages[i], f = fx[i], top = blkTop(i), ty = trackY(i);
+    var st = stages[i], f = fx[i], top = rowTop(i);
     var labels = ["I", "II", "III"];
-    rect(CELLX, top, CELLW, CH, COL.surface);                            // cell
-    rectb(CELLX + 0.5, top + 0.5, CELLW - 1, CH - 1, lerp(COL.hair, COL.accent, 0.4 * f.pulse));
-    txt(CELLX + 11, top + 31, labels[i], lerp(COL.dim, COL.accent, 0.5 + 0.5 * f.pulse), 16);
-    rect(DD_X, top + 10, DD_W, DD_H, COL.surf2);                         // mode chip
-    txt(DD_X + 10, top + 27, MODES[st.mode], COL.text, 12);
-    txt(DD_X + DD_W - 15, top + 27, "\u25BE", COL.dim, 11);
-    region(i, "mode", DD_X, top + 10, DD_W, DD_H);
+    txt(IDX_X, top + 15, labels[i], lerp(COL.dim, COL.accent, 0.4 + 0.6 * f.pulse), 13);
+    rect(DD_X, top, DD_W, ROWH, COL.surf2);                              // mode chip (no caret \u2014 no down arrows)
+    if (f.pulse > 0.02) rectb(DD_X + 0.5, top + 0.5, DD_W - 1, ROWH - 1, lerp(COL.surf2, COL.accent, 0.6 * f.pulse));
+    txt(DD_X + 8, top + 15, MODES[st.mode], COL.text, 11);
+    region(i, "mode", DD_X, top, DD_W, ROWH);
     switch (MODES[st.mode]) {
-        case "modulo":      vizModulo(i, st, f, top, ty); break;
-        case "probability": vizProb(i, st, f, top, ty); break;
-        case "euclidean":   vizEuclid(i, st, f, top, ty); break;
-        case "repeater":    vizRepeater(i, st, f, top, ty); break;
-        case "quantize":    vizQuantize(i, st, f, top, ty); break;
-        case "delay":       vizDelay(i, st, f, top, ty); break;
-        case "threshold":   vizThreshold(i, st, f, top, ty); break;
-        case "curve":       vizCurve(i, st, f, top, ty); break;
-        case "debounce":    vizDebounce(i, st, f, top, ty); break;
-        case "crossmap":    vizCrossmap(i, st, f, top, ty); break;
-        case "none":        vizNone(i, st, f, top, ty); break;
+        case "modulo":      vizModulo(i, st, f, top); break;
+        case "probability": vizProb(i, st, f, top); break;
+        case "euclidean":   vizEuclid(i, st, f, top); break;
+        case "repeater":    vizRepeater(i, st, f, top); break;
+        case "quantize":    vizQuantize(i, st, f, top); break;
+        case "delay":       vizDelay(i, st, f, top); break;
+        case "threshold":   vizThreshold(i, st, f, top); break;
+        case "curve":       vizCurve(i, st, f, top); break;
+        case "debounce":    vizDebounce(i, st, f, top); break;
+        case "crossmap":    vizCrossmap(i, st, f, top); break;
+        case "none":        vizNone(i, st, f, top); break;
     }
 }
 
-function vizModulo(i, st, f, top, ty) {
-    unit(top, "every"); heroVal(top, "" + st.modulo);
-    var n = st.modulo, gap = 4, cw = (TW - (n - 1) * gap) / n;
+// shared step-cell renderer \u2014 modulo and euclidean share one look (square cells).
+function drawSteps(i, field, f, top, n, isOn, isFire, cursor) {
+    var cw = VIZ_W / n, my = top + ROWH / 2;
+    var sz = Math.min(ROWH - 4, cw - 2); if (sz < 3) sz = Math.max(2, cw - 1);
     for (var s = 0; s < n; s++) {
-        var cx = TX + s * (cw + gap), isFire = (s === n - 1), isCur = (s === f.cursor);
-        var b = isFire ? COL.accentD : COL.surf2;
-        rect(cx, ty + 4, cw, TH - 8, isCur ? lerp(b, COL.accent, 0.6 + 0.4 * f.pulse) : b);
-        if (isFire) rectb(cx + 0.5, ty + 4.5, cw - 1, TH - 9, COL.accent);
+        var cx = VIZ_X + cw * (s + 0.5), x0 = cx - sz / 2, y0 = my - sz / 2;
+        var on = isOn(s), fire = isFire(s), cur = (s === cursor);
+        if (on || fire) {
+            var b = fire ? COL.accentD : COL.accent;
+            rect(x0, y0, sz, sz, cur ? lerp(b, COL.text, 0.4 * f.pulse) : b);
+            if (fire) rectb(x0 + 0.5, y0 + 0.5, sz - 1, sz - 1, COL.accent);
+        } else {
+            rectb(x0 + 0.5, y0 + 0.5, sz - 1, sz - 1, cur ? COL.dim : COL.faint);
+        }
+        if (cur) rectb(x0 - 2.5, y0 - 2.5, sz + 5, sz + 5, lerp(COL.dim, COL.accent, f.pulse));
     }
-    region(i, "modulo", TX, ty, TW, TH);
+    region(i, field, VIZ_X, top, VIZ_W, ROWH);
 }
 
-function vizProb(i, st, f, top, ty) {
-    var my = ty + TH / 2, p = st.prob / 100;
-    heroVal(top, Math.round(st.prob) + "%");
-    rect(TX, my - 7, TW, 14, COL.surf2);
-    rect(TX, my - 7, TW * p, 14, COL.afill);
-    line(TX + TW * p, ty + 5, TX + TW * p, ty + TH - 5, COL.accent, 1);
+function vizModulo(i, st, f, top) {
+    readout(top, "\u00F7" + st.modulo);
+    drawSteps(i, "modulo", f, top, st.modulo,
+        function () { return false; }, function (s) { return s === st.modulo - 1; }, f.cursor);
+}
+
+function vizEuclid(i, st, f, top) {
+    readout(top, sum(st.euPattern) + "/" + st.euSteps);
+    drawSteps(i, "eudots", f, top, st.euSteps,
+        function (s) { return st.euPattern[s] === 1; }, function () { return false; }, f.cursor);
+}
+
+function vizProb(i, st, f, top) {
+    var my = top + ROWH / 2, p = st.prob / 100;
+    readout(top, Math.round(st.prob) + "%");
+    rect(VIZ_X, my - 5, VIZ_W, 10, COL.surf2);
+    rect(VIZ_X, my - 5, VIZ_W * p, 10, COL.afill);
+    line(VIZ_X + VIZ_W * p, my - 8, VIZ_X + VIZ_W * p, my + 8, COL.accent, 1);
     if (f.roll && nowMs() - f.roll.t < 280) {
-        var rx = TX + TW * f.roll.x;
-        line(rx, ty + 2, rx, ty + TH - 2, f.roll.hit ? COL.accent : COL.faint, f.roll.hit ? 2 : 1);
-        disc(rx, my, f.roll.hit ? 5 : 3, f.roll.hit ? COL.accent : COL.faint);
+        var rx = VIZ_X + VIZ_W * f.roll.x;
+        line(rx, my - 9, rx, my + 9, f.roll.hit ? COL.accent : COL.faint, f.roll.hit ? 2 : 1);
+        disc(rx, my, f.roll.hit ? 4 : 2.5, f.roll.hit ? COL.accent : COL.faint);
     }
-    region(i, "probbar", TX, ty, TW, TH);
+    region(i, "probbar", VIZ_X, top, VIZ_W, ROWH);
 }
 
-function vizEuclid(i, st, f, top, ty) {
-    heroVal(top, sum(st.euPattern) + "/" + st.euSteps, 20);
-    var n = st.euSteps, my = ty + TH / 2, step = TW / n, sz = Math.min(14, step - 3); if (sz < 5) sz = 5;
-    for (var s = 0; s < n; s++) {
-        var cx = TX + step * (s + 0.5), cur = (s === f.cursor);
-        if (st.euPattern[s] === 1) rect(cx - sz / 2, my - sz / 2, sz, sz, cur ? lerp(COL.accent, COL.text, 0.4 * f.pulse) : COL.accent);
-        else rectb(cx - sz / 2 + 0.5, my - sz / 2 + 0.5, sz - 1, sz - 1, cur ? COL.dim : COL.faint);
-        if (cur) rectb(cx - sz / 2 - 2.5, my - sz / 2 - 2.5, sz + 5, sz + 5, lerp(COL.dim, COL.accent, f.pulse));
-    }
-    region(i, "eudots", TX, ty, TW, TH);
-}
-
-function vizRepeater(i, st, f, top, ty) {
-    heroVal(top, st.repeats + "\u00D7", 20);
-    txt(VALX - 8, top + 29, trk(st.repInterval + "ms"), COL.faint, 8, 2);
-    var n = st.repeats, x0 = TX + 6, base = ty + 28, maxH = 22, dec = st.repDecay;
-    var ivn = Math.log(st.repInterval / 20) / Math.log(100);   // log spacing (matches exp drag)
-    var maxStep = (TW - 12) / Math.max(1, n - 1);
-    var stepx = Math.max(6, ivn * maxStep);
+function vizRepeater(i, st, f, top) {
+    readout(top, st.repeats + "\u00D7"); readsub(top, st.repInterval + "ms");
+    var n = st.repeats, base = top + ROWH - 4, maxH = ROWH - 8, dec = st.repDecay, x0 = VIZ_X + 3;
+    var ivn = Math.log(st.repInterval / 20) / Math.log(100);                   // log spacing (matches exp drag)
+    var stepx = Math.max(5, ivn * (VIZ_W - 6) / Math.max(1, n - 1));
     var elapsed = f.burst ? nowMs() - f.burst.start : -1;
-    line(TX, base, TX + TW, base, COL.surf2, 1);
+    line(VIZ_X, base, VIZ_X + VIZ_W, base, COL.surf2, 1);
     for (var k = 0; k < n; k++) {
-        var bx = x0 + k * stepx, amp = Math.pow(dec, k), h = maxH * (0.12 + 0.88 * amp);
+        var bx = x0 + k * stepx; if (bx > VIZ_X + VIZ_W) break;
+        var amp = Math.pow(dec, k), h = maxH * (0.15 + 0.85 * amp);
         var lit = f.burst && elapsed >= k * f.burst.interval && elapsed < k * f.burst.interval + 150;
         var col = lit ? COL.accent : lerp(COL.surf2, COL.accent, 0.2 + 0.6 * amp);
         line(bx, base, bx, base - h, col, lit ? 3 : 2);
-        disc(bx, base - h, lit ? 4 : 2.5, col);
+        disc(bx, base - h, lit ? 3.5 : 2, col);
     }
-    var sy = ty + 34, sx = TX + 38, sw = TW - 38;
-    txt(TX, sy + 5, "decay", COL.faint, 8);
-    rect(sx, sy, sw, 4, COL.surf2);
-    rect(sx, sy, sw * dec, 4, COL.accent);
-    region(i, "reptrack", TX, ty, TW, 30);
-    region(i, "repdecay", TX, ty + 30, TW, TH - 28);
+    region(i, "reptrack", VIZ_X, top, VIZ_W, ROWH);   // <-> interval, up/down repeats, shift+up/down decay
 }
 
-function vizQuantize(i, st, f, top, ty) {
-    var my = ty + TH / 2;
-    unit(top, "grid"); heroVal(top, QUANT_LABEL[st.quantDiv], 20);
-    var density = [4, 4, 4, 6, 8, 12, 16, 16][st.quantDiv];
-    for (var g = 0; g <= density; g++) line(TX + TW * g / density, ty + 6, TX + TW * g / density, ty + TH - 6, COL.hair, 1);
-    line(TX, my, TX + TW, my, COL.surf2, 1);
-    if (f.snap) {
-        var t = nowMs() - f.snap.start, prog = clamp(t / Math.max(1, f.snap.wait), 0, 1);
-        var snapX = TX + TW * (1 - (f.snap.wait / f.snap.grid)), cx = TX + (snapX - TX) * prog;
-        var arrived = prog >= 1 && t < f.snap.wait + 200;
-        disc(cx, my, arrived ? 5 : 3, f.snap.dup ? COL.faint : (arrived ? COL.accent : COL.dim));
-        if (arrived && !f.snap.dup) line(snapX, ty + 4, snapX, ty + TH - 4, COL.accent, 2);
+function vizQuantize(i, st, f, top) {
+    var my = top + ROWH / 2;
+    readout(top, QUANT_LABEL[st.quantDiv]);
+    var density = [1, 2, 4, 4, 8, 8, 16, 16][st.quantDiv];                     // gridlines across the window
+    line(VIZ_X, my, VIZ_X + VIZ_W, my, COL.surf2, 1);
+    for (var g = 0; g <= density; g++) {                                        // bright lines on the selected grid
+        var gx = VIZ_X + VIZ_W * g / density;
+        line(gx, my - 8, gx, my + 8, COL.accentD, 1);
     }
-    region(i, "quantbar", TX, ty, TW, TH);
+    var snaps = f.snaps || [], cellw = VIZ_W / density, tx = VIZ_X + VIZ_W, now = nowMs();
+    for (var q = 0; q < snaps.length; q++) {                                    // one particle per event (delay-style, doesn't reset)
+        var sn = snaps[q], t = now - sn.start, prog = clamp(t / Math.max(1, sn.wait), 0, 1);
+        var sx = tx - cellw * (sn.wait / sn.grid), cx = sx + (tx - sx) * prog;
+        var arrived = prog >= 1 && t < sn.wait + 200;
+        if (sn.dup) disc(cx, my, 2.5, COL.faint);                              // merged event: faint, no boundary flash
+        else {
+            disc(cx, my, arrived ? 5 : 3, arrived ? COL.accent : COL.dim);
+            if (arrived) line(tx, my - 8, tx, my + 8, COL.accent, 2);          // leader flashes the boundary
+        }
+    }
+    region(i, "quantbar", VIZ_X, top, VIZ_W, ROWH);
 }
 
-function vizDelay(i, st, f, top, ty) {
-    var my = ty + TH / 2;
-    heroVal(top, Math.round(st.delay) + "", 22); txt(VALX - 8, top + 29, trk("ms"), COL.faint, 8, 2);
-    var ox = TX + TW * clamp(st.delay / 2000, 0, 1);
-    line(TX, my, TX + TW, my, COL.surf2, 1);
-    line(TX, ty + 6, TX, ty + TH - 6, COL.dim, 1.5);
-    line(ox, ty + 6, ox, ty + TH - 6, COL.accentD, 1.5);
+function vizDelay(i, st, f, top) {
+    var my = top + ROWH / 2;
+    readout(top, Math.round(st.delay) + "ms", 13);
+    var ox = VIZ_X + VIZ_W * clamp(st.delay / 2000, 0, 1);
+    line(VIZ_X, my, VIZ_X + VIZ_W, my, COL.surf2, 1);
+    line(VIZ_X, my - 7, VIZ_X, my + 7, COL.dim, 1.5);                           // origin
+    line(ox, my - 7, ox, my + 7, COL.accentD, 1.5);                            // target
     var tvs = f.travels || [];
     for (var p = 0; p < tvs.length; p++) {
         var tr = tvs[p], prog = clamp((nowMs() - tr.start) / Math.max(1, tr.dur), 0, 1);
-        disc(TX + (ox - TX) * prog, my, prog >= 1 ? 5 : 3.5, prog >= 1 ? COL.accent : COL.dim);
+        disc(VIZ_X + (ox - VIZ_X) * prog, my, prog >= 1 ? 5 : 3.5, prog >= 1 ? COL.accent : COL.dim);
     }
-    region(i, "delaybar", TX, ty, TW, TH);
+    region(i, "delaybar", VIZ_X, top, VIZ_W, ROWH);
 }
 
-function vizNone(i, st, f, top, ty) {
-    txt(VALX + VALW - 10, top + 30, "\u2014", COL.faint, 20, 2);
-    unit(top, "thru");
-    var my = ty + TH / 2;
-    line(TX, my, TX + TW, my, COL.surf2, 1.5);
-    disc(TX + TW - 4, my, 3.5, lerp(COL.surf2, COL.accent, f.pulse));
+function vizNone(i, st, f, top) {
+    var my = top + ROWH / 2;
+    txt(W - PAD, top + 15, "\u2014", COL.faint, 16, 2);
+    line(VIZ_X, my, VIZ_X + VIZ_W, my, COL.surf2, 1.5);
+    disc(VIZ_X + VIZ_W - 4, my, 3, lerp(COL.surf2, COL.accent, f.pulse));
 }
 
-function vizThreshold(i, st, f, top, ty) {
-    var my = ty + TH / 2;
-    heroVal(top, "\u2265 " + Math.round(st.thresh * 100) + "%", 20);
-    rect(TX, my - 7, TW, 14, COL.surf2);
-    rect(TX + TW * st.thresh, my - 7, TW * (1 - st.thresh), 14, COL.afill);     // pass zone (>= thresh)
-    line(TX + TW * st.thresh, ty + 4, TX + TW * st.thresh, ty + TH - 4, COL.accent, 1.5);
+function vizThreshold(i, st, f, top) {
+    var my = top + ROWH / 2;
+    readout(top, "\u2265" + Math.round(st.thresh * 100) + "%", 13);
+    rect(VIZ_X, my - 5, VIZ_W, 10, COL.surf2);
+    rect(VIZ_X + VIZ_W * st.thresh, my - 5, VIZ_W * (1 - st.thresh), 10, COL.afill);   // pass zone (>= thresh)
+    line(VIZ_X + VIZ_W * st.thresh, my - 8, VIZ_X + VIZ_W * st.thresh, my + 8, COL.accent, 1.5);
     if (f.roll && nowMs() - f.roll.t < 280 && f.roll.x !== undefined) {
-        var rx = TX + TW * f.roll.x;
-        line(rx, ty + 2, rx, ty + TH - 2, f.roll.hit ? COL.accent : COL.faint, f.roll.hit ? 2 : 1);
-        disc(rx, my, f.roll.hit ? 5 : 3, f.roll.hit ? COL.accent : COL.faint);
+        var rx = VIZ_X + VIZ_W * f.roll.x;
+        line(rx, my - 9, rx, my + 9, f.roll.hit ? COL.accent : COL.faint, f.roll.hit ? 2 : 1);
+        disc(rx, my, f.roll.hit ? 4 : 2.5, f.roll.hit ? COL.accent : COL.faint);
     }
-    region(i, "threshbar", TX, ty, TW, TH);
+    region(i, "threshbar", VIZ_X, top, VIZ_W, ROWH);
 }
 
-function vizCurve(i, st, f, top, ty) {
+function vizCurve(i, st, f, top) {
     var g = Math.pow(3, -st.curve);
-    heroVal(top, (st.curve >= 0 ? "+" : "") + Math.round(st.curve * 100), 20);
-    unit(top, st.curve >= 0 ? "compress" : "expand");
-    var y0 = ty + TH - 5, hh = TH - 10;
-    line(TX, y0, TX + TW, y0 - hh, COL.surf2, 1);                               // linear reference
-    setc(COL.accent); mgraphics.set_line_width(2); mgraphics.move_to(TX, y0);
-    for (var s = 1; s <= 24; s++) { var vin = s / 24; mgraphics.line_to(TX + TW * vin, y0 - hh * Math.pow(vin, g)); }
+    readout(top, (st.curve >= 0 ? "+" : "") + Math.round(st.curve * 100), 13);
+    var y0 = top + ROWH - 3, hh = ROWH - 6;
+    line(VIZ_X, y0, VIZ_X + VIZ_W, y0 - hh, COL.surf2, 1);                      // linear reference
+    setc(COL.accent); mgraphics.set_line_width(1.5); mgraphics.move_to(VIZ_X, y0);
+    for (var s = 1; s <= 20; s++) { var vin = s / 20; mgraphics.line_to(VIZ_X + VIZ_W * vin, y0 - hh * Math.pow(vin, g)); }
     mgraphics.stroke();
     if (f.roll && nowMs() - f.roll.t < 280 && f.roll.x !== undefined) {
-        var vx = f.roll.x; disc(TX + TW * vx, y0 - hh * Math.pow(vx, g), 4, COL.accent);
+        var vx = f.roll.x; disc(VIZ_X + VIZ_W * vx, y0 - hh * Math.pow(vx, g), 3.5, COL.accent);
     }
-    region(i, "curvebar", TX, ty, TW, TH);
+    region(i, "curvebar", VIZ_X, top, VIZ_W, ROWH);   // <-> and up/down both shape the curve
 }
 
-function vizDebounce(i, st, f, top, ty) {
-    var my = ty + TH / 2;
-    heroVal(top, st.gap + "", 22); unit(top, "ms");
+function vizDebounce(i, st, f, top) {
+    var my = top + ROWH / 2;
+    readout(top, st.gap + "ms", 13);
     var gn = Math.log(st.gap / 20) / Math.log(50);                             // 20..1000 -> 0..1
-    rect(TX, my - 5, TW, 10, COL.surf2);
-    rect(TX, my - 5, TW * gn, 10, COL.afill);                                  // min-gap window
-    line(TX + TW * gn, ty + 4, TX + TW * gn, ty + TH - 4, COL.accentD, 1);
+    rect(VIZ_X, my - 5, VIZ_W, 10, COL.surf2);
+    rect(VIZ_X, my - 5, VIZ_W * gn, 10, COL.afill);                            // min-gap window
+    line(VIZ_X + VIZ_W * gn, my - 8, VIZ_X + VIZ_W * gn, my + 8, COL.accentD, 1);
     if (f.roll && nowMs() - f.roll.t < 280)
-        disc(TX + TW - 6, my, f.roll.hit ? 5 : 3, f.roll.hit ? COL.accent : COL.faint);
-    region(i, "debouncebar", TX, ty, TW, TH);
+        disc(VIZ_X + VIZ_W - 6, my, f.roll.hit ? 4 : 2.5, f.roll.hit ? COL.accent : COL.faint);
+    region(i, "debouncebar", VIZ_X, top, VIZ_W, ROWH);
 }
 
-function vizCrossmap(i, st, f, top, ty) {
-    heroVal(top, "v\u2192" + (1 + st.xmapAmt), 18);
-    txt(VALX - 8, top + 29, trk(st.xmapInt + "ms"), COL.faint, 8, 2);
-    var maxN = 1 + st.xmapAmt, x0 = TX + 6, base = ty + 28, maxH = 22;
-    var span = TW * 0.7, stepx = maxN > 1 ? span / (maxN - 1) : 0;
+function vizCrossmap(i, st, f, top) {
+    readout(top, "v\u2192" + (1 + st.xmapAmt), 13); readsub(top, st.xmapInt + "ms");
+    var maxN = 1 + st.xmapAmt, x0 = VIZ_X + 3, base = top + ROWH - 4, maxH = ROWH - 8;
+    var span = VIZ_W * 0.85, stepx = maxN > 1 ? span / (maxN - 1) : 0;
     var liveN = f.xreps || 0, elapsed = f.burst ? nowMs() - f.burst.start : -1;
-    line(TX, base, TX + TW, base, COL.surf2, 1);
+    line(VIZ_X, base, VIZ_X + VIZ_W, base, COL.surf2, 1);
     for (var k = 0; k < maxN; k++) {
-        var bx = x0 + k * stepx;
+        var bx = x0 + k * stepx; if (bx > VIZ_X + VIZ_W) break;
         var on = k < liveN && f.burst && elapsed < liveN * f.burst.interval + 200;
         var lit = on && elapsed >= k * f.burst.interval && elapsed < k * f.burst.interval + 150;
-        var h = on ? maxH * Math.pow(0.8, k) : maxH * 0.18;
+        var h = on ? maxH * Math.pow(0.8, k) : maxH * 0.2;
         var col = lit ? COL.accent : (on ? lerp(COL.surf2, COL.accent, 0.5) : COL.surf2);
         line(bx, base, bx, base - h, col, lit ? 3 : 2);
-        disc(bx, base - h, lit ? 4 : 2.5, col);
+        disc(bx, base - h, lit ? 3.5 : 2, col);
     }
-    region(i, "crosstrack", TX, ty, TW, TH);                                   // <-> amount  up/down interval
+    region(i, "crosstrack", VIZ_X, top, VIZ_W, ROWH);                          // <-> interval, up/down amount (matches repeater)
 }
 
 function drawOutputs() {
-    var oy = H - 14;
-    line(PAD, oy - 13, W - PAD, oy - 13, COL.hair, 1);
+    var oy = H - 12;
+    line(PAD, oy - 12, W - PAD, oy - 12, COL.hair, 1);
     txt(PAD, oy, trk("output"), COL.faint, 8);
     txt(W - PAD - 14, oy, "fire", COL.faint, 9, 2);
     disc(W - PAD - 5, oy - 3, 4, lerp(COL.surf2, COL.accent, outFx[0]));
@@ -498,15 +501,19 @@ function drawOutputs() {
 }
 
 function drawMenu(i) {
-    var top = blkTop(i) + 10, ih = 18, mh = MODES.length * ih, my = top + DD_H;
-    if (my + mh > H) my = top - mh;
-    rect(DD_X, my, DD_W, mh, COL.surf2);
-    rectb(DD_X + 0.5, my + 0.5, DD_W - 1, mh - 1, COL.hair);
+    var ih = 15, cw = 92, cols = 2, rows = Math.ceil(MODES.length / cols);      // 2-col popover fits the short canvas
+    var mw = cols * cw, mh = rows * ih;
+    var mx = DD_X, my = clamp(rowTop(i) + ROWH, 0, H - mh);                      // anchored to the chip, kept on-canvas
+    rect(mx, my, mw, mh, COL.surf2);
+    rectb(mx + 0.5, my + 0.5, mw - 1, mh - 1, COL.hair);
+    line(mx + cw, my + 2, mx + cw, my + mh - 2, COL.hair, 1);
     for (var m = 0; m < MODES.length; m++) {
-        var iy = my + m * ih;
-        if (m === stages[i].mode) rect(DD_X, iy, DD_W, ih, COL.afill);
-        txt(DD_X + 10, iy + 13, MODES[m], m === stages[i].mode ? COL.accent : COL.text, 10);
-        region(i, "menu:" + m, DD_X, iy, DD_W, ih);
+        var c = Math.floor(m / rows), r = m % rows, ix = mx + c * cw, iy = my + r * ih;
+        var sel = (m === stages[i].mode), hov = (m === menuHover);
+        if (sel) rect(ix, iy, cw, ih, COL.afill);
+        else if (hov) rect(ix, iy, cw, ih, lerp(COL.surf2, COL.text, 0.1));
+        txt(ix + 8, iy + 11, MODES[m], sel ? COL.accent : (hov ? COL.text : COL.dim), 10);
+        region(i, "menu:" + m, ix, iy, cw, ih);
     }
 }
 
@@ -516,16 +523,16 @@ function onclick(x, y, but, cmd, shift) {
         var r = hit(x, y);
         if (r && ("" + r.field).indexOf("menu:") === 0 && r.stage === openMenu)
             stages[openMenu].mode = parseInt(("" + r.field).split(":")[1], 10);
-        openMenu = -1; mgraphics.redraw(); return;
+        openMenu = -1; menuHover = -1; mgraphics.redraw(); return;
     }
     var h = hit(x, y);
     if (!h) return;
-    if (h.field === "mode") { openMenu = h.stage; mgraphics.redraw(); return; }
-    drag = { stage: h.stage, field: h.field, x0: x, y0: y, moved: false };
+    if (h.field === "mode") { openMenu = h.stage; menuHover = -1; mgraphics.redraw(); return; }
+    drag = { stage: h.stage, field: h.field, x0: x, y0: y, moved: false, shift: !!shift };
     var st = stages[h.stage];
     drag.start = startVal(st, h.field);
-    if (h.field === "eudots") { drag.circle = Math.floor((x - TX) / (TW / st.euSteps)); drag.startEvents = st.euEvents; }
-    if (h.field === "reptrack") drag.startInterval = st.repInterval;
+    if (h.field === "eudots") { drag.circle = Math.floor((x - VIZ_X) / (VIZ_W / st.euSteps)); drag.startEvents = st.euEvents; }
+    if (h.field === "reptrack") { drag.startInterval = st.repInterval; drag.startDecay = st.repDecay; }
     if (h.field === "crosstrack") drag.startInterval = st.xmapInt;
     applyDrag(x, y);
 }
@@ -542,20 +549,34 @@ function ondrag(x, y, but) {
 }
 ondrag.local = 1;
 
+// hover highlight for the open mode menu
+function onidle(x, y) {
+    var nh = -1;
+    if (openMenu >= 0) {
+        var r = hit(x, y);
+        if (r && ("" + r.field).indexOf("menu:") === 0 && r.stage === openMenu)
+            nh = parseInt(("" + r.field).split(":")[1], 10);
+    }
+    if (nh !== menuHover) { menuHover = nh; mgraphics.redraw(); }
+}
+onidle.local = 1;
+function onidleout() { if (menuHover >= 0) { menuHover = -1; mgraphics.redraw(); } }
+onidleout.local = 1;
+
 function applyDrag(x, y) {
     var st = stages[drag.stage], dx = x - drag.x0, dy = drag.y0 - y;
     switch (drag.field) {
         case "modulo":   st.modulo = clamp(Math.round(drag.start + dx / 16), 1, 16); st.count = 0; break;
-        case "probbar":  st.prob = clamp((x - TX) / TW * 100, 0, 100); break;
-        case "delaybar": st.delay = clamp((x - TX) / TW * 2000, 0, 2000); break;
-        case "reptrack": st.repeats = clamp(Math.round(drag.start + dx / 16), 1, 12);
-                         st.repInterval = clamp(Math.round(drag.startInterval * Math.exp(dy * 0.014)), 20, 2000); break;  // exp: ~50px/octave
-        case "repdecay": st.repDecay = clamp((x - (TX + 38)) / (TW - 38), 0.1, 0.98); break;
-        case "threshbar": st.thresh = clamp((x - TX) / TW, 0, 1); break;
-        case "curvebar":  st.curve = clamp((x - TX) / TW * 2 - 1, -1, 1); break;
-        case "debouncebar": st.gap = clamp(Math.round(20 * Math.pow(50, (x - TX) / TW)), 20, 1000); break;
-        case "crosstrack": st.xmapAmt = clamp(Math.round(drag.start + dx / 16), 1, 11);
-                           st.xmapInt = clamp(Math.round(drag.startInterval * Math.exp(dy * 0.014)), 20, 2000); break;
+        case "probbar":  st.prob = clamp((x - VIZ_X) / VIZ_W * 100, 0, 100); break;
+        case "delaybar": st.delay = clamp((x - VIZ_X) / VIZ_W * 2000, 0, 2000); break;
+        case "reptrack": st.repInterval = clamp(Math.round(drag.startInterval * Math.exp(dx * 0.014)), 20, 2000);  // <-> interval (exp)
+                         if (drag.shift) st.repDecay = clamp(drag.startDecay + dy * 0.004, 0.1, 0.98);             // shift+up/down decay
+                         else st.repeats = clamp(Math.round(drag.start + dy / 16), 1, 12); break;                 // up/down repeats
+        case "threshbar": st.thresh = clamp((x - VIZ_X) / VIZ_W, 0, 1); break;
+        case "curvebar":  st.curve = clamp(drag.start + (dx + dy) * 0.006, -1, 1); break;                         // <-> and up/down both shape
+        case "debouncebar": st.gap = clamp(Math.round(20 * Math.pow(50, (x - VIZ_X) / VIZ_W)), 20, 1000); break;
+        case "crosstrack": st.xmapInt = clamp(Math.round(drag.startInterval * Math.exp(dx * 0.014)), 20, 2000);  // <-> interval (exp)
+                           st.xmapAmt = clamp(Math.round(drag.start + dy / 16), 1, 11); break;                  // up/down amount
         case "quantbar": st.quantDiv = clamp(Math.round(drag.start + dx / 28), 0, QUANT_DIVS.length - 1); break;
         case "eudots":   if (drag.moved) {     // drag ←→ steps, drag ↕ events, regenerate euclidean
                              st.euSteps = clamp(Math.round(drag.start + dx / 16), 1, 32);
@@ -571,6 +592,7 @@ function startVal(st, field) {
         case "reptrack": return st.repeats;
         case "crosstrack": return st.xmapAmt;
         case "quantbar": return st.quantDiv;
+        case "curvebar": return st.curve;
         case "eudots": return st.euSteps;
     }
     return 0;
