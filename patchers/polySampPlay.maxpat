@@ -61,36 +61,17 @@
    {
     "box": {
      "maxclass": "newobj",
-     "text": "pack 0. 5",
-     "id": "pk",
-     "numinlets": 2,
-     "numoutlets": 1,
-     "outlettype": [
-      ""
-     ],
-     "patching_rect": [
-      40.0,
-      102.0,
-      60.0,
-      22.0
-     ]
-    }
-   },
-   {
-    "box": {
-     "maxclass": "newobj",
-     "text": "line~",
+     "text": "curve~",
      "id": "ln",
      "numinlets": 1,
-     "numoutlets": 2,
+     "numoutlets": 1,
      "outlettype": [
-      "signal",
-      "bang"
+      "signal"
      ],
      "patching_rect": [
       40.0,
       138.0,
-      46.0,
+      52.0,
       22.0
      ]
     }
@@ -220,7 +201,7 @@
       0
      ],
      "destination": [
-      "pk",
+      "ln",
       0
      ]
     }
@@ -233,18 +214,6 @@
      ],
      "destination": [
       "gr",
-      0
-     ]
-    }
-   },
-   {
-    "patchline": {
-     "source": [
-      "pk",
-      0
-     ],
-     "destination": [
-      "ln",
       0
      ]
     }

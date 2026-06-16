@@ -1,18 +1,21 @@
 // SamplePlayPoly.js — v8ui face for the SPT polyphonic sample player.
-// Dark-editorial. Draws the buffer waveform, a draggable start point + loop
-// region, animated playheads for the 8 voices, and gain/pan controls.
+// Dark-editorial. Draws the buffer waveform, a draggable start/end region, an
+// optional play-once A/D amplitude envelope over the waveform, animated
+// playheads for the 8 voices, and gain/pan controls. Voices always play once
+// (no looping) — the envelope (or a flat gate) shapes and ends each note.
 //
 // Inlet messages (from the host patch):
 //   setbuffer <name>   the buffer~ name to read (e.g. #0-samp, resolved by Max)
 //   loaded             buffer contents changed -> re-read + redraw the waveform
 //   voice <i>          voice i (0..N-1) just triggered -> launch a playhead
 //   bang               a voice triggered (unknown index) -> playhead on next voice
-//   gain <f> / pan <f> / start <f> / loopon <0|1>   restore values (from pattr)
+//   gain <f> / pan <f> / start <f> / envon <0|1>    restore values
 //
 // Outlet 0 messages (to the host patch):
-//   gain <0..1>   pan <-1..1>   start <0..1>   loop <s> <e>   loopon <0|1>
-//
-// (Looping/start are honoured by the groove~-based voice in polySampPlay.)
+//   gain <0..1>   pan <-1..1>   start <ms>   loop <s_ms> <e_ms>   loopon 0
+//   run <i> <level> <ms>                   per-voice gate ramp (arm / fade-out)
+//   venv <i> 0 0 1 <atkMs> 0 <decMs>       per-voice A/D envelope (line~ segments)
+//   open                                   ask host to open a file dialog
 
 autowatch = 1;
 inlets = 1;
@@ -37,15 +40,22 @@ var COL = {
     warn:    [0.878, 0.639, 0.227, 1.0]
 };
 var FONT = "Helvetica Neue";
-var NVOICES = 8;
+var MAXVOICES = 8;          // mcs.poly~ instances available
+var NVOICES = 8;            // active voice count (1..MAXVOICES); 1 = mono retrigger
 
 // ---------------------------------------------------------------- state
 var bufName = "";
 var env = [];           // cached min/max envelope: [ [min,max], ... ] one per column
 var frames = 0, durMs = 0, fileName = "";
-var gGain = 0.8, gPan = 0.0, startPt = 0.0, endPt = 1.0, loopOn = 0;   // start/end region always active; loop just toggles looping
-var voices = [];        // active playheads: { start, dur, t0, vi }
-var nextVoice = 0;
+var gGain = 0.8, gPan = 0.0;
+// The amplitude envelope IS the region: startPt/endPt (absolute 0..1 in the buffer)
+// set the scanned portion; envA/envD are the attack-peak and sustain-end positions
+// as fractions of that region (so the shape rescales when you move start/end). The
+// envelope is ALWAYS applied; envShown only toggles drawing/editing it.
+//   startPt --attack(curveA)--> envA(peak 1) --sustain--> envD(1) --decay(curveD)--> endPt(0)
+var startPt = 0.0, endPt = 1.0, envA = 0.02, envD = 0.98, curveA = 0.0, curveD = 0.0, envShown = 0;
+var voices = [];        // active playheads: { s, e, dur, t0, vi(0-based slot), vel }
+var nextVoice = 1;      // 1-based round-robin for bare bang/float triggers
 
 var W = 320, H = 196, PAD = 16;
 var WF_X = PAD, WF_W = W - 2 * PAD, WF_Y = 46, WF_H = 84;   // waveform rect
@@ -101,51 +111,42 @@ function readBuffer() {
 function setbuffer(name) { bufName = "" + name; readBuffer(); }
 function loaded() { readBuffer(); }
 function filename(n) { fileName = "" + n; mgraphics.redraw(); }
-function voice(vi) { launch(vi); }
-function bang() { launch(nextVoice); nextVoice = (nextVoice + 1) % NVOICES; }
-function msg_float() { launch(nextVoice); nextVoice = (nextVoice + 1) % NVOICES; }
+function voice(vi, vel) { launch(vi, vel); }
+function bang() { launch(nextVoice, 1); nextVoice = nextVoice % NVOICES + 1; }
+function msg_float(v) { launch(nextVoice, v); nextVoice = nextVoice % NVOICES + 1; }
 function gain(v) { gGain = clamp(v, 0, 1); mgraphics.redraw(); }
 function pan(v) { gPan = clamp(v, -1, 1); mgraphics.redraw(); }
 function start(v) { startPt = clamp(v, 0, 1); mgraphics.redraw(); }
-function loopon(v) { loopOn = v ? 1 : 0; mgraphics.redraw(); }
 
-var stopTasks = [];                                  // per-voice scheduled "run 0"
-function cancelStop(idx) { if (stopTasks[idx]) { stopTasks[idx].cancel(); stopTasks[idx] = null; } }
-function scheduleStop(idx, dur) {
-    cancelStop(idx);
-    var t = new Task(function () { outlet(0, "run", idx, 0); stopTasks[idx] = null; });
-    stopTasks[idx] = t;
-    t.schedule(dur);
-}
-
-function launch(vi) {
-    var idx = vi % NVOICES;
-    var s = startPt, e = endPt;
-    var dur = durMs * (e - s);
+function launch(vi, vel) {
+    var vnum = (vi < 1) ? 1 : Math.round(vi);              // poly~ voice number (1-based) = curve~/groove~ target
+    var di = (vnum - 1) % MAXVOICES;                        // 0-based slot for dots/animation
+    var pk = (vel === undefined) ? 1 : clamp(vel, 0, 1);   // velocity scales the envelope peak
+    var dur = durMs * (endPt - startPt);
     if (dur <= 0) dur = durMs;
-    voices.push({ s: s, e: e, dur: dur, t0: nowMs(), vi: idx, loop: loopOn });
+    voices.push({ s: startPt, e: endPt, dur: dur, t0: nowMs(), vi: di, vel: pk });
     if (voices.length > 24) voices.shift();
-    cancelStop(idx);
-    outlet(0, "run", idx, 1);                         // arm + 5ms fade-in (declick)
-    if (!loopOn && dur > 0) scheduleStop(idx, dur);   // one-shot: fade out at the end marker
+    // curve~ segments (always applied): snap 0, attack->peak (curveA), hold, decay->0 (curveD).
+    var atk = Math.max(1, Math.round(envA * dur));
+    var sus = Math.max(0, Math.round((envD - envA) * dur));
+    var dec = Math.max(1, Math.round((1 - envD) * dur));
+    var p = Math.round(pk * 1000) / 1000;
+    outlet(0, "venv", vnum, 0, 0, 0, p, atk, curveA, p, sus, 0, 0, dec, curveD);   // target the actual voice
     pump();
 }
+function setVoices(n) { NVOICES = clamp(Math.round(n), 1, MAXVOICES); out("voices", NVOICES); mgraphics.redraw(); }
 
 // ---------------------------------------------------------------- animation pump
 var pumpTask = null, pumping = false;
 function active() {
     var t = nowMs();
-    for (var i = 0; i < voices.length; i++) {
-        var v = voices[i];
-        if (v.loop || t - v.t0 < v.dur) return true;
-    }
+    for (var i = 0; i < voices.length; i++) if (t - voices[i].t0 < voices[i].dur) return true;
     return false;
 }
 function animTick() {
     var t = nowMs();
     for (var i = voices.length - 1; i >= 0; i--) {
-        var v = voices[i];
-        if (!v.loop && t - v.t0 > v.dur + 60) voices.splice(i, 1);
+        if (t - voices[i].t0 > voices[i].dur + 60) voices.splice(i, 1);
     }
     mgraphics.redraw();
     if (!active()) { pumping = false; if (pumpTask) pumpTask.cancel(); }
@@ -223,27 +224,62 @@ function drawWaveform() {
     fillEnv(0, n, n, mid, h2, g, COL.faint);                                  // full, dimmed
     fillEnv(Math.round(as * n), Math.round(ae * n), n, mid, h2, g, COL.accent); // active, bright
 
-    // start + end handles (both always present; loop just toggles looping)
-    handle(startPt, COL.accent);
-    handle(endPt, COL.accent);
-
-    // playheads
+    // playheads (always play-once now)
     var t = nowMs();
     for (var i = 0; i < voices.length; i++) {
-        var v = voices[i], prog = v.loop ? ((t - v.t0) % Math.max(1, v.dur)) / Math.max(1, v.dur) : (t - v.t0) / Math.max(1, v.dur);
+        var v = voices[i], prog = (t - v.t0) / Math.max(1, v.dur);
         if (prog > 1) continue;
         var hx = px(v.s + (v.e - v.s) * prog);
         line(hx, WF_Y + 1, hx, WF_Y + WF_H - 1, COL.accent, 1);
         disc(hx, WF_Y + 3, 2, COL.accent);
     }
     region("wave", WF_X, WF_Y, WF_W, WF_H);
+    if (envShown) drawEnvelope();               // env handles registered after "wave" -> take priority
 }
 
-function handle(frac, c) {
-    var x = px(frac);
-    line(x, WF_Y, x, WF_Y + WF_H, c, 1.5);
-    setc(c); mgraphics.move_to(x - 4, WF_Y); mgraphics.line_to(x + 4, WF_Y); mgraphics.line_to(x, WF_Y + 6); mgraphics.close_path(); mgraphics.fill();
+function fracFromX(x) { return clamp((x - WF_X) / WF_W, 0, 1); }
+// Matches curve~'s ramp shape so the drawing equals what you hear.
+// phase t in [0,1] -> progress [0,1]; k is the curve~ curve parameter (-1..1).
+function cv(t, k) {
+    t = clamp(t, 0, 1);
+    if (k > -0.001 && k < 0.001) return t;
+    var K = k * 6;
+    return (1 - Math.exp(t * K)) / (1 - Math.exp(K));
 }
+// The envelope spans startPt..endPt: attack startPt->aPos, sustain aPos->dPos, decay dPos->endPt.
+function envPosToX(f) { return px(startPt + clamp(f, 0, 1) * (endPt - startPt)); }   // region-fraction -> screen x
+function regFrac(x) { var span = endPt - startPt; return span > 0.001 ? clamp((fracFromX(x) - startPt) / span, 0, 1) : 0; }
+function drawEnvelope() {
+    var xS = px(startPt), xA = envPosToX(envA), xD = envPosToX(envD), xE = px(endPt);
+    var yb = WF_Y + WF_H - 3, yt = WF_Y + 3, N = 20, i, tt, amp;
+    setc(COL.afill); mgraphics.move_to(xS, yb);
+    for (i = 0; i <= N; i++) { tt = i / N; amp = cv(tt, curveA); mgraphics.line_to(xS + (xA - xS) * tt, yb + (yt - yb) * amp); }
+    mgraphics.line_to(xD, yt);
+    for (i = 0; i <= N; i++) { tt = i / N; amp = 1 - cv(tt, curveD); mgraphics.line_to(xD + (xE - xD) * tt, yb + (yt - yb) * amp); }
+    mgraphics.line_to(xE, yb); mgraphics.close_path(); mgraphics.fill();
+    setc(COL.accent); mgraphics.set_line_width(1.5); mgraphics.move_to(xS, yb);
+    for (i = 1; i <= N; i++) { tt = i / N; amp = cv(tt, curveA); mgraphics.line_to(xS + (xA - xS) * tt, yb + (yt - yb) * amp); }
+    mgraphics.line_to(xD, yt);
+    for (i = 1; i <= N; i++) { tt = i / N; amp = 1 - cv(tt, curveD); mgraphics.line_to(xD + (xE - xD) * tt, yb + (yt - yb) * amp); }
+    mgraphics.stroke();
+    var hm = WF_Y + WF_H / 2;
+    // big grab zones along each slope (registered first so the point handles win at the corners)
+    var amx = (xS + xA) / 2, amy = yb + (yt - yb) * cv(0.5, curveA);
+    var dmx = (xD + xE) / 2, dmy = yb + (yt - yb) * (1 - cv(0.5, curveD));
+    var aw = Math.max(26, Math.abs(xA - xS)), dw = Math.max(26, Math.abs(xE - xD));
+    region("curveA", amx - aw / 2, WF_Y, aw, WF_H);
+    region("curveD", dmx - dw / 2, WF_Y, dw, WF_H);
+    // point handles (small, at the corners; take priority over the slope grab zones)
+    disc(xS, yb, 4, COL.accent); region("envS", xS - 8, hm, 16, WF_H / 2 + 3);   // start (bottom)
+    disc(xE, yb, 4, COL.accent); region("envE", xE - 8, hm, 16, WF_H / 2 + 3);   // end (bottom)
+    disc(xA, yt, 4, COL.accent); region("envA", xA - 8, WF_Y, 16, WF_H / 2);     // attack peak (top)
+    disc(xD, yt, 4, COL.accent); region("envD", xD - 8, WF_Y, 16, WF_H / 2);     // sustain end (top)
+    // curve handle dots (visual marker on each slope)
+    disc(amx, amy, 2.5, COL.accent); ring(amx, amy, 5, COL.accentD, 1);
+    disc(dmx, dmy, 2.5, COL.accent); ring(dmx, dmy, 5, COL.accentD, 1);
+}
+
+function ring(cx, cy, r, c, lw) { setc(c); mgraphics.set_line_width(lw || 1); mgraphics.ellipse(cx - r, cy - r, r * 2, r * 2); mgraphics.stroke(); }
 
 function drawControls() {
     var y = CTRL_Y;
@@ -252,11 +288,15 @@ function drawControls() {
     rect(PAD + 38, y - 4, 120, 8, COL.surf2);
     rect(PAD + 38, y - 4, 120 * gGain, 8, COL.accent);
     region("gain", PAD + 38, y - 10, 120, 18);
+    // voices count (drag vertical: 1..MAX; 1 = mono retrigger). dot row mirrors it.
+    txt(176, y + 4, "" + NVOICES, COL.accent, 13, 0);
+    txt(176 + (NVOICES >= 10 ? 18 : 11), y + 4, trk("vox"), COL.faint, 7, 0);
+    region("voices", 174, y - 9, 44, 18);
     // voice activity dots (right)
     var t = nowMs();
     for (var vch = 0; vch < NVOICES; vch++) {
         var lit = 0;
-        for (var i = 0; i < voices.length; i++) if (voices[i].vi === vch) { var age = t - voices[i].t0; if (voices[i].loop || age < voices[i].dur) lit = Math.max(lit, voices[i].loop ? 0.7 : clamp(1 - age / voices[i].dur, 0, 1)); }
+        for (var i = 0; i < voices.length; i++) if (voices[i].vi === vch) { var age = t - voices[i].t0; if (age < voices[i].dur) lit = Math.max(lit, clamp(1 - age / voices[i].dur, 0, 1) * (voices[i].vel || 1)); }
         disc(W - PAD - 6 - vch * 11, y - 1, 2.5, lerp(COL.surf2, COL.accent, lit));
     }
     // pan
@@ -269,12 +309,12 @@ function drawControls() {
     rect(Math.min(pmid, phx), y2 - 4, Math.abs(phx - pmid), 8, COL.afill);
     disc(phx, y2, 4, COL.accent);
     region("pan", pcx, y2 - 10, pcw, 18);
-    // loop toggle
+    // envelope toggle — shows/edits the env (always applied either way)
     var lx = W - PAD - 54;
-    rect(lx, y2 - 7, 54, 16, loopOn ? COL.afill : COL.surf2);
-    rectb(lx + 0.5, y2 - 6.5, 53, 15, loopOn ? COL.accent : COL.hair);
-    txt(lx + 27, y2 + 4, "loop", loopOn ? COL.accent : COL.dim, 9, 1);
-    region("loop", lx, y2 - 7, 54, 16);
+    rect(lx, y2 - 7, 54, 16, envShown ? COL.afill : COL.surf2);
+    rectb(lx + 0.5, y2 - 6.5, 53, 15, envShown ? COL.accent : COL.hair);
+    txt(lx + 27, y2 + 4, "env", envShown ? COL.accent : COL.dim, 9, 1);
+    region("env", lx, y2 - 7, 54, 16);
 }
 
 // ---------------------------------------------------------------- interaction
@@ -283,41 +323,57 @@ function onclick(x, y, but, cmd, shift) {
     var h = hit(x, y);
     if (!h) return;
     if (h.field === "open") { outlet(0, "open"); return; }   // ask host to open a file dialog
-    if (h.field === "loop") { loopOn = loopOn ? 0 : 1; out("loopon", loopOn); emitStart(); mgraphics.redraw(); return; }
-    if (h.field === "wave") {
-        // pick nearest handle to drag — start or end
-        var frac = clamp((x - WF_X) / WF_W, 0, 1);
-        drag = { field: Math.abs(frac - startPt) <= Math.abs(frac - endPt) ? "start" : "end" };
-    } else drag = { field: h.field };
-    applyDrag(x, y);
+    if (h.field === "env") { envShown = envShown ? 0 : 1; mgraphics.redraw(); return; }
+    if (h.field === "voices") { drag = { field: "voices", y0: y, startN: NVOICES }; return; }
+    if (h.field === "curveA") { drag = { field: "curveA", y0: y, startC: curveA }; return; }
+    if (h.field === "curveD") { drag = { field: "curveD", y0: y, startC: curveD }; return; }
+    if (h.field === "envS" || h.field === "envA" || h.field === "envD" || h.field === "envE") { drag = { field: h.field }; applyDrag(x, y); return; }
+    if (h.field === "wave") {                                  // wave click -> nearest of the four env points
+        if (!envShown) return;
+        var R = endPt - startPt, f = fracFromX(x);
+        var pts = [["envS", startPt], ["envA", startPt + envA * R], ["envD", startPt + envD * R], ["envE", endPt]];
+        var best = pts[0], bd = 9; for (var k = 0; k < 4; k++) { var d = Math.abs(f - pts[k][1]); if (d < bd) { bd = d; best = pts[k]; } }
+        drag = { field: best[0] }; applyDrag(x, y);
+    } else { drag = { field: h.field }; applyDrag(x, y); }
 }
 onclick.local = 1;
 function ondrag(x, y, but) { if (!drag) return; if (but === 0) { drag = null; return; } applyDrag(x, y); }
 ondrag.local = 1;
 
 function applyDrag(x, y) {
-    var fracX = clamp((x - WF_X) / WF_W, 0, 1);
+    var f = fracFromX(x);
     switch (drag.field) {
-        case "gain":  gGain = clamp((x - (PAD + 38)) / 120, 0, 1); out("gain", gGain); break;
-        case "pan":   gPan = clamp((x - (PAD + 38)) / 120 * 2 - 1, -1, 1); out("pan", gPan); break;
-        case "start": startPt = Math.min(fracX, endPt - 0.01); emitLoop(); emitStart(); break;
-        case "end":   endPt = Math.max(fracX, startPt + 0.01); emitLoop(); break;
+        case "gain":   gGain = clamp((x - (PAD + 38)) / 120, 0, 1); out("gain", gGain); break;
+        case "pan":    gPan = clamp((x - (PAD + 38)) / 120 * 2 - 1, -1, 1); out("pan", gPan); break;
+        case "envS":   startPt = clamp(f, 0, endPt - 0.02); emitStart(); emitLoop(); break;     // start = scan start
+        case "envA":   envA = clamp(regFrac(x), 0, envD); break;                                // attack peak (frac of region)
+        case "envD":   envD = clamp(regFrac(x), envA, 1); break;                                // sustain end (frac of region)
+        case "envE":   endPt = clamp(f, startPt + 0.02, 1); emitLoop(); break;                  // end = scan end
+        case "curveA": curveA = clamp(drag.startC - (drag.y0 - y) / 140, -0.95, 0.95); break;    // up = fuller (faster attack)
+        case "curveD": curveD = clamp(drag.startC + (drag.y0 - y) / 140, -0.95, 0.95); break;    // up = fuller (slower release)
+        case "voices": { var nn = clamp(Math.round(drag.startN + (drag.y0 - y) / 14), 1, MAXVOICES); if (nn !== NVOICES) { NVOICES = nn; out("voices", nn); } break; }  // up = more voices
     }
     mgraphics.redraw();
 }
 function out(sel, v) { outlet(0, sel, v); }
-function emitStart() { outlet(0, "start", Math.round(startPt * durMs)); }                       // start position in ms
-function emitLoop() { outlet(0, "loop", Math.round(startPt * durMs), Math.round(endPt * durMs)); } // region in ms
-function emitAll() { out("gain", gGain); out("pan", gPan); out("loopon", loopOn); emitLoop(); emitStart(); }
+function emitStart() { outlet(0, "start", Math.round(startPt * durMs)); }                       // scan start in ms
+function emitLoop() { outlet(0, "loop", Math.round(startPt * durMs), Math.round(endPt * durMs)); } // scanned region in ms
+function emitAll() { out("gain", gGain); out("pan", gPan); out("loopon", 0); out("voices", NVOICES); emitLoop(); emitStart(); }  // never loop
 
 // ---------------------------------------------------------------- persistence
-function exportState() { return { gain: gGain, pan: gPan, startPt: startPt, endPt: endPt, loopOn: loopOn }; }
+function exportState() { return { gain: gGain, pan: gPan, startPt: startPt, endPt: endPt, envA: envA, envD: envD, curveA: curveA, curveD: curveD, envShown: envShown, nvoices: NVOICES }; }
 function setstate(s) {
     try {
         var o = JSON.parse(s);
-        gGain = o.gain; gPan = o.pan; loopOn = o.loopOn;
-        startPt = (o.startPt != null) ? o.startPt : (o.loopS != null ? o.loopS : 0.0);   // back-compat w/ old loopS/loopE
-        endPt = (o.endPt != null) ? o.endPt : (o.loopE != null ? o.loopE : 1.0);
+        gGain = o.gain; gPan = o.pan;
+        if (o.startPt != null) startPt = o.startPt;
+        if (o.endPt != null) endPt = o.endPt;
+        if (o.envA != null) envA = o.envA;
+        if (o.envD != null) envD = o.envD;
+        if (o.curveA != null) curveA = o.curveA;
+        if (o.curveD != null) curveD = o.curveD;
+        if (o.envShown != null) envShown = o.envShown;
+        if (o.nvoices != null) { NVOICES = clamp(o.nvoices, 1, MAXVOICES); out("voices", NVOICES); }
         mgraphics.redraw();
     } catch (e) {}
 }
