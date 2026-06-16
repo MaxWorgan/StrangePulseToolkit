@@ -25,6 +25,17 @@
             },
             {
                 "box": {
+                    "id": "fit",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 540.0, 38.0, 130.0, 22.0 ],
+                    "text": "v8 attractorFit.js"
+                }
+            },
+            {
+                "box": {
                     "comment": "",
                     "id": "obj-3",
                     "index": 0,
@@ -78,7 +89,7 @@
                     "numoutlets": 2,
                     "outlettype": [ "bang", "" ],
                     "patching_rect": [ 369.0, 124.0, 138.0, 22.0 ],
-                    "text": "jit.gl.render #0-screen"
+                    "text": "jit.gl.render #0-screen @erase_color 0.0549 0.0549 0.0588 1."
                 }
             },
             {
@@ -89,7 +100,7 @@
                     "numoutlets": 2,
                     "outlettype": [ "", "" ],
                     "patching_rect": [ 38.0, 158.0, 624.0, 22.0 ],
-                    "text": "jit.gl.path #0-path @interpmode spline @segments 15 @pathstyle line @line_width 1.5 @color 0.976 0.78 0.31 1."
+                    "text": "jit.gl.path #0-path @interpmode spline @segments 15 @pathstyle line @line_width 1.5 @color 0.7216 1. 0.3608 1."
                 }
             },
             {
@@ -208,6 +219,12 @@
             {
                 "patchline": {
                     "destination": [ "obj-38", 0 ],
+                    "source": [ "obj-4", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "fit", 0 ],
                     "source": [ "obj-4", 0 ]
                 }
             },

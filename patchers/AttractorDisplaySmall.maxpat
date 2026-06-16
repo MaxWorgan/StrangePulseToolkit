@@ -78,7 +78,7 @@
                     "numoutlets": 2,
                     "outlettype": [ "bang", "" ],
                     "patching_rect": [ 369.0, 124.0, 157.0, 22.0 ],
-                    "text": "jit.gl.render #0-screen-small"
+                    "text": "jit.gl.render #0-screen-small @erase_color 0.0549 0.0549 0.0588 1."
                 }
             },
             {
@@ -89,7 +89,7 @@
                     "numoutlets": 2,
                     "outlettype": [ "", "" ],
                     "patching_rect": [ 38.0, 158.0, 643.0, 22.0 ],
-                    "text": "jit.gl.path #0-path-small @interpmode spline @segments 15 @pathstyle line @line_width 1.5 @color 0.976 0.78 0.31 1."
+                    "text": "jit.gl.path #0-path-small @interpmode spline @segments 15 @pathstyle line @line_width 1.5 @color 0.7216 1. 0.3608 1."
                 }
             },
             {
