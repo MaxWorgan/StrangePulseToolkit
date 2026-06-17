@@ -1,15 +1,19 @@
-// attractorFit.js — make AttractorDisplay resizable.
-// Reads this bpatcher's own box size in the parent and resizes the embedded
-// jit.pwindow (varname "screen") to fill it, re-fitting when the bpatcher is
-// dragged. One file now works at any size — no separate "Small" copy needed.
+// attractorFit.js — make an embedded display fill its bpatcher, so the patch
+// works at any size (no separate hand-sized copy). Reads this bpatcher's own box
+// size in the parent and resizes a named child object to fill it, re-fitting when
+// the bpatcher is dragged.
 //
-// jit.gl.render draws into the named pwindow context, so the 3D view adapts to
-// the new size automatically; we just keep the pwindow filling the bpatcher.
+//   [v8 attractorFit.js]        -> fits the object named "screen" (default)
+//   [v8 attractorFit.js ui]     -> fits the object named "ui"
+//
+// Works for jit.pwindow (also sets its render size) and v8ui (whose onresize
+// then re-lays-out). One file now covers any size.
 
 autowatch = 1;
 
-var P = this.patcher;          // the patcher loaded inside this bpatcher
-var SCREEN = null;             // the jit.pwindow Maxobj (resolved lazily)
+var P = this.patcher;                                   // patcher inside this bpatcher
+var TARGET_NAME = (jsarguments.length > 1) ? ("" + jsarguments[1]) : "screen";
+var TARGET = null;
 var lastW = -1, lastH = -1;
 var fitTask = new Task(fit);
 
@@ -31,9 +35,9 @@ function fit() {
     var h = Math.max(1, Math.round(r[3] - r[1]));
     if (w === lastW && h === lastH) return;
     lastW = w; lastH = h;
-    if (!SCREEN) SCREEN = P.getnamed("screen");
-    if (!SCREEN) return;
-    SCREEN.message("size", w, h);                    // render/display resolution
-    SCREEN.rect = [0, 0, w, h];                      // patching rect
-    try { SCREEN.presentation_rect = [0, 0, w, h]; } catch (e) {}   // shown in the bpatcher (presentation)
+    if (!TARGET) TARGET = P.getnamed(TARGET_NAME);
+    if (!TARGET) return;
+    if (TARGET.maxclass === "jit.pwindow") TARGET.message("size", w, h);   // render/display resolution
+    TARGET.rect = [0, 0, w, h];                                            // patching rect
+    try { TARGET.presentation_rect = [0, 0, w, h]; } catch (e) {}          // shown in the bpatcher
 }
