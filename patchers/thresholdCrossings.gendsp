@@ -1,0 +1,20 @@
+{
+  "patcher": {
+    "fileversion": 1,
+    "appversion": { "major": 9, "minor": 1, "revision": 1, "architecture": "x64", "modernui": 1 },
+    "classnamespace": "dsp.gen",
+    "rect": [100.0, 100.0, 720.0, 430.0],
+    "boxes": [
+      { "box": { "id": "in", "maxclass": "newobj", "text": "in 1", "numinlets": 0, "numoutlets": 1, "outlettype": [""], "patching_rect": [48.0, 28.0, 28.0, 22.0] } },
+      { "box": { "id": "code", "maxclass": "codebox", "numinlets": 1, "numoutlets": 2, "outlettype": ["", ""], "patching_rect": [48.0, 72.0, 590.0, 220.0], "code": "Param high(0, min=-1, max=1);\nParam low(0, min=-1, max=1);\n\nHistory prev(0);\nHistory high_count(0);\nHistory low_count(0);\n\n// Sample-accurate directional threshold crossings. Counters retain every\n// event until the Max scheduler drains them; no one-sample pulse is lost.\nhigh_cross = (in1 > high) && (prev <= high);\nlow_cross = (in1 < low) && (prev >= low);\n\nhigh_count = high_count + high_cross;\nlow_count = low_count + low_cross;\n\nout1 = high_count;\nout2 = low_count;\nprev = in1;" } },
+      { "box": { "id": "high-out", "maxclass": "newobj", "text": "out 1", "numinlets": 1, "numoutlets": 0, "patching_rect": [48.0, 330.0, 35.0, 22.0] } },
+      { "box": { "id": "low-out", "maxclass": "newobj", "text": "out 2", "numinlets": 1, "numoutlets": 0, "patching_rect": [180.0, 330.0, 35.0, 22.0] } }
+    ],
+    "lines": [
+      { "patchline": { "source": ["in", 0], "destination": ["code", 0] } },
+      { "patchline": { "source": ["code", 0], "destination": ["high-out", 0] } },
+      { "patchline": { "source": ["code", 1], "destination": ["low-out", 0] } }
+    ],
+    "autosave": 0
+  }
+}
