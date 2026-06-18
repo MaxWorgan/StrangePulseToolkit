@@ -31,7 +31,7 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [ 45.0, 654.0, 224.0, 29.0 ],
-                    "text": "CombineSignals:",
+                    "text": "SignalMorph:",
                     "textcolor": [ 0.1530902088, 0.4896173477, 0.6329272389, 1.0 ]
                 }
             },
@@ -46,13 +46,13 @@
                     "lockeddragscroll": 0,
                     "lockedsize": 0,
                     "maxclass": "bpatcher",
-                    "name": "CombineSignals.maxpat",
+                    "name": "SignalMorph.maxpat",
                     "numinlets": 4,
                     "numoutlets": 1,
                     "offset": [ 0.0, 0.0 ],
                     "outlettype": [ "signal" ],
                     "patching_rect": [ 45.0, 764.0, 184.0, 95.0 ],
-                    "varname": "CombineSignals",
+                    "varname": "SignalMorph",
                     "viewvisibility": 1
                 }
             },
