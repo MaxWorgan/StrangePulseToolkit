@@ -116,13 +116,13 @@
                     "lockeddragscroll": 0,
                     "lockedsize": 0,
                     "maxclass": "bpatcher",
-                    "name": "combineSignalsAsGates.maxpat",
+                    "name": "MotionLogic.maxpat",
                     "numinlets": 3,
                     "numoutlets": 2,
                     "offset": [ 0.0, 0.0 ],
                     "outlettype": [ "bang", "bang" ],
                     "patching_rect": [ 521.0, 304.0, 172.952379, 161.0 ],
-                    "varname": "combineSignalsAsGates",
+                    "varname": "MotionLogic",
                     "viewvisibility": 1
                 }
             },
