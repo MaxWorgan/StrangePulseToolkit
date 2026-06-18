@@ -1,0 +1,83 @@
+{
+    "patcher": {
+        "fileversion": 1,
+        "appversion": {
+            "major": 9,
+            "minor": 1,
+            "revision": 1,
+            "architecture": "x64",
+            "modernui": 1
+        },
+        "classnamespace": "jit.gen",
+        "rect": [ 34.0, 99.0, 700.0, 460.0 ],
+        "boxes": [
+            {
+                "box": {
+                    "id": "obj-in1",
+                    "maxclass": "newobj",
+                    "numinlets": 0,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 40.0, 30.0, 32.0, 22.0 ],
+                    "text": "in 1"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-in2",
+                    "maxclass": "newobj",
+                    "numinlets": 0,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 120.0, 30.0, 32.0, 22.0 ],
+                    "text": "in 2"
+                }
+            },
+            {
+                "box": {
+                    "code": "// Recurrence matrix, per-cell (no sample()). in1 = window value at this\n// column (window[x], a row that varies left<->right); in2 = the transpose\n// (window[y], varies top<->bottom). Cell (x,y) is recurrent when the two\n// window values are within eps. Symmetric, with a lit diagonal (x==y).\n\nParam eps(0.1, min=0, max=1);\n\nhit = abs(in1 - in2) < eps;\n\n// base #0E0E0F -> accent #B8FF5C, lerped by hit (0/1)\nr  = 0.0549 + 0.6667 * hit;\ng  = 0.0549 + 0.9451 * hit;\nbl = 0.0588 + 0.3020 * hit;\n\nout1 = vec(r, g, bl, 1.0);",
+                    "fontface": 0,
+                    "fontname": "<Monospaced>",
+                    "fontsize": 12.0,
+                    "id": "obj-code",
+                    "maxclass": "codebox",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 40.0, 70.0, 600.0, 320.0 ]
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-out",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 40.0, 410.0, 38.0, 22.0 ],
+                    "text": "out 1"
+                }
+            }
+        ],
+        "lines": [
+            {
+                "patchline": {
+                    "destination": [ "obj-code", 0 ],
+                    "source": [ "obj-in1", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-code", 1 ],
+                    "source": [ "obj-in2", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-out", 0 ],
+                    "source": [ "obj-code", 0 ]
+                }
+            }
+        ],
+        "autosave": 0
+    }
+}

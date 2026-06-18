@@ -9,336 +9,627 @@
             "modernui": 1
         },
         "classnamespace": "box",
-        "rect": [ 42.0, 107.0, 896.0, 807.0 ],
+        "rect": [ 264.0, 99.0, 578.0, 823.0 ],
         "openinpresentation": 1,
         "boxes": [
             {
                 "box": {
-                    "comment": "",
-                    "id": "obj-120",
-                    "index": 0,
-                    "maxclass": "inlet",
-                    "numinlets": 0,
-                    "numoutlets": 1,
-                    "outlettype": [ "" ],
-                    "patching_rect": [ 31.0, 57.0, 30.0, 30.0 ]
-                }
-            },
-            {
-                "box": {
-                    "activedialcolor": [ 0.976470588235294, 0.780392156862745, 0.309803921568627, 1.0 ],
-                    "id": "obj-118",
-                    "maxclass": "live.dial",
-                    "numinlets": 1,
-                    "numoutlets": 2,
-                    "outlettype": [ "", "float" ],
-                    "parameter_enable": 1,
-                    "patching_rect": [ 141.0, 338.0, 41.0, 48.0 ],
-                    "presentation": 1,
-                    "presentation_rect": [ 1.0, 1.0, 41.0, 48.0 ],
-                    "saved_attribute_attributes": {
-                        "activedialcolor": {
-                            "expression": ""
-                        },
-                        "valueof": {
-                            "parameter_exponent": 3.0,
-                            "parameter_longname": "live.dial[2]",
-                            "parameter_mmax": 1.0,
-                            "parameter_modmode": 4,
-                            "parameter_shortname": "Distance",
-                            "parameter_type": 0,
-                            "parameter_unitstyle": 1
-                        }
-                    },
-                    "varname": "live.dial[2]"
-                }
-            },
-            {
-                "box": {
-                    "id": "obj-117",
-                    "maxclass": "message",
-                    "numinlets": 2,
-                    "numoutlets": 1,
-                    "outlettype": [ "" ],
-                    "patching_rect": [ 537.5, 306.0, 116.0, 22.0 ],
-                    "text": "script hide building"
-                }
-            },
-            {
-                "box": {
-                    "id": "obj-114",
-                    "maxclass": "message",
-                    "numinlets": 2,
-                    "numoutlets": 1,
-                    "outlettype": [ "" ],
-                    "patching_rect": [ 497.0, 338.0, 124.0, 22.0 ],
-                    "text": "script show building"
-                }
-            },
-            {
-                "box": {
-                    "id": "obj-112",
-                    "maxclass": "newobj",
-                    "numinlets": 1,
-                    "numoutlets": 2,
-                    "outlettype": [ "", "" ],
-                    "patching_rect": [ 497.0, 397.0, 100.0, 22.0 ],
-                    "save": [ "#N", "thispatcher", ";", "#Q", "end", ";" ],
-                    "text": "thispatcher"
-                }
-            },
-            {
-                "box": {
-                    "fontface": 2,
-                    "fontsize": 18.0,
-                    "hidden": 1,
-                    "id": "obj-111",
-                    "maxclass": "comment",
-                    "numinlets": 1,
-                    "numoutlets": 0,
-                    "patching_rect": [ 133.0, 388.0, 259.0, 27.0 ],
-                    "presentation": 1,
-                    "presentation_rect": [ 137.0, 22.0, 259.0, 27.0 ],
-                    "text": "rebuilding recurrence matrix...",
-                    "textcolor": [ 0.980392156862745, 0.443137254901961, 0.4, 1.0 ],
-                    "varname": "building"
-                }
-            },
-            {
-                "box": {
-                    "id": "obj-109",
-                    "maxclass": "newobj",
-                    "numinlets": 3,
-                    "numoutlets": 3,
-                    "outlettype": [ "", "", "" ],
-                    "patching_rect": [ 497.0, 279.0, 100.0, 22.0 ],
-                    "text": "route 0 1"
-                }
-            },
-            {
-                "box": {
-                    "activedialcolor": [ 0.976470588235294, 0.780392156862745, 0.309803921568627, 1.0 ],
-                    "id": "obj-108",
-                    "maxclass": "live.dial",
-                    "numinlets": 1,
-                    "numoutlets": 2,
-                    "outlettype": [ "", "float" ],
-                    "parameter_enable": 1,
-                    "patching_rect": [ 236.0, 338.0, 41.0, 48.0 ],
-                    "presentation": 1,
-                    "presentation_rect": [ 87.0, 1.0, 41.0, 48.0 ],
-                    "saved_attribute_attributes": {
-                        "activedialcolor": {
-                            "expression": ""
-                        },
-                        "valueof": {
-                            "parameter_longname": "live.dial[1]",
-                            "parameter_mmax": 200.0,
-                            "parameter_mmin": 50.0,
-                            "parameter_modmode": 4,
-                            "parameter_shortname": "Size",
-                            "parameter_type": 1,
-                            "parameter_unitstyle": 0
-                        }
-                    },
-                    "varname": "live.dial[1]"
-                }
-            },
-            {
-                "box": {
-                    "activedialcolor": [ 0.976470588235294, 0.780392156862745, 0.309803921568627, 1.0 ],
-                    "id": "obj-107",
-                    "maxclass": "live.dial",
-                    "numinlets": 1,
-                    "numoutlets": 2,
-                    "outlettype": [ "", "float" ],
-                    "parameter_enable": 1,
-                    "patching_rect": [ 192.0, 338.0, 27.0, 48.0 ],
-                    "presentation": 1,
-                    "presentation_rect": [ 44.0, 1.0, 27.0, 48.0 ],
-                    "saved_attribute_attributes": {
-                        "activedialcolor": {
-                            "expression": ""
-                        },
-                        "valueof": {
-                            "parameter_longname": "live.dial",
-                            "parameter_mmax": 200.0,
-                            "parameter_mmin": 5.0,
-                            "parameter_modmin": 5.0,
-                            "parameter_modmode": 4,
-                            "parameter_shortname": "Speed",
-                            "parameter_type": 1,
-                            "parameter_unitstyle": 0
-                        }
-                    },
-                    "varname": "live.dial"
-                }
-            },
-            {
-                "box": {
-                    "id": "obj-46",
+                    "id": "obj-7",
                     "linecount": 2,
                     "maxclass": "message",
                     "numinlets": 2,
                     "numoutlets": 1,
                     "outlettype": [ "" ],
-                    "patching_rect": [ 74.0, 306.0, 52.0, 35.0 ],
-                    "text": "setprop eps $1"
+                    "patching_rect": [ 532.0, 712.0, 50.0, 35.0 ],
+                    "text": "1482.25"
                 }
             },
             {
                 "box": {
-                    "id": "obj-15",
+                    "id": "obj-5",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 503.0, 654.0, 121.0, 22.0 ],
+                    "text": "expr pow($i1 / 2.0\\, 2)"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-2",
+                    "maxclass": "newobj",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [ "int" ],
+                    "patching_rect": [ 560.0, 413.0, 29.5, 22.0 ],
+                    "text": "int"
+                }
+            },
+            {
+                "box": {
+                    "background": 1,
+                    "bgcolor": [ 0.054901960784314, 0.054901960784314, 0.058823529411765, 1.0 ],
+                    "bordercolor": [ 0.054901960784314, 0.054901960784314, 0.058823529411765, 1.0 ],
+                    "id": "obj-bg",
+                    "maxclass": "panel",
+                    "mode": 0,
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 700.0, 57.0, 404.0, 338.0 ],
+                    "presentation": 1,
+                    "presentation_rect": [ 0.0, 0.0, 349.0, 335.0 ],
+                    "rounded": 0
+                }
+            },
+            {
+                "box": {
+                    "fontsize": 9.0,
+                    "id": "obj-hdr",
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 700.0, 20.0, 160.0, 17.0 ],
+                    "presentation": 1,
+                    "presentation_rect": [ 12.0, 14.0, 160.0, 17.0 ],
+                    "text": "RECURRENCE",
+                    "textcolor": [ 0.541176470588235, 0.541176470588235, 0.56078431372549, 1.0 ]
+                }
+            },
+            {
+                "box": {
+                    "comment": "",
+                    "id": "obj-in",
+                    "index": 1,
+                    "maxclass": "inlet",
+                    "numinlets": 0,
+                    "numoutlets": 1,
+                    "outlettype": [ "signal" ],
+                    "patching_rect": [ 31.0, 57.0, 30.0, 30.0 ]
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-catch",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [ "jit_matrix", "" ],
+                    "patching_rect": [ 31.0, 110.0, 312.0, 22.0 ],
+                    "text": "jit.catch~ 1 @mode 2 @framesize 128 @downsample 16"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-shape",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [ "jit_matrix", "" ],
+                    "patching_rect": [ 31.0, 150.0, 200.0, 22.0 ],
+                    "text": "jit.matrix 1 float32 256 1 @interp 0"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-up",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [ "jit_matrix", "" ],
+                    "patching_rect": [ 31.0, 190.0, 210.0, 22.0 ],
+                    "text": "jit.matrix 1 float32 256 256 @interp 0"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-trig",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [ "", "" ],
+                    "patching_rect": [ 31.0, 228.0, 60.0, 22.0 ],
+                    "text": "t l l"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-transpose",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [ "jit_matrix", "" ],
+                    "patching_rect": [ 150.0, 266.0, 90.0, 22.0 ],
+                    "text": "jit.transpose"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-pix",
+                    "maxclass": "newobj",
+                    "numinlets": 2,
+                    "numoutlets": 2,
+                    "outlettype": [ "jit_matrix", "" ],
+                    "patching_rect": [ 31.0, 306.0, 276.0, 22.0 ],
+                    "text": "jit.pix @gen recurrence2 @dim 256 256 @adapt 0"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-metro",
+                    "maxclass": "newobj",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [ "bang" ],
+                    "patching_rect": [ 330.0, 110.0, 70.0, 22.0 ],
+                    "text": "qmetro 33"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-tog",
+                    "maxclass": "toggle",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [ "int" ],
+                    "parameter_enable": 0,
+                    "patching_rect": [ 330.0, 74.0, 24.0, 24.0 ]
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-loadb",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [ "bang" ],
+                    "patching_rect": [ 430.0, 28.0, 58.0, 22.0 ],
+                    "text": "loadbang"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-on",
+                    "maxclass": "message",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 330.0, 40.0, 32.0, 22.0 ],
+                    "text": "1"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-pwin",
                     "maxclass": "jit.pwindow",
                     "numinlets": 1,
                     "numoutlets": 2,
                     "outlettype": [ "jit_matrix", "" ],
-                    "patching_rect": [ 27.0, 467.0, 404.0, 288.0 ],
+                    "patching_rect": [ 31.0, 360.0, 256.0, 256.0 ],
                     "presentation": 1,
-                    "presentation_rect": [ -4.5, 51.0, 404.0, 288.0 ],
+                    "presentation_rect": [ 10.0, 40.0, 256.0, 256.0 ],
                     "sync": 1
                 }
             },
             {
                 "box": {
-                    "filename": "recplot.js",
-                    "id": "obj-14",
-                    "maxclass": "newobj",
+                    "activedialcolor": [ 0.72156862745098, 1.0, 0.36078431372549, 1.0 ],
+                    "activefgdialcolor": [ 0.925490196078431, 0.925490196078431, 0.925490196078431, 1.0 ],
+                    "activeneedlecolor": [ 0.925490196078431, 0.925490196078431, 0.925490196078431, 1.0 ],
+                    "bordercolor": [ 0.172549019607843, 0.172549019607843, 0.192156862745098, 1.0 ],
+                    "dialcolor": [ 0.125490196078431, 0.125490196078431, 0.141176470588235, 1.0 ],
+                    "fgdialcolor": [ 0.541176470588235, 0.541176470588235, 0.56078431372549, 1.0 ],
+                    "id": "obj-thr",
+                    "maxclass": "live.dial",
+                    "needlecolor": [ 0.541176470588235, 0.541176470588235, 0.56078431372549, 1.0 ],
                     "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [ "", "float" ],
+                    "parameter_enable": 1,
+                    "patching_rect": [ 470.0, 360.0, 44.0, 48.0 ],
+                    "presentation": 1,
+                    "presentation_rect": [ 285.0, 52.0, 44.0, 48.0 ],
+                    "saved_attribute_attributes": {
+                        "activedialcolor": {
+                            "expression": ""
+                        },
+                        "activefgdialcolor": {
+                            "expression": ""
+                        },
+                        "activeneedlecolor": {
+                            "expression": ""
+                        },
+                        "bordercolor": {
+                            "expression": ""
+                        },
+                        "dialcolor": {
+                            "expression": ""
+                        },
+                        "fgdialcolor": {
+                            "expression": ""
+                        },
+                        "needlecolor": {
+                            "expression": ""
+                        },
+                        "textcolor": {
+                            "expression": ""
+                        },
+                        "tricolor": {
+                            "expression": ""
+                        },
+                        "valueof": {
+                            "parameter_longname": "thr",
+                            "parameter_mmax": 1.0,
+                            "parameter_modmode": 4,
+                            "parameter_shortname": "Threshold",
+                            "parameter_type": 0,
+                            "parameter_unitstyle": 1
+                        }
+                    },
+                    "textcolor": [ 0.6, 0.6, 0.62, 1.0 ],
+                    "tricolor": [ 0.172549019607843, 0.172549019607843, 0.192156862745098, 1.0 ],
+                    "varname": "thr"
+                }
+            },
+            {
+                "box": {
+                    "activedialcolor": [ 0.72156862745098, 1.0, 0.36078431372549, 1.0 ],
+                    "activefgdialcolor": [ 0.925490196078431, 0.925490196078431, 0.925490196078431, 1.0 ],
+                    "activeneedlecolor": [ 0.925490196078431, 0.925490196078431, 0.925490196078431, 1.0 ],
+                    "bordercolor": [ 0.172549019607843, 0.172549019607843, 0.192156862745098, 1.0 ],
+                    "dialcolor": [ 0.125490196078431, 0.125490196078431, 0.141176470588235, 1.0 ],
+                    "fgdialcolor": [ 0.541176470588235, 0.541176470588235, 0.56078431372549, 1.0 ],
+                    "id": "obj-span",
+                    "maxclass": "live.dial",
+                    "needlecolor": [ 0.541176470588235, 0.541176470588235, 0.56078431372549, 1.0 ],
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [ "", "float" ],
+                    "parameter_enable": 1,
+                    "patching_rect": [ 478.0, 427.0, 44.0, 48.0 ],
+                    "presentation": 1,
+                    "presentation_rect": [ 285.0, 136.0, 44.0, 48.0 ],
+                    "saved_attribute_attributes": {
+                        "activedialcolor": {
+                            "expression": ""
+                        },
+                        "activefgdialcolor": {
+                            "expression": ""
+                        },
+                        "activeneedlecolor": {
+                            "expression": ""
+                        },
+                        "bordercolor": {
+                            "expression": ""
+                        },
+                        "dialcolor": {
+                            "expression": ""
+                        },
+                        "fgdialcolor": {
+                            "expression": ""
+                        },
+                        "needlecolor": {
+                            "expression": ""
+                        },
+                        "textcolor": {
+                            "expression": ""
+                        },
+                        "tricolor": {
+                            "expression": ""
+                        },
+                        "valueof": {
+                            "parameter_longname": "span",
+                            "parameter_mmax": 100.0,
+                            "parameter_mmin": 1.0,
+                            "parameter_modmax": 1024.0,
+                            "parameter_modmode": 4,
+                            "parameter_shortname": "Time span",
+                            "parameter_type": 0,
+                            "parameter_unitstyle": 0
+                        }
+                    },
+                    "textcolor": [ 0.6, 0.6, 0.62, 1.0 ],
+                    "tricolor": [ 0.172549019607843, 0.172549019607843, 0.192156862745098, 1.0 ],
+                    "varname": "span"
+                }
+            },
+            {
+                "box": {
+                    "activedialcolor": [ 0.72156862745098, 1.0, 0.36078431372549, 1.0 ],
+                    "activefgdialcolor": [ 0.925490196078431, 0.925490196078431, 0.925490196078431, 1.0 ],
+                    "activeneedlecolor": [ 0.925490196078431, 0.925490196078431, 0.925490196078431, 1.0 ],
+                    "bordercolor": [ 0.172549019607843, 0.172549019607843, 0.192156862745098, 1.0 ],
+                    "dialcolor": [ 0.125490196078431, 0.125490196078431, 0.141176470588235, 1.0 ],
+                    "fgdialcolor": [ 0.541176470588235, 0.541176470588235, 0.56078431372549, 1.0 ],
+                    "id": "obj-res",
+                    "maxclass": "live.dial",
+                    "needlecolor": [ 0.541176470588235, 0.541176470588235, 0.56078431372549, 1.0 ],
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [ "", "float" ],
+                    "parameter_enable": 1,
+                    "patching_rect": [ 470.0, 520.0, 44.0, 48.0 ],
+                    "presentation": 1,
+                    "presentation_rect": [ 285.0, 220.0, 44.0, 48.0 ],
+                    "saved_attribute_attributes": {
+                        "activedialcolor": {
+                            "expression": ""
+                        },
+                        "activefgdialcolor": {
+                            "expression": ""
+                        },
+                        "activeneedlecolor": {
+                            "expression": ""
+                        },
+                        "bordercolor": {
+                            "expression": ""
+                        },
+                        "dialcolor": {
+                            "expression": ""
+                        },
+                        "fgdialcolor": {
+                            "expression": ""
+                        },
+                        "needlecolor": {
+                            "expression": ""
+                        },
+                        "textcolor": {
+                            "expression": ""
+                        },
+                        "tricolor": {
+                            "expression": ""
+                        },
+                        "valueof": {
+                            "parameter_longname": "res",
+                            "parameter_mmax": 256.0,
+                            "parameter_mmin": 16.0,
+                            "parameter_modmode": 4,
+                            "parameter_shortname": "Resolution",
+                            "parameter_type": 1,
+                            "parameter_unitstyle": 0
+                        }
+                    },
+                    "textcolor": [ 0.6, 0.6, 0.62, 1.0 ],
+                    "tricolor": [ 0.172549019607843, 0.172549019607843, 0.192156862745098, 1.0 ],
+                    "varname": "res"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-thrmsg",
+                    "maxclass": "message",
+                    "numinlets": 2,
                     "numoutlets": 1,
                     "outlettype": [ "" ],
-                    "patching_rect": [ 27.0, 351.0, 123.0, 22.0 ],
-                    "saved_object_attributes": {
-                        "parameter_enable": 0
-                    },
-                    "text": "v8 recplot @embed 1",
-                    "textfile": {
-                        "text": "// recplot.js (V8-safe, slightly optimised)\ninlets = 1;\noutlets = 1;\n\nvar eps = 0.1;\nvar mat = new JitterMatrix(\"recurrence\");  // use existing or create new\n\nfunction list() {\n    var vals = arrayfromargs(arguments);\n    var N    = vals.length;\n\n    // Ensure matrix is N x N, float32, 1-plane\n    if (mat.dim[0] !== N || mat.dim[1] !== N) {\n        mat.dim = [N, N];\n        mat.planecount = 1;\n        mat.type = \"float32\";\n    }\n\n    // Symmetric recurrence: d(i,j) == d(j,i)\n    for (var i = 0; i < N; i++) {\n        var xi = vals[i];\n        for (var j = i; j < N; j++) {\n            var diff = xi - vals[j];\n            var v = (diff < eps && diff > -eps) ? 1.0 : 0.0;\n\n            // fill upper triangle and mirror into lower triangle\n            mat.setcell2d(i, j, v);\n            if (j !== i) {\n                mat.setcell2d(j, i, v);\n            }\n        }\n    }\n\n    outlet(0, \"jit_matrix\", \"recurrence\");\n}",
-                        "filename": "recplot.js",
-                        "flags": 1,
-                        "embed": 1,
-                        "autowatch": 1
-                    },
-                    "varname": "v8_AA"
+                    "patching_rect": [ 560.0, 360.0, 80.0, 22.0 ],
+                    "text": "eps $1"
                 }
             },
             {
                 "box": {
-                    "id": "obj-13",
-                    "maxclass": "newobj",
-                    "numinlets": 2,
-                    "numoutlets": 2,
-                    "outlettype": [ "", "" ],
-                    "patching_rect": [ 27.0, 249.0, 100.0, 22.0 ],
-                    "text": "zl stream 250"
-                }
-            },
-            {
-                "box": {
-                    "id": "obj-12",
-                    "maxclass": "newobj",
+                    "id": "obj-spanmsg",
+                    "maxclass": "message",
                     "numinlets": 2,
                     "numoutlets": 1,
-                    "outlettype": [ "float" ],
-                    "patching_rect": [ 27.0, 188.0, 100.0, 22.0 ],
-                    "text": "snapshot~ 50"
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 560.0, 440.0, 110.0, 22.0 ],
+                    "text": "downsample $1"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-resmsg",
+                    "maxclass": "message",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 560.0, 520.0, 100.0, 22.0 ],
+                    "text": "framesize $1"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-thrinit",
+                    "maxclass": "message",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 470.0, 326.0, 40.0, 22.0 ],
+                    "text": "0.06"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-spaninit",
+                    "maxclass": "message",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 470.0, 406.0, 40.0, 22.0 ],
+                    "text": "16"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-resinit",
+                    "maxclass": "message",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 470.0, 486.0, 40.0, 22.0 ],
+                    "text": "128"
                 }
             }
         ],
         "lines": [
             {
                 "patchline": {
-                    "destination": [ "obj-12", 1 ],
-                    "source": [ "obj-107", 0 ]
+                    "destination": [ "obj-spanmsg", 0 ],
+                    "source": [ "obj-2", 0 ]
                 }
             },
             {
                 "patchline": {
-                    "destination": [ "obj-13", 1 ],
-                    "source": [ "obj-108", 0 ]
+                    "destination": [ "obj-2", 0 ],
+                    "order": 1,
+                    "source": [ "obj-5", 0 ]
                 }
             },
             {
                 "patchline": {
-                    "destination": [ "obj-114", 0 ],
-                    "source": [ "obj-109", 0 ]
+                    "destination": [ "obj-7", 1 ],
+                    "order": 0,
+                    "source": [ "obj-5", 0 ]
                 }
             },
             {
                 "patchline": {
-                    "destination": [ "obj-117", 0 ],
-                    "source": [ "obj-109", 1 ]
+                    "destination": [ "obj-shape", 0 ],
+                    "source": [ "obj-catch", 0 ]
                 }
             },
             {
                 "patchline": {
-                    "destination": [ "obj-112", 0 ],
-                    "source": [ "obj-114", 0 ]
+                    "destination": [ "obj-catch", 0 ],
+                    "source": [ "obj-in", 0 ]
                 }
             },
             {
                 "patchline": {
-                    "destination": [ "obj-112", 0 ],
-                    "source": [ "obj-117", 0 ]
+                    "destination": [ "obj-on", 0 ],
+                    "order": 3,
+                    "source": [ "obj-loadb", 0 ]
                 }
             },
             {
                 "patchline": {
-                    "destination": [ "obj-46", 0 ],
-                    "source": [ "obj-118", 0 ]
+                    "destination": [ "obj-resinit", 0 ],
+                    "order": 0,
+                    "source": [ "obj-loadb", 0 ]
                 }
             },
             {
                 "patchline": {
-                    "destination": [ "obj-13", 0 ],
-                    "source": [ "obj-12", 0 ]
+                    "destination": [ "obj-spaninit", 0 ],
+                    "order": 1,
+                    "source": [ "obj-loadb", 0 ]
                 }
             },
             {
                 "patchline": {
-                    "destination": [ "obj-12", 0 ],
-                    "source": [ "obj-120", 0 ]
+                    "destination": [ "obj-thrinit", 0 ],
+                    "order": 2,
+                    "source": [ "obj-loadb", 0 ]
                 }
             },
             {
                 "patchline": {
-                    "destination": [ "obj-109", 0 ],
-                    "source": [ "obj-13", 1 ]
+                    "destination": [ "obj-catch", 0 ],
+                    "source": [ "obj-metro", 0 ]
                 }
             },
             {
                 "patchline": {
-                    "destination": [ "obj-14", 0 ],
-                    "source": [ "obj-13", 0 ]
+                    "destination": [ "obj-tog", 0 ],
+                    "source": [ "obj-on", 0 ]
                 }
             },
             {
                 "patchline": {
-                    "destination": [ "obj-15", 0 ],
-                    "source": [ "obj-14", 0 ]
+                    "destination": [ "obj-pwin", 0 ],
+                    "source": [ "obj-pix", 0 ]
                 }
             },
             {
                 "patchline": {
-                    "destination": [ "obj-14", 0 ],
-                    "source": [ "obj-46", 0 ]
+                    "destination": [ "obj-resmsg", 0 ],
+                    "source": [ "obj-res", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-res", 0 ],
+                    "source": [ "obj-resinit", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-catch", 0 ],
+                    "source": [ "obj-resmsg", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-up", 0 ],
+                    "source": [ "obj-shape", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-5", 0 ],
+                    "source": [ "obj-span", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-span", 0 ],
+                    "source": [ "obj-spaninit", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-catch", 0 ],
+                    "source": [ "obj-spanmsg", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-thrmsg", 0 ],
+                    "source": [ "obj-thr", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-thr", 0 ],
+                    "source": [ "obj-thrinit", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-pix", 0 ],
+                    "source": [ "obj-thrmsg", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-metro", 0 ],
+                    "source": [ "obj-tog", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-pix", 1 ],
+                    "source": [ "obj-transpose", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-pix", 0 ],
+                    "source": [ "obj-trig", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-transpose", 0 ],
+                    "source": [ "obj-trig", 1 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-trig", 0 ],
+                    "source": [ "obj-up", 0 ]
                 }
             }
-        ],
-        "parameters": {
-            "obj-107": [ "live.dial", "Speed", 0 ],
-            "obj-108": [ "live.dial[1]", "Size", 0 ],
-            "obj-118": [ "live.dial[2]", "Distance", 0 ],
-            "parameterbanks": {
-                "0": {
-                    "index": 0,
-                    "name": "",
-                    "parameters": [ "-", "-", "-", "-", "-", "-", "-", "-" ],
-                    "buttons": [ "-", "-", "-", "-", "-", "-", "-", "-" ]
-                }
-            },
-            "inherited_shortname": 1
-        },
-        "autosave": 0
+        ]
     }
 }
