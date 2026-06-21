@@ -116,6 +116,16 @@ public:
         const bool   use_rk4_flag = use_rk4.get();
         const Vec3   reset_pos = get_position();
 
+        // Only spend cycles on the secondary attractor when at least one of its
+        // outputs is actually patched. has_signal_connection() reflects the
+        // current dsp chain, so connecting or disconnecting a secondary outlet
+        // recompiles the chain and flips this with no user intervention. When
+        // unused, we skip its integration, scaling and smoothing entirely and
+        // emit silence on its outlets.
+        const bool secondary_active = output_x2.has_signal_connection()
+                                   || output_y2.has_signal_connection()
+                                   || output_z2.has_signal_connection();
+
         if (sr > 0.0) {
             _reset_log_interval_samples = std::max<size_t>(
                 1, static_cast<size_t>(sr * default_reset_log_interval_sec));
@@ -136,27 +146,56 @@ public:
 
         auto& derived = *static_cast<Derived*>(this);
 
+        // Prime the scaled-output cache for this buffer's do_scale setting. An
+        // attractor's scaled output only changes when its position changes (i.e.
+        // when it actually steps), so we pay for the tanh scaling once per step
+        // and reuse the result on the intervening samples instead of recomputing
+        // it every sample. Priming here also picks up any position change from
+        // handle_pending_requests() and any toggle of do_scale since last buffer.
+        _primary.scaled = scale_pos(_primary.pos, do_scale, scale_factor);
+        if (secondary_active) {
+            _secondary.scaled = scale_pos(_secondary.pos, do_scale, scale_factor);
+        }
+
         for (size_t i = 0; i < n; ++i) {
             if (should_step(sp1, _sample_counter)) {
                 step_n_times(derived, _primary.pos, sp1.substeps, dt_base, use_rk4_flag);
+                _primary.scaled = scale_pos(_primary.pos, do_scale, scale_factor);
             }
-            if (should_step(sp2, _sample_counter)) {
+            if (secondary_active && should_step(sp2, _sample_counter)) {
                 step_n_times(derived, _secondary.pos, sp2.substeps, dt_base, use_rk4_flag);
+                _secondary.scaled = scale_pos(_secondary.pos, do_scale, scale_factor);
             }
 
             if ((_sample_counter & (BAD_STATE_CHECK_INTERVAL - 1)) == 0) {
-                check_and_handle_bad_state(derived, reset_pos);
+                check_and_handle_bad_state(derived, reset_pos, secondary_active);
+                // A reset moves the position, so refresh the cache. This runs at
+                // most once per BAD_STATE_CHECK_INTERVAL samples.
+                _primary.scaled = scale_pos(_primary.pos, do_scale, scale_factor);
+                if (secondary_active) {
+                    _secondary.scaled = scale_pos(_secondary.pos, do_scale, scale_factor);
+                }
             }
 
-            Vec3 out1 = do_scale ? scale_vec(_primary.pos, scale_factor) : _primary.pos;
-            Vec3 out2 = do_scale ? scale_vec(_secondary.pos, scale_factor) : _secondary.pos;
-
+            // Per-sample work is now just the EMA toward the cached scaled target.
             if (use_smooth) {
-                _primary.smoothed = history_weight * _primary.smoothed + new_weight * out1;
-                _secondary.smoothed = history_weight * _secondary.smoothed + new_weight * out2;
-                write_outputs(outs, i, _primary.smoothed, _secondary.smoothed);
+                _primary.smoothed = history_weight * _primary.smoothed + new_weight * _primary.scaled;
+                write_primary(outs, i, _primary.smoothed);
             } else {
-                write_outputs(outs, i, out1, out2);
+                write_primary(outs, i, _primary.scaled);
+            }
+
+            if (secondary_active) {
+                if (use_smooth) {
+                    _secondary.smoothed = history_weight * _secondary.smoothed + new_weight * _secondary.scaled;
+                    write_secondary(outs, i, _secondary.smoothed);
+                } else {
+                    write_secondary(outs, i, _secondary.scaled);
+                }
+            } else {
+                outs[3][i] = static_cast<sample>(0.0);
+                outs[4][i] = static_cast<sample>(0.0);
+                outs[5][i] = static_cast<sample>(0.0);
             }
 
             ++_sample_counter;
@@ -174,6 +213,7 @@ protected:
     struct AttractorState {
         Vec3 pos = Vec3::Zero();
         Vec3 smoothed = Vec3::Zero();
+        Vec3 scaled = Vec3::Zero();   // cached scaled output; refreshed only when pos changes
         Vec3 mean = Vec3::Zero();
         int stall_count{0};
 
@@ -316,7 +356,12 @@ private:
         return false;
     }
 
-    void check_and_handle_bad_state(Derived& derived, const Vec3& reset_pos) {
+    void check_and_handle_bad_state(Derived& derived, const Vec3& reset_pos,
+                                    bool check_secondary = true) {
+        // When the secondary's outlets are unpatched it is frozen and unread, so
+        // check_secondary is false and all of its checks below are skipped: it
+        // cannot drift into a bad state, and running the stall detector on a
+        // static position could otherwise spam reset logging.
         const char* reason_primary = nullptr;
         const char* reason_secondary = nullptr;
 
@@ -324,7 +369,7 @@ private:
         if (!_primary.pos.allFinite()) {
             reason_primary = "NaN/Inf";
         }
-        if (!_secondary.pos.allFinite()) {
+        if (check_secondary && !_secondary.pos.allFinite()) {
             reason_secondary = "NaN/Inf";
         }
 
@@ -333,7 +378,7 @@ private:
             _primary.pos.cwiseAbs().maxCoeff() > Derived::default_overflow_limit) {
             reason_primary = "overflow";
         }
-        if (!reason_secondary &&
+        if (check_secondary && !reason_secondary &&
             _secondary.pos.cwiseAbs().maxCoeff() > Derived::default_overflow_limit) {
             reason_secondary = "overflow";
         }
@@ -343,7 +388,7 @@ private:
             _primary.pos.squaredNorm() < Derived::default_collapse_threshold) {
             reason_primary = "collapse";
         }
-        if (!reason_secondary &&
+        if (check_secondary && !reason_secondary &&
             _secondary.pos.squaredNorm() < Derived::default_collapse_threshold) {
             reason_secondary = "collapse";
         }
@@ -353,7 +398,7 @@ private:
         if (!reason_primary) {
             derived.compute(vel1, _primary.pos);
         }
-        if (!reason_secondary) {
+        if (check_secondary && !reason_secondary) {
             derived.compute(vel2, _secondary.pos);
         }
 
@@ -364,7 +409,7 @@ private:
         if (!reason_primary && vel1_sq < Derived::default_stall_immediate_threshold) {
             reason_primary = "stall (immediate)";
         }
-        if (!reason_secondary && vel2_sq < Derived::default_stall_immediate_threshold) {
+        if (check_secondary && !reason_secondary && vel2_sq < Derived::default_stall_immediate_threshold) {
             reason_secondary = "stall (immediate)";
         }
 
@@ -372,7 +417,7 @@ private:
         if (!reason_primary && check_stall(_primary, vel1)) {
             reason_primary = "stall (gradual)";
         }
-        if (!reason_secondary && check_stall(_secondary, vel2)) {
+        if (check_secondary && !reason_secondary && check_stall(_secondary, vel2)) {
             reason_secondary = "stall (gradual)";
         }
 
@@ -422,13 +467,23 @@ private:
         return Vec3(fast_tanh(v(0) * sf), fast_tanh(v(1) * sf), fast_tanh(v(2) * sf));
     }
 
-    static void write_outputs(sample** outs, size_t i, const Vec3& v1, const Vec3& v2) {
-        outs[0][i] = static_cast<sample>(v1(0));
-        outs[1][i] = static_cast<sample>(v1(1));
-        outs[2][i] = static_cast<sample>(v1(2));
-        outs[3][i] = static_cast<sample>(v2(0));
-        outs[4][i] = static_cast<sample>(v2(1));
-        outs[5][i] = static_cast<sample>(v2(2));
+    // Apply output scaling (or pass through) for a position. Wraps scale_vec so
+    // the operator loop can cache the result and skip recomputing the tanh on
+    // every sample between integrator steps.
+    static Vec3 scale_pos(const Vec3& pos, bool do_scale, double sf) {
+        return do_scale ? scale_vec(pos, sf) : pos;
+    }
+
+    static void write_primary(sample** outs, size_t i, const Vec3& v) {
+        outs[0][i] = static_cast<sample>(v(0));
+        outs[1][i] = static_cast<sample>(v(1));
+        outs[2][i] = static_cast<sample>(v(2));
+    }
+
+    static void write_secondary(sample** outs, size_t i, const Vec3& v) {
+        outs[3][i] = static_cast<sample>(v(0));
+        outs[4][i] = static_cast<sample>(v(1));
+        outs[5][i] = static_cast<sample>(v(2));
     }
 
     void log_reset(const char* reason) {
