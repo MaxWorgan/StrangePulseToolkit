@@ -126,13 +126,13 @@
                     "lockeddragscroll": 0,
                     "lockedsize": 0,
                     "maxclass": "bpatcher",
-                    "name": "AudioTriggers.maxpat",
+                    "name": "AudioReactive.maxpat",
                     "numinlets": 1,
                     "numoutlets": 3,
                     "offset": [ 0.0, 0.0 ],
-                    "outlettype": [ "", "", "signal" ],
+                    "outlettype": [ "bang", "signal", "signal" ],
                     "patching_rect": [ 117.0, 258.0, 494.0, 323.0 ],
-                    "varname": "AudioTriggers",
+                    "varname": "AudioReactive",
                     "viewvisibility": 1
                 }
             },
@@ -169,7 +169,7 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [ 41.0, 205.0, 152.0, 27.0 ],
-                    "text": "AudioTriggers",
+                    "text": "Audio Reactive",
                     "textcolor": [ 0.2429931462, 0.5804384947, 0.4775273204, 1.0 ]
                 }
             },
@@ -181,7 +181,7 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [ 45.0, 152.0, 332.0, 47.0 ],
-                    "text": "There are two avenues of feedback that can be considered when building withe the SPT, audio feedback, and a recurrence based feedback."
+                    "text": "SPT supports audio-reactive control and recurrence-based feedback. Audio analysis produces events, envelopes and follower signals for patching elsewhere."
                 }
             },
             {
