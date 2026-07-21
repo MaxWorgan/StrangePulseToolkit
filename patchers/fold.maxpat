@@ -14,13 +14,45 @@
         "boxes": [
             {
                 "box": {
+                    "id": "load",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [ "bang" ],
+                    "patching_rect": [ 376.0, 90.0, 58.0, 22.0 ],
+                    "text": "loadbang"
+                }
+            },
+            {
+                "box": {
+                    "filename": "attractorFit.js",
+                    "id": "fit",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 376.0, 124.0, 138.0, 22.0 ],
+                    "saved_object_attributes": {
+                        "parameter_enable": 0
+                    },
+                    "text": "v8 attractorFit.js ui",
+                    "textfile": {
+                        "filename": "attractorFit.js",
+                        "flags": 0,
+                        "embed": 0,
+                        "autowatch": 1
+                    }
+                }
+            },
+            {
+                "box": {
                     "comment": "",
                     "id": "in",
                     "index": 1,
                     "maxclass": "inlet",
                     "numinlets": 0,
                     "numoutlets": 1,
-                    "outlettype": [ "signal" ],
+                    "outlettype": [ "" ],
                     "patching_rect": [ 40.0, 40.0, 30.0, 30.0 ]
                 }
             },
@@ -75,8 +107,8 @@
                     "numinlets": 2,
                     "numoutlets": 1,
                     "outlettype": [ "signal" ],
-                    "patching_rect": [ 40.0, 510.0, 90.0, 22.0 ],
-                    "text": "onepole~ 100"
+                    "patching_rect": [ 40.0, 510.0, 82.0, 22.0 ],
+                    "text": "onepole~ 200"
                 }
             },
             {
@@ -94,7 +126,7 @@
                 "box": {
                     "border": 0,
                     "embedstate": [
-                        [ "setstate", 5.0754716981132075, 0 ]
+                        [ "setstate", 6.816037735849057, 0 ]
                     ],
                     "filename": "fold.js",
                     "id": "ui",
@@ -117,22 +149,92 @@
             },
             {
                 "box": {
-                    "activebgcolor": [ 0.054901960784314, 0.054901960784314, 0.058823529411765, 1.0 ],
-                    "activelinecolor": [ 0.72156862745098, 1.0, 0.36078431372549, 1.0 ],
-                    "bgcolor": [ 0.054901960784314, 0.054901960784314, 0.058823529411765, 1.0 ],
-                    "gridcolor": [ 0.172549019607843, 0.172549019607843, 0.192156862745098, 1.0 ],
-                    "id": "scope",
-                    "ignoreclick": 1,
-                    "line_width": 1.6,
-                    "linecolor": [ 0.72156862745098, 1.0, 0.36078431372549, 1.0 ],
-                    "maxclass": "live.scope~",
+                    "id": "snFold",
+                    "maxclass": "newobj",
                     "numinlets": 2,
                     "numoutlets": 1,
-                    "outlettype": [ "bang" ],
-                    "patching_rect": [ 330.0, 320.0, 184.0, 68.0 ],
-                    "presentation": 1,
-                    "presentation_rect": [ 13.0, 29.0, 210.0, 112.0 ],
-                    "varname": "scope"
+                    "outlettype": [ "float" ],
+                    "patching_rect": [ 430.0, 300.0, 90.0, 22.0 ],
+                    "text": "snapshot~ 1"
+                }
+            },
+            {
+                "box": {
+                    "id": "zsFold",
+                    "maxclass": "newobj",
+                    "numinlets": 2,
+                    "numoutlets": 2,
+                    "outlettype": [ "", "" ],
+                    "patching_rect": [ 430.0, 330.0, 100.0, 22.0 ],
+                    "text": "zl.stream 512"
+                }
+            },
+            {
+                "box": {
+                    "id": "spFold",
+                    "maxclass": "newobj",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 430.0, 360.0, 80.0, 22.0 ],
+                    "text": "speedlim 33"
+                }
+            },
+            {
+                "box": {
+                    "id": "prFold",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 430.0, 390.0, 90.0, 22.0 ],
+                    "text": "prepend sig"
+                }
+            },
+            {
+                "box": {
+                    "id": "pDrive",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [ "", "" ],
+                    "patching_rect": [ 40.0, 360.0, 70.0, 22.0 ],
+                    "text": "pattr drive",
+                    "varname": "drive"
+                }
+            },
+            {
+                "box": {
+                    "id": "sDrive",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 240.0, 400.0, 100.0, 22.0 ],
+                    "text": "prepend sdrive"
+                }
+            },
+            {
+                "box": {
+                    "id": "pMode",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [ "", "" ],
+                    "patching_rect": [ 120.0, 320.0, 70.0, 22.0 ],
+                    "text": "pattr mode",
+                    "varname": "mode"
+                }
+            },
+            {
+                "box": {
+                    "id": "sMode",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 240.0, 440.0, 100.0, 22.0 ],
+                    "text": "prepend smode"
                 }
             }
         ],
@@ -141,6 +243,12 @@
                 "patchline": {
                     "destination": [ "mul", 0 ],
                     "source": [ "in", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "fit", 0 ],
+                    "source": [ "load", 0 ]
                 }
             },
             {
@@ -170,27 +278,87 @@
             },
             {
                 "patchline": {
-                    "destination": [ "scope", 0 ],
+                    "destination": [ "snFold", 0 ],
                     "order": 0,
                     "source": [ "pong", 0 ]
                 }
             },
             {
                 "patchline": {
-                    "destination": [ "modemsg", 0 ],
+                    "destination": [ "ui", 0 ],
+                    "source": [ "prFold", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "pMode", 0 ],
                     "source": [ "route", 1 ]
                 }
             },
             {
                 "patchline": {
-                    "destination": [ "mul", 1 ],
+                    "destination": [ "pDrive", 0 ],
                     "source": [ "route", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "mul", 1 ],
+                    "source": [ "pDrive", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "sDrive", 0 ],
+                    "source": [ "pDrive", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "ui", 0 ],
+                    "source": [ "sDrive", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "modemsg", 0 ],
+                    "source": [ "pMode", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "sMode", 0 ],
+                    "source": [ "pMode", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "ui", 0 ],
+                    "source": [ "sMode", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "zsFold", 0 ],
+                    "source": [ "snFold", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "prFold", 0 ],
+                    "source": [ "spFold", 0 ]
                 }
             },
             {
                 "patchline": {
                     "destination": [ "route", 0 ],
                     "source": [ "ui", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "spFold", 0 ],
+                    "source": [ "zsFold", 0 ]
                 }
             }
         ]
