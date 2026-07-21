@@ -3,7 +3,7 @@
 	"description" : "A collection of Max/MSP externals, patchers, and snippets for embedding strange attractors into your patches, with a focus on their rhythmic potential.",
 	"homepatcher" : "spt-Overview.maxpat",
 	"max_version_min" : "8.0", "max_version_max" : "none",
-	"name" : "@C74_PACKAGE_NAME@",
+	"name" : "spt",
 	"os" : {
 		"macintosh" : {
 			"platform" : [ "x64", "aarch64" ],
@@ -19,6 +19,6 @@
 		"copyright" : "Copyright (c) 2025-2026 Max Worgan"
 	},
 	"tags" : [ "strange attractors", "chaos", "rhythm", "analysis", "generative" ],
-	"version" : "@GIT_VERSION_MAJ@.@GIT_VERSION_MIN@.@GIT_VERSION_SUB@",
+	"version" : "0.0.1",
 	"website" : "https://github.com/MaxWorgan/StrangePulseToolkit"
 }

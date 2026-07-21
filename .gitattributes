@@ -1,0 +1,23 @@
+# Normalise line endings. The ReadMe advertises a Visual Studio build, so
+# contributors on Windows would otherwise commit CRLF into the Max patch files
+# and produce whole-file diffs.
+* text=auto eol=lf
+
+# Max documents are JSON. Keeping them explicitly text means diffs stay readable
+# and merge drivers do not treat them as opaque blobs.
+*.maxpat    text eol=lf
+*.maxhelp   text eol=lf
+*.gendsp    text eol=lf
+*.genjit    text eol=lf
+*.maxref.xml text eol=lf
+*.maxtheme  text eol=lf
+*.maxstyle  text eol=lf
+
+# Never touched by line-ending conversion.
+*.png       binary
+*.wav       binary
+*.aif       binary
+*.aiff      binary
+*.mxo       binary
+*.mxe64     binary
+*.dylib     binary

@@ -1,0 +1,41 @@
+{
+	"style" : 	{
+		"name" : "Strange Pulse Paper Lab",
+		"parentstyle" : "",
+		"multi" : 0,
+		"default" : 		{
+			"accentcolor" : [ 0.862745, 0.227451, 0.105882, 1.0 ],
+			"bgcolor" : [ 0.964706, 0.952941, 0.925490, 1.0 ],
+			"bgfillcolor" : 			{
+				"angle" : 270.0,
+				"autogradient" : 0.0,
+				"color" : [ 0.925490, 0.905882, 0.862745, 1.0 ],
+				"color1" : [ 0.964706, 0.952941, 0.925490, 1.0 ],
+				"color2" : [ 0.925490, 0.905882, 0.862745, 1.0 ],
+				"proportion" : 0.39,
+				"type" : "color"
+			},
+			"clearcolor" : [ 1.0, 1.0, 1.0, 0.0 ],
+			"color" : [ 0.862745, 0.227451, 0.105882, 1.0 ],
+			"darkcolor" : [ 0.094118, 0.086275, 0.066667, 1.0 ],
+			"editing_bgcolor" : [ 1.0, 1.0, 1.0, 1.0 ],
+			"elementcolor" : [ 0.886275, 0.862745, 0.807843, 1.0 ],
+			"fontface" : [ 0 ],
+			"fontname" : [ "Helvetica Neue" ],
+			"fontsize" : [ 12.0 ],
+			"lightcolor" : [ 0.964706, 0.952941, 0.925490, 1.0 ],
+			"locked_bgcolor" : [ 0.925490, 0.905882, 0.862745, 1.0 ],
+			"patchlinecolor" : [ 0.094118, 0.086275, 0.066667, 0.9 ],
+			"selectioncolor" : [ 0.305882, 0.482353, 0.909804, 1.0 ],
+			"stripecolor" : [ 0.886275, 0.862745, 0.807843, 1.0 ],
+			"textcolor" : [ 0.094118, 0.086275, 0.066667, 1.0 ],
+			"textcolor_inverse" : [ 0.964706, 0.952941, 0.925490, 1.0 ],
+			"bubble_bgcolor" : [ 0.964706, 0.952941, 0.925490, 1.0 ],
+			"bubble_outlinecolor" : [ 0.094118, 0.086275, 0.066667, 1.0 ],
+			"syntax_objectcolor" : [ 0.094118, 0.086275, 0.066667, 1.0 ],
+			"syntax_attributecolor" : [ 0.305882, 0.482353, 0.909804, 1.0 ],
+			"syntax_attrargcolor" : [ 0.407843, 0.384314, 0.309804, 1.0 ],
+			"syntax_objargcolor" : [ 0.094118, 0.086275, 0.066667, 1.0 ]
+		}
+	}
+}
