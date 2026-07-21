@@ -9,19 +9,71 @@
             "modernui": 1
         },
         "classnamespace": "box",
-        "rect": [ 264.0, 99.0, 578.0, 823.0 ],
+        "rect": [ 100.0, 99.0, 578.0, 823.0 ],
         "openinpresentation": 1,
         "boxes": [
             {
                 "box": {
+                    "activebgcolor": [ 0.9250507950782776, 0.9052134156227112, 0.8623547554016113, 0.0 ],
+                    "bordercolor": [ 0.09803920239210129, 0.09803920239210129, 0.09803920239210129, 0.0 ],
+                    "focusbordercolor": [ 0.4470588235294118, 0.4470588235294118, 0.4470588235294118, 0.0 ],
+                    "fontname": "Menlo",
+                    "fontsize": 11.0,
+                    "id": "obj-thr",
+                    "maxclass": "live.numbox",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [ "", "float" ],
+                    "parameter_enable": 1,
+                    "patching_rect": [ 470.0, 360.0, 74.0, 16.0 ],
+                    "presentation": 1,
+                    "presentation_rect": [ 17.857143729925156, 329.94507107138634, 67.66466981172562, 16.0 ],
+                    "saved_attribute_attributes": {
+                        "activebgcolor": {
+                            "expression": ""
+                        },
+                        "bordercolor": {
+                            "expression": ""
+                        },
+                        "focusbordercolor": {
+                            "expression": ""
+                        },
+                        "textcolor": {
+                            "expression": ""
+                        },
+                        "tricolor": {
+                            "expression": ""
+                        },
+                        "valueof": {
+                            "parameter_exponent": 2.0,
+                            "parameter_longname": "thr",
+                            "parameter_mmax": 1.0,
+                            "parameter_modmax": 1.0,
+                            "parameter_modmode": 4,
+                            "parameter_shortname": "Threshold",
+                            "parameter_steps": 1000,
+                            "parameter_type": 0,
+                            "parameter_units": "%.3f",
+                            "parameter_unitstyle": 9
+                        }
+                    },
+                    "textcolor": [ 0.862745098039216, 0.227450980392157, 0.105882352941176, 1.0 ],
+                    "textjustification": 0,
+                    "tricolor": [ 0.788235294117647, 0.76078431372549, 0.698039215686275, 1.0 ],
+                    "valuepopup": 1,
+                    "valuepopuplabel": 4,
+                    "varname": "thr"
+                }
+            },
+            {
+                "box": {
                     "id": "obj-7",
-                    "linecount": 2,
                     "maxclass": "message",
                     "numinlets": 2,
                     "numoutlets": 1,
                     "outlettype": [ "" ],
-                    "patching_rect": [ 532.0, 712.0, 50.0, 35.0 ],
-                    "text": "1482.25"
+                    "patching_rect": [ 532.0, 712.0, 50.0, 22.0 ],
+                    "text": "2025."
                 }
             },
             {
@@ -49,8 +101,9 @@
             {
                 "box": {
                     "background": 1,
-                    "bgcolor": [ 0.054901960784314, 0.054901960784314, 0.058823529411765, 1.0 ],
-                    "bordercolor": [ 0.054901960784314, 0.054901960784314, 0.058823529411765, 1.0 ],
+                    "bgcolor": [ 0.964705882352941, 0.952941176470588, 0.925490196078431, 1.0 ],
+                    "border": 1,
+                    "bordercolor": [ 0.788235294117647, 0.76078431372549, 0.698039215686275, 1.0 ],
                     "id": "obj-bg",
                     "maxclass": "panel",
                     "mode": 0,
@@ -58,8 +111,39 @@
                     "numoutlets": 0,
                     "patching_rect": [ 700.0, 57.0, 404.0, 338.0 ],
                     "presentation": 1,
-                    "presentation_rect": [ 0.0, 0.0, 349.0, 335.0 ],
+                    "presentation_rect": [ 0.0, 0.0, 300.0, 358.0 ],
                     "rounded": 0
+                }
+            },
+            {
+                "box": {
+                    "background": 1,
+                    "bgcolor": [ 0.925490196078431, 0.905882352941176, 0.862745098039216, 1.0 ],
+                    "border": 1,
+                    "bordercolor": [ 0.788235294117647, 0.76078431372549, 0.698039215686275, 1.0 ],
+                    "id": "obj-plotframe",
+                    "maxclass": "panel",
+                    "mode": 0,
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 700.0, 400.0, 274.0, 274.0 ],
+                    "presentation": 1,
+                    "presentation_rect": [ 13.0, 33.0, 274.0, 274.0 ],
+                    "rounded": 0
+                }
+            },
+            {
+                "box": {
+                    "fontsize": 9.0,
+                    "id": "obj-idx",
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 700.0, 4.0, 24.0, 17.0 ],
+                    "presentation": 1,
+                    "presentation_rect": [ 14.0, 13.0, 20.0, 17.0 ],
+                    "text": "14",
+                    "textcolor": [ 0.63921568627451, 0.611764705882353, 0.541176470588235, 1.0 ]
                 }
             },
             {
@@ -71,9 +155,9 @@
                     "numoutlets": 0,
                     "patching_rect": [ 700.0, 20.0, 160.0, 17.0 ],
                     "presentation": 1,
-                    "presentation_rect": [ 12.0, 14.0, 160.0, 17.0 ],
-                    "text": "RECURRENCE",
-                    "textcolor": [ 0.541176470588235, 0.541176470588235, 0.56078431372549, 1.0 ]
+                    "presentation_rect": [ 33.0, 13.0, 170.0, 17.0 ],
+                    "text": "RECURRENCE PLOT",
+                    "textcolor": [ 0.407843137254902, 0.384313725490196, 0.309803921568627, 1.0 ]
                 }
             },
             {
@@ -200,6 +284,8 @@
             },
             {
                 "box": {
+                    "border": 1.0,
+                    "bordercolor": [ 0.789483368396759, 0.7597718834877014, 0.6996591091156006, 1.0 ],
                     "id": "obj-pwin",
                     "maxclass": "jit.pwindow",
                     "numinlets": 1,
@@ -207,108 +293,97 @@
                     "outlettype": [ "jit_matrix", "" ],
                     "patching_rect": [ 31.0, 360.0, 256.0, 256.0 ],
                     "presentation": 1,
-                    "presentation_rect": [ 10.0, 40.0, 256.0, 256.0 ],
+                    "presentation_rect": [ 14.0, 34.0, 272.0, 272.0 ],
                     "sync": 1
                 }
             },
             {
                 "box": {
-                    "activedialcolor": [ 0.72156862745098, 1.0, 0.36078431372549, 1.0 ],
-                    "activefgdialcolor": [ 0.925490196078431, 0.925490196078431, 0.925490196078431, 1.0 ],
-                    "activeneedlecolor": [ 0.925490196078431, 0.925490196078431, 0.925490196078431, 1.0 ],
-                    "bordercolor": [ 0.172549019607843, 0.172549019607843, 0.192156862745098, 1.0 ],
-                    "dialcolor": [ 0.125490196078431, 0.125490196078431, 0.141176470588235, 1.0 ],
-                    "fgdialcolor": [ 0.541176470588235, 0.541176470588235, 0.56078431372549, 1.0 ],
-                    "id": "obj-thr",
-                    "maxclass": "live.dial",
-                    "needlecolor": [ 0.541176470588235, 0.541176470588235, 0.56078431372549, 1.0 ],
+                    "background": 1,
+                    "bgcolor": [ 0.925490196078431, 0.905882352941176, 0.862745098039216, 1.0 ],
+                    "border": 1,
+                    "bordercolor": [ 0.788235294117647, 0.76078431372549, 0.698039215686275, 1.0 ],
+                    "id": "obj-thrcell",
+                    "maxclass": "panel",
+                    "mode": 0,
                     "numinlets": 1,
-                    "numoutlets": 2,
-                    "outlettype": [ "", "float" ],
-                    "parameter_enable": 1,
-                    "patching_rect": [ 470.0, 360.0, 44.0, 48.0 ],
+                    "numoutlets": 0,
+                    "patching_rect": [ 470.0, 360.0, 86.0, 34.0 ],
                     "presentation": 1,
-                    "presentation_rect": [ 285.0, 52.0, 44.0, 48.0 ],
-                    "saved_attribute_attributes": {
-                        "activedialcolor": {
-                            "expression": ""
-                        },
-                        "activefgdialcolor": {
-                            "expression": ""
-                        },
-                        "activeneedlecolor": {
-                            "expression": ""
-                        },
-                        "bordercolor": {
-                            "expression": ""
-                        },
-                        "dialcolor": {
-                            "expression": ""
-                        },
-                        "fgdialcolor": {
-                            "expression": ""
-                        },
-                        "needlecolor": {
-                            "expression": ""
-                        },
-                        "textcolor": {
-                            "expression": ""
-                        },
-                        "tricolor": {
-                            "expression": ""
-                        },
-                        "valueof": {
-                            "parameter_longname": "thr",
-                            "parameter_mmax": 1.0,
-                            "parameter_modmode": 4,
-                            "parameter_shortname": "Threshold",
-                            "parameter_type": 0,
-                            "parameter_unitstyle": 1
-                        }
-                    },
-                    "textcolor": [ 0.6, 0.6, 0.62, 1.0 ],
-                    "tricolor": [ 0.172549019607843, 0.172549019607843, 0.192156862745098, 1.0 ],
-                    "varname": "thr"
+                    "presentation_rect": [ 14.0, 314.0, 86.0, 34.0 ],
+                    "rounded": 0
                 }
             },
             {
                 "box": {
-                    "activedialcolor": [ 0.72156862745098, 1.0, 0.36078431372549, 1.0 ],
-                    "activefgdialcolor": [ 0.925490196078431, 0.925490196078431, 0.925490196078431, 1.0 ],
-                    "activeneedlecolor": [ 0.925490196078431, 0.925490196078431, 0.925490196078431, 1.0 ],
-                    "bordercolor": [ 0.172549019607843, 0.172549019607843, 0.192156862745098, 1.0 ],
-                    "dialcolor": [ 0.125490196078431, 0.125490196078431, 0.141176470588235, 1.0 ],
-                    "fgdialcolor": [ 0.541176470588235, 0.541176470588235, 0.56078431372549, 1.0 ],
+                    "bubble_outlinecolor": [ 0.85, 0.85, 0.85, 0.0 ],
+                    "fontsize": 7.0,
+                    "id": "obj-thrlbl",
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 470.0, 396.0, 80.0, 14.0 ],
+                    "presentation": 1,
+                    "presentation_rect": [ 17.03296786546707, 317.85715839266777, 74.0, 14.0 ],
+                    "text": "THRESHOLD",
+                    "textcolor": [ 0.63921568627451, 0.611764705882353, 0.541176470588235, 1.0 ]
+                }
+            },
+            {
+                "box": {
+                    "background": 1,
+                    "bgcolor": [ 0.925490196078431, 0.905882352941176, 0.862745098039216, 1.0 ],
+                    "border": 1,
+                    "bordercolor": [ 0.788235294117647, 0.76078431372549, 0.698039215686275, 1.0 ],
+                    "id": "obj-spancell",
+                    "maxclass": "panel",
+                    "mode": 0,
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 478.0, 427.0, 86.0, 34.0 ],
+                    "presentation": 1,
+                    "presentation_rect": [ 106.0, 314.0, 86.0, 34.0 ],
+                    "rounded": 0
+                }
+            },
+            {
+                "box": {
+                    "fontsize": 7.0,
+                    "id": "obj-spanlbl",
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 478.0, 463.0, 80.0, 14.0 ],
+                    "presentation": 1,
+                    "presentation_rect": [ 112.0, 318.0, 74.0, 14.0 ],
+                    "text": "WINDOW",
+                    "textcolor": [ 0.63921568627451, 0.611764705882353, 0.541176470588235, 1.0 ]
+                }
+            },
+            {
+                "box": {
+                    "activebgcolor": [ 0.9250507950782776, 0.9052134156227112, 0.8623547554016113, 1.0 ],
+                    "bordercolor": [ 0.09803921568627451, 0.09803921568627451, 0.09803921568627451, 0.0 ],
+                    "focusbordercolor": [ 0.4470588235294118, 0.4470588235294118, 0.4470588235294118, 0.0 ],
+                    "fontname": "Menlo",
+                    "fontsize": 11.0,
                     "id": "obj-span",
-                    "maxclass": "live.dial",
-                    "needlecolor": [ 0.541176470588235, 0.541176470588235, 0.56078431372549, 1.0 ],
+                    "maxclass": "live.numbox",
                     "numinlets": 1,
                     "numoutlets": 2,
                     "outlettype": [ "", "float" ],
                     "parameter_enable": 1,
-                    "patching_rect": [ 478.0, 427.0, 44.0, 48.0 ],
+                    "patching_rect": [ 478.0, 427.0, 74.0, 16.0 ],
                     "presentation": 1,
-                    "presentation_rect": [ 285.0, 136.0, 44.0, 48.0 ],
+                    "presentation_rect": [ 112.3892208635807, 330.0, 75.22155827283859, 16.0 ],
                     "saved_attribute_attributes": {
-                        "activedialcolor": {
-                            "expression": ""
-                        },
-                        "activefgdialcolor": {
-                            "expression": ""
-                        },
-                        "activeneedlecolor": {
+                        "activebgcolor": {
                             "expression": ""
                         },
                         "bordercolor": {
                             "expression": ""
                         },
-                        "dialcolor": {
-                            "expression": ""
-                        },
-                        "fgdialcolor": {
-                            "expression": ""
-                        },
-                        "needlecolor": {
+                        "focusbordercolor": {
                             "expression": ""
                         },
                         "textcolor": {
@@ -318,59 +393,79 @@
                             "expression": ""
                         },
                         "valueof": {
-                            "parameter_longname": "span",
+                            "parameter_longname": "window",
                             "parameter_mmax": 100.0,
                             "parameter_mmin": 1.0,
                             "parameter_modmax": 1024.0,
                             "parameter_modmode": 4,
-                            "parameter_shortname": "Time span",
+                            "parameter_shortname": "Window",
                             "parameter_type": 0,
                             "parameter_unitstyle": 0
                         }
                     },
-                    "textcolor": [ 0.6, 0.6, 0.62, 1.0 ],
-                    "tricolor": [ 0.172549019607843, 0.172549019607843, 0.192156862745098, 1.0 ],
+                    "textcolor": [ 0.4081761837005615, 0.38345998525619507, 0.309639036655426, 1.0 ],
+                    "textjustification": 0,
+                    "tricolor": [ 0.788235294117647, 0.76078431372549, 0.698039215686275, 1.0 ],
+                    "valuepopup": 1,
+                    "valuepopuplabel": 4,
                     "varname": "span"
                 }
             },
             {
                 "box": {
-                    "activedialcolor": [ 0.72156862745098, 1.0, 0.36078431372549, 1.0 ],
-                    "activefgdialcolor": [ 0.925490196078431, 0.925490196078431, 0.925490196078431, 1.0 ],
-                    "activeneedlecolor": [ 0.925490196078431, 0.925490196078431, 0.925490196078431, 1.0 ],
-                    "bordercolor": [ 0.172549019607843, 0.172549019607843, 0.192156862745098, 1.0 ],
-                    "dialcolor": [ 0.125490196078431, 0.125490196078431, 0.141176470588235, 1.0 ],
-                    "fgdialcolor": [ 0.541176470588235, 0.541176470588235, 0.56078431372549, 1.0 ],
+                    "background": 1,
+                    "bgcolor": [ 0.925490196078431, 0.905882352941176, 0.862745098039216, 1.0 ],
+                    "border": 1,
+                    "bordercolor": [ 0.788235294117647, 0.76078431372549, 0.698039215686275, 1.0 ],
+                    "id": "obj-rescell",
+                    "maxclass": "panel",
+                    "mode": 0,
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 470.0, 520.0, 86.0, 34.0 ],
+                    "presentation": 1,
+                    "presentation_rect": [ 198.0, 314.0, 86.0, 34.0 ],
+                    "rounded": 0
+                }
+            },
+            {
+                "box": {
+                    "fontsize": 7.0,
+                    "id": "obj-reslbl",
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 470.0, 556.0, 80.0, 14.0 ],
+                    "presentation": 1,
+                    "presentation_rect": [ 208.38323092460632, 317.96406787633896, 74.0, 14.0 ],
+                    "text": "RESOLUTION",
+                    "textcolor": [ 0.63921568627451, 0.611764705882353, 0.541176470588235, 1.0 ]
+                }
+            },
+            {
+                "box": {
+                    "activebgcolor": [ 0.9250507950782776, 0.9052134156227112, 0.8623547554016113, 1.0 ],
+                    "bordercolor": [ 0.09803921568627451, 0.09803921568627451, 0.09803921568627451, 0.0 ],
+                    "focusbordercolor": [ 0.4470588235294118, 0.4470588235294118, 0.4470588235294118, 0.0 ],
+                    "fontname": "Menlo",
+                    "fontsize": 11.0,
                     "id": "obj-res",
-                    "maxclass": "live.dial",
-                    "needlecolor": [ 0.541176470588235, 0.541176470588235, 0.56078431372549, 1.0 ],
+                    "maxclass": "live.numbox",
                     "numinlets": 1,
                     "numoutlets": 2,
                     "outlettype": [ "", "float" ],
                     "parameter_enable": 1,
-                    "patching_rect": [ 470.0, 520.0, 44.0, 48.0 ],
+                    "patching_rect": [ 470.0, 520.0, 74.0, 16.0 ],
                     "presentation": 1,
-                    "presentation_rect": [ 285.0, 220.0, 44.0, 48.0 ],
+                    "presentation_rect": [ 208.9820333123207, 329.9401156306267, 75.44910085201263, 16.0 ],
                     "saved_attribute_attributes": {
-                        "activedialcolor": {
-                            "expression": ""
-                        },
-                        "activefgdialcolor": {
-                            "expression": ""
-                        },
-                        "activeneedlecolor": {
+                        "activebgcolor": {
                             "expression": ""
                         },
                         "bordercolor": {
                             "expression": ""
                         },
-                        "dialcolor": {
-                            "expression": ""
-                        },
-                        "fgdialcolor": {
-                            "expression": ""
-                        },
-                        "needlecolor": {
+                        "focusbordercolor": {
                             "expression": ""
                         },
                         "textcolor": {
@@ -389,8 +484,11 @@
                             "parameter_unitstyle": 0
                         }
                     },
-                    "textcolor": [ 0.6, 0.6, 0.62, 1.0 ],
-                    "tricolor": [ 0.172549019607843, 0.172549019607843, 0.192156862745098, 1.0 ],
+                    "textcolor": [ 0.10980392156862745, 0.10980392156862745, 0.10980392156862745, 1.0 ],
+                    "textjustification": 0,
+                    "tricolor": [ 0.788235294117647, 0.76078431372549, 0.698039215686275, 1.0 ],
+                    "valuepopup": 1,
+                    "valuepopuplabel": 4,
                     "varname": "res"
                 }
             },
@@ -403,6 +501,60 @@
                     "outlettype": [ "" ],
                     "patching_rect": [ 560.0, 360.0, 80.0, 22.0 ],
                     "text": "eps $1"
+                }
+            },
+            {
+                "box": {
+                    "angle": 270.0,
+                    "bgcolor": [ 0.9250507950782776, 0.9052134156227112, 0.8623547554016113, 1.0 ],
+                    "border": 1,
+                    "bordercolor": [ 0.789483368396759, 0.7597718834877014, 0.6996591091156006, 1.0 ],
+                    "id": "obj-6",
+                    "maxclass": "panel",
+                    "mode": 0,
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 173.05389004945755, 363.1736481487751, 128.0, 128.0 ],
+                    "presentation": 1,
+                    "presentation_rect": [ 13.772454917430878, 314.97005593776703, 81.4371247291565, 36.526945650577545 ],
+                    "proportion": 0.5,
+                    "rounded": 1
+                }
+            },
+            {
+                "box": {
+                    "angle": 270.0,
+                    "bgcolor": [ 0.9250507950782776, 0.9052134156227112, 0.8623547554016113, 1.0 ],
+                    "border": 1,
+                    "bordercolor": [ 0.789483368396759, 0.7597718834877014, 0.6996591091156006, 1.0 ],
+                    "id": "obj-8",
+                    "maxclass": "panel",
+                    "mode": 0,
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 188.05389004945755, 378.1736481487751, 128.0, 128.0 ],
+                    "presentation": 1,
+                    "presentation_rect": [ 108.28143763542175, 314.97005593776703, 81.4371247291565, 36.526945650577545 ],
+                    "proportion": 0.5,
+                    "rounded": 1
+                }
+            },
+            {
+                "box": {
+                    "angle": 270.0,
+                    "bgcolor": [ 0.9250507950782776, 0.9052134156227112, 0.8623547554016113, 1.0 ],
+                    "border": 1,
+                    "bordercolor": [ 0.789483368396759, 0.7597718834877014, 0.6996591091156006, 1.0 ],
+                    "id": "obj-9",
+                    "maxclass": "panel",
+                    "mode": 0,
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 203.05389004945755, 393.1736481487751, 128.0, 128.0 ],
+                    "presentation": 1,
+                    "presentation_rect": [ 204.0, 314.97005593776703, 81.4371247291565, 36.526945650577545 ],
+                    "proportion": 0.5,
+                    "rounded": 1
                 }
             },
             {

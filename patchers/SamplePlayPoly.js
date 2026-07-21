@@ -4,17 +4,23 @@
 // playheads for the 8 voices, and gain/pan controls. Voices always play once
 // (no looping) — the envelope (or a flat gate) shapes and ends each note.
 //
-// Inlet messages (from the host patch):
+// Inlet 0 messages (from the host patch):
 //   setbuffer <name>   the buffer~ name to read (e.g. #0-samp, resolved by Max)
 //   loaded             buffer contents changed -> re-read + redraw the waveform
 //   voice <i>          voice i (0..N-1) just triggered -> launch a playhead
 //   bang               a voice triggered (unknown index) -> playhead on next voice
 //   gain <f> / pan <f> / start <f> / envon <0|1>    restore values
+//   moddepth <0..1>    bipolar start-modulation depth (fraction of the buffer)
+//   startmod <-1..1>   live modulation value (host snapshot~ of the mod signal). Slides
+//                      the top-edge start indicator to startPt + value*moddepth (window
+//                      keeps its length). Display only: the host samples the same signal
+//                      per-trigger for the real start.
 //
 // Outlet 0 messages (to the host patch):
 //   gain <0..1>   pan <-1..1>   start <ms>   loop <s_ms> <e_ms>   loopon 0
 //   run <i> <level> <ms>                   per-voice gate ramp (arm / fade-out)
 //   venv <i> 0 0 1 <atkMs> 0 <decMs>       per-voice A/D envelope (line~ segments)
+//   modscale <ms>                          ms per unit of mod signal (moddepth * duration)
 //   open                                   ask host to open a file dialog
 
 autowatch = 1;
@@ -26,20 +32,22 @@ mgraphics.relative_coords = 0;
 mgraphics.autofill = 0;
 
 // ---------------------------------------------------------------- tokens
+// Paper Lab — light lab-instrument palette (see design_handoff_paperlab_ui/tokens.md)
 var COL = {
-    base:    [0.0549, 0.0549, 0.0588, 1.0],
-    surface: [0.0863, 0.0863, 0.0941, 1.0],
-    surf2:   [0.1255, 0.1255, 0.1412, 1.0],
-    hair:    [0.1725, 0.1725, 0.1922, 1.0],
-    text:    [0.9255, 0.9255, 0.9255, 1.0],
-    dim:     [0.5412, 0.5412, 0.5608, 1.0],
-    faint:   [0.3608, 0.3608, 0.3804, 1.0],
-    accent:  [0.7216, 1.0, 0.3608, 1.0],
-    accentD: [0.7216, 1.0, 0.3608, 0.30],
-    afill:   [0.7216, 1.0, 0.3608, 0.14],
-    warn:    [0.878, 0.639, 0.227, 1.0]
+    base:    [0.925, 0.906, 0.863, 1.0],
+    surface: [0.965, 0.953, 0.925, 1.0],
+    surf2:   [0.886, 0.863, 0.808, 1.0],
+    hair:    [0.788, 0.761, 0.698, 1.0],
+    text:    [0.094, 0.086, 0.067, 1.0],
+    dim:     [0.408, 0.384, 0.310, 1.0],
+    faint:   [0.639, 0.612, 0.541, 1.0],
+    accent:  [0.863, 0.227, 0.106, 1.0],
+    accent2: [0.306, 0.482, 0.910, 1.0],
+    accentD: [0.863, 0.227, 0.106, 0.30],
+    afill:   [0.863, 0.227, 0.106, 0.13]
 };
 var FONT = "Helvetica Neue";
+var MONO = "Menlo";
 var MAXVOICES = 8;          // mcs.poly~ instances available
 var NVOICES = 8;            // active voice count (1..MAXVOICES); 1 = mono retrigger
 
@@ -47,7 +55,11 @@ var NVOICES = 8;            // active voice count (1..MAXVOICES); 1 = mono retri
 var bufName = "";
 var env = [];           // cached min/max envelope: [ [min,max], ... ] one per column
 var frames = 0, durMs = 0, fileName = "";
-var gGain = 0.8, gPan = 0.0;
+// gain is dB-domain (matches the old samplePlay mc.live.gain~ and the host pattr client
+// so preset morphs interpolate in dB). The v8ui fader maps the -70..+6 dB range to 0..1;
+// the host converts dB->amp (dbtoa) for the DSP multiply.
+var GDB_MIN = -70, GDB_MAX = 6, GDB_SPAN = 76;
+var gGain = 0.0, gPan = 0.0;   // gGain in dB (0 = unity)
 // The amplitude envelope IS the region: startPt/endPt (absolute 0..1 in the buffer)
 // set the scanned portion; envA/envD are the attack-peak and sustain-end positions
 // as fractions of that region (so the shape rescales when you move start/end). The
@@ -56,10 +68,29 @@ var gGain = 0.8, gPan = 0.0;
 var startPt = 0.0, endPt = 1.0, envA = 0.02, envD = 0.98, curveA = 0.0, curveD = 0.0, envShown = 0;
 var voices = [];        // active playheads: { s, e, dur, t0, vi(0-based slot), vel }
 var nextVoice = 1;      // 1-based round-robin for bare bang/float triggers
+// Bipolar start modulation: a -1..1 signal (from the host's snapshot~) slides the whole
+// scan/envelope window around startPt by ±modDepth of the buffer, keeping its length (the
+// note just ends later). modVal is the live value for the top-edge start indicator only;
+// the host samples the same signal per-trigger for the actual playback start.
+var modVal = 0.0, modDepth = 0.25;
 
 var W = 320, H = 196, PAD = 16;
-var WF_X = PAD, WF_W = W - 2 * PAD, WF_Y = 46, WF_H = 84;   // waveform rect
-var CTRL_Y = WF_Y + WF_H + 14;
+// Layout rects, recomputed by layout() whenever the host bpatcher resizes (see
+// onresize). The header (title + loader) and the two control rows are fixed
+// height, anchored to top and foot respectively; the waveform fills the middle
+// and the faders fill the width. The loader chip stays put so the host's
+// dropfile overlay (fixed presentation_rect) keeps covering its drop cell.
+var WF_X, WF_W, WF_Y, WF_H, CTRL_Y, FADER_X, FADER_W;
+function layout() {
+    WF_X = PAD;
+    WF_W = Math.max(40, W - 2 * PAD);
+    WF_Y = 46;                                       // fixed header band
+    CTRL_Y = H - 52;                                 // control cluster pinned to the foot
+    WF_H = Math.max(20, CTRL_Y - 14 - WF_Y);         // waveform fills the gap between
+    FADER_X = PAD + 38;
+    FADER_W = Math.max(40, W - FADER_X - PAD - 130); // reserve 130px for the vox/env cluster
+}
+function onresize(w, h) { W = w; H = h; layout(); mgraphics.redraw(); }
 
 // ---------------------------------------------------------------- draw helpers
 function setc(c) { mgraphics.set_source_rgba(c[0], c[1], c[2], c[3]); }
@@ -67,16 +98,18 @@ function rect(x, y, w, h, c) { setc(c); mgraphics.rectangle(x, y, w, h); mgraphi
 function rectb(x, y, w, h, c) { setc(c); mgraphics.set_line_width(1); mgraphics.rectangle(x, y, w, h); mgraphics.stroke(); }
 function line(x1, y1, x2, y2, c, lw) { setc(c); mgraphics.set_line_width(lw || 1); mgraphics.move_to(x1, y1); mgraphics.line_to(x2, y2); mgraphics.stroke(); }
 function disc(cx, cy, r, c) { setc(c); mgraphics.ellipse(cx - r, cy - r, r * 2, r * 2); mgraphics.fill(); }
-function setfont(s) { mgraphics.select_font_face(FONT); mgraphics.set_font_size(s); }
-function meas(s, sz) { setfont(sz); var m = mgraphics.text_measure("" + s); return (m && m.length) ? m[0] : ("" + s).length * sz * 0.55; }
-function txt(x, y, s, c, sz, just) {
-    setc(c); setfont(sz);
-    var w = (just === 1 || just === 2) ? meas(s, sz) : 0;
+function setfont(s, mono) { mgraphics.select_font_face(mono ? MONO : FONT); mgraphics.set_font_size(s); }
+function meas(s, sz, mono) { setfont(sz, mono); var m = mgraphics.text_measure("" + s); return (m && m.length) ? m[0] : ("" + s).length * sz * 0.55; }
+function txt(x, y, s, c, sz, just, mono) {
+    setc(c); setfont(sz, mono);
+    var w = (just === 1 || just === 2) ? meas(s, sz, mono) : 0;
     mgraphics.move_to(just === 2 ? x - w : (just === 1 ? x - w / 2 : x), y);
     mgraphics.show_text("" + s);
 }
 function trk(s) { return ("" + s).toUpperCase().split("").join(" "); }
 function clamp(v, lo, hi) { return v < lo ? lo : (v > hi ? hi : v); }
+function dbtoa(db) { return Math.pow(10, db / 20); }
+function gainFrac() { return clamp((gGain - GDB_MIN) / GDB_SPAN, 0, 1); }   // dB -> fader position
 function lerp(a, b, t) { return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t, a[3] + (b[3] - a[3]) * t]; }
 function nowMs() { return (new Date()).getTime(); }
 
@@ -114,17 +147,27 @@ function filename(n) { fileName = "" + n; mgraphics.redraw(); }
 function voice(vi, vel) { launch(vi, vel); }
 function bang() { launch(nextVoice, 1); nextVoice = nextVoice % NVOICES + 1; }
 function msg_float(v) { launch(nextVoice, v); nextVoice = nextVoice % NVOICES + 1; }
-function gain(v) { gGain = clamp(v, 0, 1); mgraphics.redraw(); }
+function gain(v) { gGain = clamp(v, GDB_MIN, GDB_MAX); mgraphics.redraw(); }   // v in dB
 function pan(v) { gPan = clamp(v, -1, 1); mgraphics.redraw(); }
 function start(v) { startPt = clamp(v, 0, 1); mgraphics.redraw(); }
+function moddepth(v) { modDepth = clamp(v, 0, 1); emitModscale(); mgraphics.redraw(); }
+function startmod(v) { modVal = clamp(v, -1, 1); mgraphics.redraw(); }   // live mod value -> top-edge start indicator
 
 function launch(vi, vel) {
     var vnum = (vi < 1) ? 1 : Math.round(vi);              // poly~ voice number (1-based) = curve~/groove~ target
     var di = (vnum - 1) % MAXVOICES;                        // 0-based slot for dots/animation
     var pk = (vel === undefined) ? 1 : clamp(vel, 0, 1);   // velocity scales the envelope peak
-    var dur = durMs * (endPt - startPt);
+    var len = endPt - startPt;
+    var s = clamp(startPt + modVal * modDepth, 0, endPt);  // modulated start (matches the caret / groove~)
+    var dur = durMs * len;                                 // envelope length is fixed; only the start moves
     if (dur <= 0) dur = durMs;
-    voices.push({ s: startPt, e: endPt, dur: dur, t0: nowMs(), vi: di, vel: pk });
+    // A physical voice plays one note at a time: retriggering the same slot
+    // steals/restarts it, so drop that slot's previous playhead instead of
+    // leaving a second cursor to run on to the envelope end. This keeps the
+    // number of moving cursors equal to the voices actually sounding — exactly
+    // one at 1 vox, at most NVOICES under round-robin.
+    for (var q = voices.length - 1; q >= 0; q--) if (voices[q].vi === di) voices.splice(q, 1);
+    voices.push({ s: s, e: s + len, dur: dur, t0: nowMs(), vi: di, vel: pk });   // sweep the same-length window from s
     if (voices.length > 24) voices.shift();
     // curve~ segments (always applied): snap 0, attack->peak (curveA), hold, decay->0 (curveD).
     var atk = Math.max(1, Math.round(envA * dur));
@@ -164,10 +207,12 @@ function region(field, x, y, w, h) { regions.push({ field: field, x: x, y: y, w:
 function hit(px, py) { for (var i = regions.length - 1; i >= 0; i--) { var r = regions[i]; if (px >= r.x && px <= r.x + r.w && py >= r.y && py <= r.y + r.h) return r; } return null; }
 
 function paint() {
+    if (WF_X === undefined) layout();
     regions = [];
-    rect(0, 0, W, H, COL.base);
+    rect(0, 0, W, H, COL.surface);
     // header
-    txt(PAD, 24, trk("SAMPLE"), COL.dim, 9);
+    txt(PAD, 24, "04", COL.faint, 9);
+    txt(PAD + 18, 24, trk("SAMPLE"), COL.dim, 9);
     drawLoader();
     line(PAD, 32, W - PAD, 32, COL.hair, 1);
 
@@ -206,7 +251,7 @@ function fillEnv(c0, c1, n, mid, h2, g, c) {
 }
 
 function drawWaveform() {
-    rect(WF_X, WF_Y, WF_W, WF_H, COL.surface);
+    rect(WF_X, WF_Y, WF_W, WF_H, COL.base);
     rectb(WF_X + 0.5, WF_Y + 0.5, WF_W - 1, WF_H - 1, COL.hair);
     var mid = WF_Y + WF_H / 2;
     line(WF_X, mid, WF_X + WF_W, mid, COL.hair, 1);
@@ -220,7 +265,7 @@ function drawWaveform() {
     rect(px(as), WF_Y + 1, px(ae) - px(as), WF_H - 2, COL.afill);
 
     // waveform envelope — gain scales the drawn height
-    var n = env.length, h2 = (WF_H - 6) / 2, g = clamp(gGain, 0, 1);
+    var n = env.length, h2 = (WF_H - 6) / 2, g = clamp(dbtoa(gGain), 0, 1);   // dB -> amp for the drawn height
     fillEnv(0, n, n, mid, h2, g, COL.faint);                                  // full, dimmed
     fillEnv(Math.round(as * n), Math.round(ae * n), n, mid, h2, g, COL.accent); // active, bright
 
@@ -230,9 +275,17 @@ function drawWaveform() {
         var v = voices[i], prog = (t - v.t0) / Math.max(1, v.dur);
         if (prog > 1) continue;
         var hx = px(v.s + (v.e - v.s) * prog);
-        line(hx, WF_Y + 1, hx, WF_Y + WF_H - 1, COL.accent, 1);
-        disc(hx, WF_Y + 3, 2, COL.accent);
+        line(hx, WF_Y + 1, hx, WF_Y + WF_H - 1, COL.accent2, 1);
+        disc(hx, WF_Y + 3, 2, COL.accent2);
     }
+    // live start indicator — small vermillion caret hanging from the top edge, marking
+    // where the next trigger will actually begin. Sits at startPt with no modulation and
+    // slides with the mod signal (bipolar offset, clamped to the region end). Matches the
+    // start-handle colour; distinct from the blue play cursors, which only appear on trigger.
+    var gx = px(clamp(startPt + modVal * modDepth, 0, endPt));
+    setc(COL.accent);
+    mgraphics.move_to(gx - 4, WF_Y); mgraphics.line_to(gx + 4, WF_Y); mgraphics.line_to(gx, WF_Y + 6); mgraphics.close_path(); mgraphics.fill();
+    line(gx, WF_Y, gx, WF_Y + 9, COL.accent, 1);             // short stub for an exact read
     region("wave", WF_X, WF_Y, WF_W, WF_H);
     if (envShown) drawEnvelope();               // env handles registered after "wave" -> take priority
 }
@@ -283,15 +336,18 @@ function ring(cx, cy, r, c, lw) { setc(c); mgraphics.set_line_width(lw || 1); mg
 
 function drawControls() {
     var y = CTRL_Y;
-    // gain fader
+    // gain fader (dB)
     txt(PAD, y + 2, trk("gain"), COL.faint, 8);
-    rect(PAD + 38, y - 4, 120, 8, COL.surf2);
-    rect(PAD + 38, y - 4, 120 * gGain, 8, COL.accent);
-    region("gain", PAD + 38, y - 10, 120, 18);
+    rect(FADER_X, y - 4, FADER_W, 8, COL.surf2);
+    rect(FADER_X, y - 4, FADER_W * gainFrac(), 8, COL.accent);
+    var gdb = gGain <= GDB_MIN + 0.5 ? "-inf" : (gGain > 0 ? "+" : "") + gGain.toFixed(1);
+    txt(FADER_X + FADER_W - 2, y + 2, gdb, COL.dim, 7, 2, true);   // dB readout, right-aligned in the track
+    region("gain", FADER_X, y - 10, FADER_W, 18);
     // voices count (drag vertical: 1..MAX; 1 = mono retrigger). dot row mirrors it.
-    txt(176, y + 4, "" + NVOICES, COL.accent, 13, 0);
-    txt(176 + (NVOICES >= 10 ? 18 : 11), y + 4, trk("vox"), COL.faint, 7, 0);
-    region("voices", 174, y - 9, 44, 18);
+    var voxX = FADER_X + FADER_W + 2;               // sits just past the fader, tracks its width
+    txt(voxX, y + 4, "" + NVOICES, COL.accent, 13, 0, true);
+    txt(voxX + (NVOICES >= 10 ? 18 : 11), y + 4, trk("vox"), COL.faint, 7, 0);
+    region("voices", voxX - 2, y - 9, 44, 18);
     // voice activity dots (right)
     var t = nowMs();
     for (var vch = 0; vch < NVOICES; vch++) {
@@ -302,7 +358,7 @@ function drawControls() {
     // pan
     var y2 = y + 22;
     txt(PAD, y2 + 2, trk("pan"), COL.faint, 8);
-    var pcx = PAD + 38, pcw = 120, pmid = pcx + pcw / 2;
+    var pcx = FADER_X, pcw = FADER_W, pmid = pcx + pcw / 2;
     rect(pcx, y2 - 4, pcw, 8, COL.surf2);
     line(pmid, y2 - 6, pmid, y2 + 4, COL.hair, 1);
     var phx = pmid + (pcw / 2) * gPan;
@@ -343,12 +399,12 @@ ondrag.local = 1;
 function applyDrag(x, y) {
     var f = fracFromX(x);
     switch (drag.field) {
-        case "gain":   gGain = clamp((x - (PAD + 38)) / 120, 0, 1); out("gain", gGain); break;
-        case "pan":    gPan = clamp((x - (PAD + 38)) / 120 * 2 - 1, -1, 1); out("pan", gPan); break;
-        case "envS":   startPt = clamp(f, 0, endPt - 0.02); emitStart(); emitLoop(); break;     // start = scan start
+        case "gain":   gGain = clamp(GDB_MIN + (x - FADER_X) / FADER_W * GDB_SPAN, GDB_MIN, GDB_MAX); out("gain", gGain); break;   // dB
+        case "pan":    gPan = clamp((x - FADER_X) / FADER_W * 2 - 1, -1, 1); out("pan", gPan); break;
+        case "envS":   startPt = clamp(f, 0, endPt - 0.02); emitStart(); emitLoop(); emitModmax(); break;     // start = scan start
         case "envA":   envA = clamp(regFrac(x), 0, envD); break;                                // attack peak (frac of region)
         case "envD":   envD = clamp(regFrac(x), envA, 1); break;                                // sustain end (frac of region)
-        case "envE":   endPt = clamp(f, startPt + 0.02, 1); emitLoop(); break;                  // end = scan end
+        case "envE":   endPt = clamp(f, startPt + 0.02, 1); emitLoop(); emitModmax(); break;                  // end = scan end
         case "curveA": curveA = clamp(drag.startC - (drag.y0 - y) / 140, -0.95, 0.95); break;    // up = fuller (faster attack)
         case "curveD": curveD = clamp(drag.startC + (drag.y0 - y) / 140, -0.95, 0.95); break;    // up = fuller (slower release)
         case "voices": { var nn = clamp(Math.round(drag.startN + (drag.y0 - y) / 14), 1, MAXVOICES); if (nn !== NVOICES) { NVOICES = nn; out("voices", nn); } break; }  // up = more voices
@@ -358,10 +414,12 @@ function applyDrag(x, y) {
 function out(sel, v) { outlet(0, sel, v); }
 function emitStart() { outlet(0, "start", Math.round(startPt * durMs)); }                       // scan start in ms
 function emitLoop() { outlet(0, "loop", Math.round(startPt * durMs), Math.round(endPt * durMs)); } // scanned region in ms
-function emitAll() { out("gain", gGain); out("pan", gPan); out("loopon", 0); out("voices", NVOICES); emitLoop(); emitStart(); }  // never loop
+function emitModscale() { outlet(0, "modscale", Math.round(modDepth * durMs)); }                // ms per unit of mod signal
+function emitModmax() { outlet(0, "modmax", Math.round(endPt * durMs)); }                       // furthest the modulated start may slide (region end); tail runs past, truncating at buffer end
+function emitAll() { out("gain", gGain); out("pan", gPan); out("loopon", 0); out("voices", NVOICES); emitLoop(); emitStart(); emitModscale(); emitModmax(); }  // never loop
 
 // ---------------------------------------------------------------- persistence
-function exportState() { return { gain: gGain, pan: gPan, startPt: startPt, endPt: endPt, envA: envA, envD: envD, curveA: curveA, curveD: curveD, envShown: envShown, nvoices: NVOICES }; }
+function exportState() { return { gain: gGain, pan: gPan, startPt: startPt, endPt: endPt, envA: envA, envD: envD, curveA: curveA, curveD: curveD, envShown: envShown, nvoices: NVOICES, moddepth: modDepth }; }
 function setstate(s) {
     try {
         var o = JSON.parse(s);
@@ -374,7 +432,10 @@ function setstate(s) {
         if (o.curveD != null) curveD = o.curveD;
         if (o.envShown != null) envShown = o.envShown;
         if (o.nvoices != null) { NVOICES = clamp(o.nvoices, 1, MAXVOICES); out("voices", NVOICES); }
+        if (o.moddepth != null) modDepth = clamp(o.moddepth, 0, 1);
         mgraphics.redraw();
     } catch (e) {}
 }
 function save() { embedmessage("setstate", JSON.stringify(exportState())); }
+
+layout();   // resolve the initial rects before the first paint / onresize

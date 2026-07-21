@@ -9,228 +9,52 @@
             "modernui": 1
         },
         "classnamespace": "box",
-        "rect": [ -168.0, -985.0, 1425.0, 943.0 ],
+        "rect": [ 34.0, 99.0, 1202.0, 823.0 ],
+        "style": "StrangeStyle",
         "boxes": [
             {
                 "box": {
-                    "blinkcolor": [ 0.023529411764706, 0.83921568627451, 0.627450980392157, 1.0 ],
-                    "blinktime": 10,
-                    "id": "obj-41",
-                    "maxclass": "button",
-                    "numinlets": 1,
-                    "numoutlets": 1,
-                    "outlettype": [ "bang" ],
-                    "parameter_enable": 0,
-                    "patching_rect": [ 532.0, 1905.0, 24.0, 24.0 ]
-                }
-            },
-            {
-                "box": {
-                    "id": "obj-39",
-                    "linecount": 4,
-                    "maxclass": "comment",
-                    "numinlets": 1,
-                    "numoutlets": 0,
-                    "patching_rect": [ 45.0, 1590.0, 390.0, 74.0 ],
-                    "text": "Since it's so common to want to chain a few of these operators together\nthere is a tabbed varient called MultiModTrigger with tabs along the bottom that passes the output of the first to the second and on to the third:\n"
-                }
-            },
-            {
-                "box": {
-                    "fontface": 1,
-                    "fontsize": 18.0,
-                    "id": "obj-38",
-                    "maxclass": "comment",
-                    "numinlets": 1,
-                    "numoutlets": 0,
-                    "patching_rect": [ 44.5, 1546.0, 197.0, 27.0 ],
-                    "text": "MultiModTrigger",
-                    "textcolor": [ 0.2429931462, 0.5804384947, 0.4775273204, 1.0 ]
-                }
-            },
-            {
-                "box": {
-                    "fontface": 1,
-                    "fontsize": 18.0,
-                    "id": "obj-37",
-                    "maxclass": "comment",
-                    "numinlets": 1,
-                    "numoutlets": 0,
-                    "patching_rect": [ 45.0, 197.0, 197.0, 27.0 ],
-                    "text": "ModTrigger",
-                    "textcolor": [ 0.2429931462, 0.5804384947, 0.4775273204, 1.0 ]
-                }
-            },
-            {
-                "box": {
-                    "bgmode": 0,
-                    "border": 0,
-                    "clickthrough": 0,
-                    "enablehscroll": 0,
-                    "enablevscroll": 0,
-                    "id": "obj-33",
-                    "lockeddragscroll": 0,
-                    "lockedsize": 0,
-                    "maxclass": "bpatcher",
-                    "name": "MultiModTrigger.maxpat",
-                    "numinlets": 1,
-                    "numoutlets": 2,
-                    "offset": [ 0.0, 0.0 ],
-                    "outlettype": [ "bang", "bang" ],
-                    "patching_rect": [ 532.0, 1590.0, 100.0, 301.0 ],
-                    "varname": "MultiModTrigger",
-                    "viewvisibility": 1
-                }
-            },
-            {
-                "box": {
-                    "blinkcolor": [ 0.023529411764706, 0.83921568627451, 0.627450980392157, 1.0 ],
-                    "blinktime": 10,
-                    "id": "obj-31",
-                    "maxclass": "button",
-                    "numinlets": 1,
-                    "numoutlets": 1,
-                    "outlettype": [ "bang" ],
-                    "parameter_enable": 0,
-                    "patching_rect": [ 544.0, 1461.0, 24.0, 24.0 ]
-                }
-            },
-            {
-                "box": {
-                    "id": "obj-29",
-                    "linecount": 2,
-                    "maxclass": "comment",
-                    "numinlets": 1,
-                    "numoutlets": 0,
-                    "patching_rect": [ 671.0, 1142.0, 262.0, 33.0 ],
-                    "text": "Delay the incoming bangs by the chosen milliseconds"
-                }
-            },
-            {
-                "box": {
-                    "fontface": 1,
-                    "fontsize": 16.0,
-                    "id": "obj-30",
-                    "maxclass": "comment",
-                    "numinlets": 1,
-                    "numoutlets": 0,
-                    "patching_rect": [ 671.0, 1112.0, 180.0, 24.0 ],
-                    "text": "Delay",
-                    "textcolor": [ 0.976470588235294, 0.254901960784314, 0.266666666666667, 1.0 ]
-                }
-            },
-            {
-                "box": {
-                    "bgmode": 0,
-                    "border": 0,
-                    "clickthrough": 0,
-                    "enablehscroll": 0,
-                    "enablevscroll": 0,
-                    "id": "obj-28",
-                    "lockeddragscroll": 0,
-                    "lockedsize": 0,
-                    "maxclass": "bpatcher",
-                    "name": "ModTrigger.maxpat",
-                    "numinlets": 1,
-                    "numoutlets": 2,
-                    "offset": [ 0.0, 0.0 ],
-                    "outlettype": [ "bang", "bang" ],
-                    "patching_rect": [ 544.0, 1173.0, 99.0, 277.0 ],
-                    "varname": "modTrigger[5]",
-                    "viewvisibility": 1
-                }
-            },
-            {
-                "box": {
                     "hidden": 1,
-                    "id": "obj-34",
-                    "maxclass": "newobj",
-                    "numinlets": 1,
-                    "numoutlets": 1,
-                    "outlettype": [ "bang" ],
-                    "patching_rect": [ 677.0, 48.0, 58.0, 22.0 ],
-                    "text": "loadbang"
-                }
-            },
-            {
-                "box": {
-                    "hidden": 1,
-                    "id": "obj-32",
-                    "maxclass": "message",
-                    "numinlets": 2,
-                    "numoutlets": 1,
-                    "outlettype": [ "" ],
-                    "patching_rect": [ 677.0, 95.0, 29.5, 22.0 ],
-                    "text": "1"
-                }
-            },
-            {
-                "box": {
-                    "hidden": 1,
-                    "id": "obj-36",
+                    "id": "obj-7",
                     "maxclass": "newobj",
                     "numinlets": 1,
                     "numoutlets": 1,
                     "outlettype": [ "" ],
-                    "patching_rect": [ 677.0, 135.0, 247.0, 22.0 ],
+                    "patching_rect": [ 801.0, 85.0, 118.0, 25.0 ],
+                    "text": "loadmess recall 1"
+                }
+            },
+            {
+                "box": {
+                    "hidden": 1,
+                    "id": "obj-21",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 801.0, 112.0, 218.0, 25.0 ],
                     "saved_object_attributes": {
                         "client_rect": [ 4, 44, 358, 172 ],
                         "parameter_enable": 0,
                         "parameter_mappable": 0,
-                        "storage_rect": [ 100, 171, 1032, 829 ]
+                        "storage_rect": [ 583, 69, 1034, 197 ]
                     },
-                    "text": "pattrstorage RhythmModifiers @savemode 2",
-                    "varname": "RhythmModifiers"
+                    "text": "pattrstorage 04RM @savemode 2",
+                    "varname": "04RM"
                 }
             },
             {
                 "box": {
-                    "hidden": 1,
-                    "id": "obj-16",
-                    "maxclass": "newobj",
-                    "numinlets": 1,
-                    "numoutlets": 4,
-                    "outlettype": [ "", "", "", "" ],
-                    "patching_rect": [ 556.0, 74.0, 56.0, 22.0 ],
-                    "text": "autopattr",
-                    "varname": "u476003008"
-                }
-            },
-            {
-                "box": {
-                    "blinkcolor": [ 0.023529411764706, 0.83921568627451, 0.627450980392157, 1.0 ],
-                    "blinktime": 10,
-                    "id": "obj-15",
-                    "maxclass": "button",
-                    "numinlets": 1,
-                    "numoutlets": 1,
-                    "outlettype": [ "bang" ],
-                    "parameter_enable": 0,
-                    "patching_rect": [ 333.0, 1461.0, 24.0, 24.0 ]
-                }
-            },
-            {
-                "box": {
-                    "id": "obj-13",
-                    "linecount": 2,
-                    "maxclass": "comment",
-                    "numinlets": 1,
-                    "numoutlets": 0,
-                    "patching_rect": [ 53.0, 1135.0, 262.0, 33.0 ],
-                    "text": "Quantize the incoming bangs to the time interval specified - transport must be running!"
-                }
-            },
-            {
-                "box": {
-                    "fontface": 1,
+                    "fontface": 0,
+                    "fontname": "Helvetica Neue",
                     "fontsize": 16.0,
-                    "id": "obj-14",
+                    "id": "obj-5",
+                    "linecount": 4,
                     "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "patching_rect": [ 53.0, 1105.0, 180.0, 24.0 ],
-                    "text": "Quantize",
-                    "textcolor": [ 0.976470588235294, 0.254901960784314, 0.266666666666667, 1.0 ]
+                    "patching_rect": [ 520.0, 377.0, 426.0, 81.0 ],
+                    "text": "MultiModTrigger can have upto 8 stages where the output of the last is chained to the input of the next. Each modes user interface is controlled with the mouse and each has an 'Alt' output that outputs some kind of 'inverse' output."
                 }
             },
             {
@@ -244,51 +68,327 @@
                     "lockeddragscroll": 0,
                     "lockedsize": 0,
                     "maxclass": "bpatcher",
-                    "name": "ModTrigger.maxpat",
+                    "name": "MultiModTrigger.maxpat",
                     "numinlets": 1,
                     "numoutlets": 2,
                     "offset": [ 0.0, 0.0 ],
-                    "outlettype": [ "bang", "bang" ],
-                    "patching_rect": [ 333.0, 1173.0, 99.0, 277.0 ],
-                    "varname": "modTrigger[4]",
+                    "outlettype": [ "", "" ],
+                    "patching_rect": [ 555.0, 1449.0, 384.0, 65.0 ],
+                    "varname": "MultiModTrigger[9]",
                     "viewvisibility": 1
                 }
             },
             {
                 "box": {
-                    "id": "obj-26",
-                    "linecount": 3,
+                    "id": "obj-2",
                     "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "patching_rect": [ 544.0, 726.0, 425.0, 47.0 ],
-                    "text": "This utility outputs the specified number of bangs and the specified interval for each bang received. The toggle allows you to specify the interval in milliseconds or in note values, based on the current transport tempo"
+                    "patching_rect": [ 555.0, 1405.0, 420.0, 23.0 ],
+                    "text": "Add some random jitter to the incoming triggers"
                 }
             },
             {
                 "box": {
                     "fontface": 1,
                     "fontsize": 16.0,
-                    "id": "obj-27",
+                    "id": "obj-4",
                     "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "patching_rect": [ 544.0, 696.0, 180.0, 24.0 ],
+                    "patching_rect": [ 555.0, 1377.0, 420.0, 26.0 ],
+                    "text": "Jitter",
+                    "textcolor": [ 0.976470588235294, 0.254901960784314, 0.266666666666667, 1.0 ]
+                }
+            },
+            {
+                "box": {
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-75",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "MultiModTrigger.maxpat",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "offset": [ 0.0, 0.0 ],
+                    "outlettype": [ "", "" ],
+                    "patching_rect": [ 75.0, 1449.0, 384.0, 65.0 ],
+                    "varname": "MultiModTrigger[8]",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-76",
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 75.0, 1405.0, 420.0, 23.0 ],
+                    "text": "Add swing to the incoming triggers"
+                }
+            },
+            {
+                "box": {
+                    "fontface": 1,
+                    "fontsize": 16.0,
+                    "id": "obj-77",
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 75.0, 1377.0, 420.0, 26.0 ],
+                    "text": "Swing",
+                    "textcolor": [ 0.976470588235294, 0.254901960784314, 0.266666666666667, 1.0 ]
+                }
+            },
+            {
+                "box": {
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-72",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "MultiModTrigger.maxpat",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "offset": [ 0.0, 0.0 ],
+                    "outlettype": [ "", "" ],
+                    "patching_rect": [ 555.0, 1284.0, 384.0, 65.0 ],
+                    "varname": "MultiModTrigger[7]",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-73",
+                    "linecount": 2,
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 555.0, 1224.0, 420.0, 39.0 ],
+                    "text": "Remap the velocity of incoming triggers. Alt output unchanged triggers"
+                }
+            },
+            {
+                "box": {
+                    "fontface": 1,
+                    "fontsize": 16.0,
+                    "id": "obj-74",
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 555.0, 1200.0, 420.0, 26.0 ],
+                    "text": "Curve",
+                    "textcolor": [ 0.976470588235294, 0.254901960784314, 0.266666666666667, 1.0 ]
+                }
+            },
+            {
+                "box": {
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-69",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "MultiModTrigger.maxpat",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "offset": [ 0.0, 0.0 ],
+                    "outlettype": [ "", "" ],
+                    "patching_rect": [ 75.0, 1284.0, 384.0, 65.0 ],
+                    "varname": "MultiModTrigger[6]",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-70",
+                    "linecount": 2,
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 75.0, 1224.0, 420.0, 39.0 ],
+                    "text": "Filter triggers based on their velocity level. Alt output is the inverse."
+                }
+            },
+            {
+                "box": {
+                    "fontface": 1,
+                    "fontsize": 16.0,
+                    "id": "obj-71",
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 75.0, 1200.0, 420.0, 26.0 ],
+                    "text": "Threshold",
+                    "textcolor": [ 0.976470588235294, 0.254901960784314, 0.266666666666667, 1.0 ]
+                }
+            },
+            {
+                "box": {
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-66",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "MultiModTrigger.maxpat",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "offset": [ 0.0, 0.0 ],
+                    "outlettype": [ "", "" ],
+                    "patching_rect": [ 558.0, 1095.0, 384.0, 65.0 ],
+                    "varname": "MultiModTrigger[5]",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-67",
+                    "linecount": 2,
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 558.0, 1035.0, 420.0, 39.0 ],
+                    "text": "Delay an incoming trigger by the specified amount. Alt output is the undelayed trigger"
+                }
+            },
+            {
+                "box": {
+                    "fontface": 1,
+                    "fontsize": 16.0,
+                    "id": "obj-68",
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 558.0, 1011.0, 420.0, 26.0 ],
+                    "text": "Delay",
+                    "textcolor": [ 0.976470588235294, 0.254901960784314, 0.266666666666667, 1.0 ]
+                }
+            },
+            {
+                "box": {
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-59",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "MultiModTrigger.maxpat",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "offset": [ 0.0, 0.0 ],
+                    "outlettype": [ "", "" ],
+                    "patching_rect": [ 75.0, 1095.0, 384.0, 65.0 ],
+                    "varname": "MultiModTrigger[4]",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-60",
+                    "linecount": 2,
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 75.0, 1035.0, 420.0, 39.0 ],
+                    "text": "Quantize the incoming triggers to the grid (requires transport to be on). Alt output is the unquantised triggers."
+                }
+            },
+            {
+                "box": {
+                    "fontface": 1,
+                    "fontsize": 16.0,
+                    "id": "obj-61",
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 75.0, 1011.0, 420.0, 26.0 ],
+                    "text": "Quantize",
+                    "textcolor": [ 0.976470588235294, 0.254901960784314, 0.266666666666667, 1.0 ]
+                }
+            },
+            {
+                "box": {
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-58",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "MultiModTrigger.maxpat",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "offset": [ 0.0, 0.0 ],
+                    "outlettype": [ "", "" ],
+                    "patching_rect": [ 555.0, 885.0, 384.0, 65.0 ],
+                    "varname": "MultiModTrigger[3]",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-56",
+                    "linecount": 3,
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 552.0, 810.0, 430.0, 55.0 ],
+                    "text": "Output the specified number of bangs at the specified interval. Adjustable velocity drop off (hold shift while dragging). Alt output is the original trigger."
+                }
+            },
+            {
+                "box": {
+                    "fontface": 1,
+                    "fontsize": 16.0,
+                    "id": "obj-57",
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 552.0, 780.0, 180.0, 26.0 ],
                     "text": "Repeater",
                     "textcolor": [ 0.976470588235294, 0.254901960784314, 0.266666666666667, 1.0 ]
                 }
             },
             {
                 "box": {
-                    "blinkcolor": [ 0.023529411764706, 0.83921568627451, 0.627450980392157, 1.0 ],
-                    "blinktime": 10,
-                    "id": "obj-24",
-                    "maxclass": "button",
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-55",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "MultiModTrigger.maxpat",
                     "numinlets": 1,
-                    "numoutlets": 1,
-                    "outlettype": [ "bang" ],
-                    "parameter_enable": 0,
-                    "patching_rect": [ 544.0, 1065.0, 24.0, 24.0 ]
+                    "numoutlets": 2,
+                    "offset": [ 0.0, 0.0 ],
+                    "outlettype": [ "", "" ],
+                    "patching_rect": [ 555.0, 660.0, 384.0, 65.0 ],
+                    "varname": "MultiModTrigger[2]",
+                    "viewvisibility": 1
                 }
             },
             {
@@ -298,31 +398,18 @@
                     "clickthrough": 0,
                     "enablehscroll": 0,
                     "enablevscroll": 0,
-                    "id": "obj-25",
+                    "id": "obj-54",
                     "lockeddragscroll": 0,
                     "lockedsize": 0,
                     "maxclass": "bpatcher",
-                    "name": "ModTrigger.maxpat",
+                    "name": "MultiModTrigger.maxpat",
                     "numinlets": 1,
                     "numoutlets": 2,
                     "offset": [ 0.0, 0.0 ],
-                    "outlettype": [ "bang", "bang" ],
-                    "patching_rect": [ 544.0, 779.0, 99.0, 278.0 ],
-                    "varname": "modTrigger",
+                    "outlettype": [ "", "" ],
+                    "patching_rect": [ 75.0, 885.0, 384.0, 65.0 ],
+                    "varname": "MultiModTrigger[1]",
                     "viewvisibility": 1
-                }
-            },
-            {
-                "box": {
-                    "blinkcolor": [ 0.023529411764706, 0.83921568627451, 0.627450980392157, 1.0 ],
-                    "blinktime": 10,
-                    "id": "obj-23",
-                    "maxclass": "button",
-                    "numinlets": 1,
-                    "numoutlets": 1,
-                    "outlettype": [ "bang" ],
-                    "parameter_enable": 0,
-                    "patching_rect": [ 333.0, 1065.0, 24.0, 24.0 ]
                 }
             },
             {
@@ -332,18 +419,113 @@
                     "clickthrough": 0,
                     "enablehscroll": 0,
                     "enablevscroll": 0,
-                    "id": "obj-21",
+                    "id": "obj-53",
                     "lockeddragscroll": 0,
                     "lockedsize": 0,
                     "maxclass": "bpatcher",
-                    "name": "ModTrigger.maxpat",
+                    "name": "MultiModTrigger.maxpat",
                     "numinlets": 1,
                     "numoutlets": 2,
                     "offset": [ 0.0, 0.0 ],
-                    "outlettype": [ "bang", "bang" ],
-                    "patching_rect": [ 333.0, 779.0, 99.0, 278.0 ],
-                    "varname": "modTrigger[1]",
+                    "outlettype": [ "", "" ],
+                    "patching_rect": [ 74.0, 660.0, 384.0, 65.0 ],
+                    "varname": "MultiModTrigger",
                     "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "fontface": 0,
+                    "fontname": "Helvetica Neue",
+                    "fontsize": 16.0,
+                    "id": "obj-47",
+                    "linecount": 3,
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 60.0, 188.0, 804.0, 62.0 ],
+                    "text": "Take a stream of triggers and reshape it. Modifier stages can be chained: thin a stream by probability, gate it through a euclidean pattern, or quantize free-running chaos onto a clock grid. The MultiMod patcher chains stages like these in one panel."
+                }
+            },
+            {
+                "box": {
+                    "fontface": 1,
+                    "fontname": "Helvetica Neue",
+                    "fontsize": 48.0,
+                    "id": "obj-48",
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 60.0, 104.0, 72.0, 64.0 ],
+                    "text": "04",
+                    "textcolor": [ 0.07450980392156863, 0.07450980392156863, 0.07450980392156863, 1.0 ]
+                }
+            },
+            {
+                "box": {
+                    "angle": 270.0,
+                    "bgcolor": [ 0.09580493718385696, 0.08593045920133591, 0.06428902596235275, 0.0 ],
+                    "border": 1,
+                    "bordercolor": [ 0.789483368396759, 0.7597718834877014, 0.6996591091156006, 1.0 ],
+                    "id": "obj-49",
+                    "maxclass": "panel",
+                    "mode": 0,
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 60.0, 282.0, 930.0, 4.0 ],
+                    "proportion": 0.5,
+                    "rounded": 0
+                }
+            },
+            {
+                "box": {
+                    "fontface": 0,
+                    "fontname": "Arial",
+                    "fontsize": 10.0,
+                    "id": "obj-50",
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 60.0, 60.0, 245.0, 18.0 ],
+                    "text": "STRANGE PULSE TOOKIT"
+                }
+            },
+            {
+                "box": {
+                    "bgcolor": [ 0.09580493718385696, 0.08593045920133591, 0.06428902596235275, 1.0 ],
+                    "id": "obj-51",
+                    "maxclass": "panel",
+                    "mode": 0,
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 60.0, 45.0, 930.0, 4.0 ]
+                }
+            },
+            {
+                "box": {
+                    "fontface": 1,
+                    "fontname": "Helvetica Neue",
+                    "fontsize": 48.0,
+                    "id": "obj-52",
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 134.0, 104.0, 637.0, 64.0 ],
+                    "text": "Rhythm Modifiers",
+                    "textcolor": [ 0.8634395599365234, 0.22767668962478638, 0.10518772155046463, 1.0 ]
+                }
+            },
+            {
+                "box": {
+                    "hidden": 1,
+                    "id": "obj-16",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 4,
+                    "outlettype": [ "", "", "", "" ],
+                    "patching_rect": [ 801.0, 143.0, 68.0, 25.0 ],
+                    "text": "autopattr",
+                    "varname": "u476003008"
                 }
             },
             {
@@ -353,8 +535,8 @@
                     "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "patching_rect": [ 53.0, 721.0, 390.0, 33.0 ],
-                    "text": "This utility outputs a user specified euclidian pattern, driven by the incoming bangs"
+                    "patching_rect": [ 555.0, 585.0, 390.0, 39.0 ],
+                    "text": "This mode outputs a user specified euclidian pattern, driven by the incoming bangs. Alt output is the unselected steps."
                 }
             },
             {
@@ -365,43 +547,9 @@
                     "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "patching_rect": [ 53.0, 691.0, 180.0, 24.0 ],
+                    "patching_rect": [ 555.0, 559.0, 180.0, 26.0 ],
                     "text": "Euclidian",
                     "textcolor": [ 0.976470588235294, 0.254901960784314, 0.266666666666667, 1.0 ]
-                }
-            },
-            {
-                "box": {
-                    "blinkcolor": [ 0.023529411764706, 0.83921568627451, 0.627450980392157, 1.0 ],
-                    "blinktime": 10,
-                    "id": "obj-7",
-                    "maxclass": "button",
-                    "numinlets": 1,
-                    "numoutlets": 1,
-                    "outlettype": [ "bang" ],
-                    "parameter_enable": 0,
-                    "patching_rect": [ 544.0, 653.0, 24.0, 24.0 ]
-                }
-            },
-            {
-                "box": {
-                    "bgmode": 0,
-                    "border": 0,
-                    "clickthrough": 0,
-                    "enablehscroll": 0,
-                    "enablevscroll": 0,
-                    "id": "obj-8",
-                    "lockeddragscroll": 0,
-                    "lockedsize": 0,
-                    "maxclass": "bpatcher",
-                    "name": "ModTrigger.maxpat",
-                    "numinlets": 1,
-                    "numoutlets": 2,
-                    "offset": [ 0.0, 0.0 ],
-                    "outlettype": [ "bang", "bang" ],
-                    "patching_rect": [ 544.0, 367.0, 101.0, 278.0 ],
-                    "varname": "modTrigger[2]",
-                    "viewvisibility": 1
                 }
             },
             {
@@ -411,8 +559,8 @@
                     "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "patching_rect": [ 544.0, 298.0, 392.0, 33.0 ],
-                    "text": "This utility simply outputs the incoming bang, given some user specified percentage chance"
+                    "patching_rect": [ 72.5, 810.0, 454.0, 39.0 ],
+                    "text": "This mode outputs the incoming bang, given some user specified percentage chance. Alt output fires when the main output does not."
                 }
             },
             {
@@ -423,69 +571,9 @@
                     "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "patching_rect": [ 544.5, 272.0, 179.0, 24.0 ],
+                    "patching_rect": [ 73.5, 780.0, 179.0, 26.0 ],
                     "text": "Probability",
                     "textcolor": [ 0.976470588235294, 0.254901960784314, 0.266666666666667, 1.0 ]
-                }
-            },
-            {
-                "box": {
-                    "blinkcolor": [ 0.023529411764706, 0.83921568627451, 0.627450980392157, 1.0 ],
-                    "blinktime": 10,
-                    "id": "obj-4",
-                    "maxclass": "button",
-                    "numinlets": 1,
-                    "numoutlets": 1,
-                    "outlettype": [ "bang" ],
-                    "parameter_enable": 0,
-                    "patching_rect": [ 333.0, 653.0, 24.0, 24.0 ]
-                }
-            },
-            {
-                "box": {
-                    "bgmode": 0,
-                    "border": 0,
-                    "clickthrough": 0,
-                    "enablehscroll": 0,
-                    "enablevscroll": 0,
-                    "id": "obj-40",
-                    "lockeddragscroll": 0,
-                    "lockedsize": 0,
-                    "maxclass": "bpatcher",
-                    "name": "ModTrigger.maxpat",
-                    "numinlets": 1,
-                    "numoutlets": 2,
-                    "offset": [ 0.0, 0.0 ],
-                    "outlettype": [ "bang", "bang" ],
-                    "patching_rect": [ 333.0, 367.0, 102.0, 278.0 ],
-                    "varname": "modTrigger[3]",
-                    "viewvisibility": 1
-                }
-            },
-            {
-                "box": {
-                    "blinkcolor": [ 0.023529411764706, 0.83921568627451, 0.627450980392157, 1.0 ],
-                    "blinktime": 10,
-                    "id": "obj-6",
-                    "maxclass": "button",
-                    "numinlets": 1,
-                    "numoutlets": 1,
-                    "outlettype": [ "bang" ],
-                    "parameter_enable": 0,
-                    "patching_rect": [ 181.0, 489.0, 24.0, 24.0 ]
-                }
-            },
-            {
-                "box": {
-                    "blinkcolor": [ 1.0, 0.819607843137255, 0.4, 1.0 ],
-                    "blinktime": 10,
-                    "id": "obj-5",
-                    "maxclass": "button",
-                    "numinlets": 1,
-                    "numoutlets": 1,
-                    "outlettype": [ "bang" ],
-                    "parameter_enable": 0,
-                    "patching_rect": [ 53.0, 489.0, 24.0, 24.0 ]
                 }
             },
             {
@@ -501,33 +589,39 @@
                     "maxclass": "bpatcher",
                     "name": "GradientTrigger.maxpat",
                     "numinlets": 1,
-                    "numoutlets": 2,
+                    "numoutlets": 4,
                     "offset": [ 0.0, 0.0 ],
-                    "outlettype": [ "bang", "bang" ],
-                    "patching_rect": [ 53.0, 390.0, 147.0, 95.0 ],
+                    "outlettype": [ "float", "float", "signal", "signal" ],
+                    "patching_rect": [ 74.0, 377.0, 340.0, 158.0 ],
                     "viewvisibility": 1
                 }
             },
             {
                 "box": {
+                    "fontface": 0,
+                    "fontsize": 12.0,
                     "id": "obj-12",
                     "maxclass": "newobj",
                     "numinlets": 1,
                     "numoutlets": 6,
                     "outlettype": [ "signal", "signal", "signal", "signal", "signal", "signal" ],
-                    "patching_rect": [ 53.0, 356.0, 111.0, 22.0 ],
+                    "patching_rect": [ 74.0, 337.0, 117.0, 22.0 ],
+                    "style": "StrangeStyle",
                     "text": "spt.attractor.dadras"
                 }
             },
             {
                 "box": {
+                    "fontface": 0,
+                    "fontsize": 14.0,
                     "id": "obj-11",
-                    "linecount": 2,
+                    "linecount": 3,
                     "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "patching_rect": [ 53.0, 298.0, 390.0, 33.0 ],
-                    "text": "This utility keeps track of the number of bangs inputted and simply outputs the incoming bang if counter % N == 0, where N is set in the UI"
+                    "patching_rect": [ 74.0, 585.0, 451.0, 55.0 ],
+                    "style": "StrangeStyle",
+                    "text": "This mode keeps track of the number of bangs inputted and simply outputs the incoming bang if counter % N == 0, where N is set in the UI. Alt output is when counter % N != 0."
                 }
             },
             {
@@ -538,78 +632,27 @@
                     "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "patching_rect": [ 54.5, 272.0, 178.0, 24.0 ],
+                    "patching_rect": [ 74.0, 559.0, 178.0, 26.0 ],
                     "text": "Modulo",
                     "textcolor": [ 0.976470588235294, 0.254901960784314, 0.266666666666667, 1.0 ]
                 }
             },
             {
                 "box": {
-                    "id": "obj-9",
-                    "linecount": 2,
-                    "maxclass": "comment",
+                    "angle": 270.0,
+                    "background": 1,
+                    "bgcolor": [ 0.847468376159668, 0.8226896524429321, 0.771217942237854, 1.0 ],
+                    "id": "obj-6",
+                    "maxclass": "panel",
+                    "mode": 0,
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "patching_rect": [ 45.0, 138.0, 390.0, 33.0 ],
-                    "text": "This is one object with a range of different ways to modify an incoming stream of bangs (plus a convinence 'multi' version - see below)"
-                }
-            },
-            {
-                "box": {
-                    "fontface": 1,
-                    "fontsize": 22.0,
-                    "id": "obj-2",
-                    "maxclass": "comment",
-                    "numinlets": 1,
-                    "numoutlets": 0,
-                    "patching_rect": [ 45.0, 105.0, 230.0, 31.0 ],
-                    "text": "Rhythm Modifiers:",
-                    "textcolor": [ 0.1530902088, 0.4896173477, 0.6329272389, 1.0 ]
-                }
-            },
-            {
-                "box": {
-                    "fontface": 1,
-                    "fontsize": 12.0,
-                    "id": "obj-76",
-                    "maxclass": "comment",
-                    "numinlets": 1,
-                    "numoutlets": 0,
-                    "patching_rect": [ 45.0, 68.0, 349.0, 20.0 ],
-                    "text": "written by Max Worgan (c) 2025, MIT Licence"
-                }
-            },
-            {
-                "box": {
-                    "fontface": 0,
-                    "fontname": "Arial",
-                    "fontsize": 40.0,
-                    "id": "obj-22",
-                    "maxclass": "comment",
-                    "numinlets": 1,
-                    "numoutlets": 0,
-                    "patching_rect": [ 45.0, 15.0, 422.0, 51.0 ],
-                    "text": "Strange Pulse Toolkit",
-                    "textcolor": [ 0.952941176470588, 0.447058823529412, 0.172549019607843, 1.0 ]
+                    "patching_rect": [ 60.0, 315.0, 960.0, 1260.0 ],
+                    "proportion": 0.5
                 }
             }
         ],
         "lines": [
-            {
-                "patchline": {
-                    "destination": [ "obj-15", 0 ],
-                    "order": 0,
-                    "source": [ "obj-1", 0 ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [ "obj-28", 0 ],
-                    "midpoints": [ 342.5, 1460.0, 495.3671875, 1460.0, 495.3671875, 1163.0, 553.5, 1163.0 ],
-                    "order": 1,
-                    "source": [ "obj-1", 0 ]
-                }
-            },
             {
                 "patchline": {
                     "destination": [ "obj-3", 0 ],
@@ -618,118 +661,99 @@
             },
             {
                 "patchline": {
-                    "destination": [ "obj-23", 0 ],
-                    "source": [ "obj-21", 0 ]
+                    "destination": [ "obj-53", 0 ],
+                    "midpoints": [ 83.5, 546.0, 66.0, 546.0, 66.0, 642.0, 83.5, 642.0 ],
+                    "source": [ "obj-3", 0 ]
                 }
             },
             {
                 "patchline": {
-                    "destination": [ "obj-1", 0 ],
-                    "order": 1,
-                    "source": [ "obj-25", 0 ]
+                    "destination": [ "obj-55", 0 ],
+                    "midpoints": [ 83.5, 735.0, 540.0, 735.0, 540.0, 657.0, 564.5, 657.0 ],
+                    "source": [ "obj-53", 0 ]
                 }
             },
             {
                 "patchline": {
-                    "destination": [ "obj-24", 0 ],
-                    "order": 0,
-                    "source": [ "obj-25", 0 ]
+                    "destination": [ "obj-58", 0 ],
+                    "midpoints": [ 84.5, 960.0, 540.0, 960.0, 540.0, 882.0, 564.5, 882.0 ],
+                    "source": [ "obj-54", 0 ]
                 }
             },
             {
                 "patchline": {
-                    "destination": [ "obj-31", 0 ],
-                    "source": [ "obj-28", 0 ]
+                    "destination": [ "obj-54", 0 ],
+                    "midpoints": [ 564.5, 765.0, 537.0, 765.0, 537.0, 870.0, 84.5, 870.0 ],
+                    "source": [ "obj-55", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-59", 0 ],
+                    "midpoints": [ 564.5, 996.0, 60.0, 996.0, 60.0, 1092.0, 84.5, 1092.0 ],
+                    "source": [ "obj-58", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-66", 0 ],
+                    "midpoints": [ 84.5, 1170.0, 543.0, 1170.0, 543.0, 1092.0, 567.5, 1092.0 ],
+                    "source": [ "obj-59", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-69", 0 ],
+                    "midpoints": [ 567.5, 1185.0, 60.0, 1185.0, 60.0, 1281.0, 84.5, 1281.0 ],
+                    "source": [ "obj-66", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-72", 0 ],
+                    "midpoints": [ 449.5, 1350.0, 540.0, 1350.0, 540.0, 1281.0, 564.5, 1281.0 ],
+                    "source": [ "obj-69", 1 ]
                 }
             },
             {
                 "patchline": {
                     "destination": [ "obj-21", 0 ],
-                    "midpoints": [ 190.5, 487.0, 167.0, 487.0, 167.0, 676.0, 34.0, 676.0, 34.0, 766.0, 342.5, 766.0 ],
-                    "order": 3,
-                    "source": [ "obj-3", 1 ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [ "obj-33", 0 ],
-                    "midpoints": [ 62.5, 486.0, 31.68359375, 486.0, 31.68359375, 677.49609375, 32.203125, 677.49609375, 32.203125, 708.0, 33.3125, 708.0, 33.3125, 1522.42578125, 541.5, 1522.42578125 ],
-                    "order": 1,
-                    "source": [ "obj-3", 0 ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [ "obj-40", 0 ],
-                    "midpoints": [ 190.5, 487.0, 176.0, 487.0, 176.0, 523.0, 320.0, 523.0, 320.0, 361.0, 342.5, 361.0 ],
-                    "order": 2,
-                    "source": [ "obj-3", 1 ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [ "obj-5", 0 ],
-                    "order": 0,
-                    "source": [ "obj-3", 0 ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [ "obj-6", 0 ],
-                    "order": 0,
-                    "source": [ "obj-3", 1 ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [ "obj-8", 0 ],
-                    "midpoints": [ 190.5, 487.0, 176.0, 487.0, 176.0, 523.0, 320.0, 523.0, 320.0, 352.0, 553.5, 352.0 ],
-                    "order": 1,
-                    "source": [ "obj-3", 1 ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [ "obj-36", 0 ],
                     "hidden": 1,
-                    "source": [ "obj-32", 0 ]
+                    "source": [ "obj-7", 0 ]
                 }
             },
             {
                 "patchline": {
-                    "destination": [ "obj-41", 0 ],
-                    "source": [ "obj-33", 0 ]
+                    "destination": [ "obj-75", 0 ],
+                    "midpoints": [ 564.5, 1362.0, 60.0, 1362.0, 60.0, 1446.0, 84.5, 1446.0 ],
+                    "source": [ "obj-72", 0 ]
                 }
             },
             {
                 "patchline": {
-                    "destination": [ "obj-32", 0 ],
-                    "hidden": 1,
-                    "source": [ "obj-34", 0 ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [ "obj-25", 0 ],
-                    "midpoints": [ 342.5, 649.0, 368.0, 649.0, 368.0, 706.0, 530.0, 706.0, 530.0, 775.0, 553.5, 775.0 ],
-                    "order": 1,
-                    "source": [ "obj-40", 0 ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [ "obj-4", 0 ],
-                    "order": 0,
-                    "source": [ "obj-40", 0 ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [ "obj-7", 0 ],
-                    "source": [ "obj-8", 0 ]
+                    "destination": [ "obj-1", 0 ],
+                    "midpoints": [ 84.5, 1524.0, 540.0, 1524.0, 540.0, 1446.0, 564.5, 1446.0 ],
+                    "source": [ "obj-75", 0 ]
                 }
             }
         ],
-        "autosave": 1
+        "autosave": 1,
+        "styles": [
+            {
+                "name": "StrangeStyle",
+                "default": {
+                    "bgcolor": [ 0.9647058823529412, 0.9529411764705882, 0.9254901960784314, 1.0 ],
+                    "editing_bgcolor": [ 0.9673275351524353, 0.9524412751197815, 0.9268162250518799, 1.0 ],
+                    "fontface": [ 0 ],
+                    "fontname": [ "Helvetica Neue" ],
+                    "fontsize": [ 14.0 ],
+                    "locked_bgcolor": [ 0.9673275351524353, 0.9524412751197815, 0.9268162250518799, 1.0 ],
+                    "syntax_objectcolor": [ 0.4081761837005615, 0.38345998525619507, 0.309639036655426, 1.0 ],
+                    "textcolor": [ 0.4081761837005615, 0.38345998525619507, 0.309639036655426, 1.0 ]
+                },
+                "parentstyle": "",
+                "multi": 0
+            }
+        ]
     }
 }

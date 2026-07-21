@@ -42,11 +42,12 @@
    {
     "box": {
      "maxclass": "newobj",
-     "text": "route run",
+     "text": "route run rch",
      "id": "rt",
      "numinlets": 1,
-     "numoutlets": 2,
+     "numoutlets": 3,
      "outlettype": [
+      "",
       "",
       ""
      ],
@@ -179,6 +180,60 @@
       22.0
      ]
     }
+   },
+   {
+    "box": {
+     "maxclass": "newobj",
+     "text": "selector~ 2",
+     "id": "rsel",
+     "numinlets": 3,
+     "numoutlets": 1,
+     "outlettype": [
+      "signal"
+     ],
+     "patching_rect": [
+      210.0,
+      168.0,
+      66.0,
+      22.0
+     ]
+    }
+   },
+   {
+    "box": {
+     "maxclass": "newobj",
+     "text": "loadbang",
+     "id": "rdef",
+     "numinlets": 1,
+     "numoutlets": 1,
+     "outlettype": [
+      "bang"
+     ],
+     "patching_rect": [
+      300.0,
+      30.0,
+      60.0,
+      22.0
+     ]
+    }
+   },
+   {
+    "box": {
+     "maxclass": "message",
+     "text": "2",
+     "id": "rdefm",
+     "numinlets": 2,
+     "numoutlets": 1,
+     "outlettype": [
+      ""
+     ],
+     "patching_rect": [
+      300.0,
+      66.0,
+      32.0,
+      22.0
+     ]
+    }
    }
   ],
   "lines": [
@@ -210,7 +265,7 @@
     "patchline": {
      "source": [
       "rt",
-      1
+      2
      ],
      "destination": [
       "gr",
@@ -269,18 +324,6 @@
    {
     "patchline": {
      "source": [
-      "gr",
-      1
-     ],
-     "destination": [
-      "gR",
-      0
-     ]
-    }
-   },
-   {
-    "patchline": {
-     "source": [
       "gl",
       0
      ],
@@ -298,6 +341,78 @@
      ],
      "destination": [
       "o2",
+      0
+     ]
+    }
+   },
+   {
+    "patchline": {
+     "source": [
+      "rt",
+      1
+     ],
+     "destination": [
+      "rsel",
+      0
+     ]
+    }
+   },
+   {
+    "patchline": {
+     "source": [
+      "rdef",
+      0
+     ],
+     "destination": [
+      "rdefm",
+      0
+     ]
+    }
+   },
+   {
+    "patchline": {
+     "source": [
+      "rdefm",
+      0
+     ],
+     "destination": [
+      "rsel",
+      0
+     ]
+    }
+   },
+   {
+    "patchline": {
+     "source": [
+      "gr",
+      0
+     ],
+     "destination": [
+      "rsel",
+      1
+     ]
+    }
+   },
+   {
+    "patchline": {
+     "source": [
+      "gr",
+      1
+     ],
+     "destination": [
+      "rsel",
+      2
+     ]
+    }
+   },
+   {
+    "patchline": {
+     "source": [
+      "rsel",
+      0
+     ],
+     "destination": [
+      "gR",
       0
      ]
     }

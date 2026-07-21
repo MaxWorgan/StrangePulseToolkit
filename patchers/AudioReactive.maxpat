@@ -14,30 +14,6 @@
         "boxes": [
             {
                 "box": {
-                    "bgcolor": [ 1.0, 1.0, 1.0, 0.84 ],
-                    "bgmode": 0,
-                    "border": 0,
-                    "clickthrough": 0,
-                    "enablehscroll": 0,
-                    "enablevscroll": 0,
-                    "id": "envelope",
-                    "lockeddragscroll": 0,
-                    "lockedsize": 0,
-                    "maxclass": "bpatcher",
-                    "name": "EventEnvelope.maxpat",
-                    "numinlets": 2,
-                    "numoutlets": 1,
-                    "offset": [ 0.0, 0.0 ],
-                    "outlettype": [ "signal" ],
-                    "patching_rect": [ 307.14, 172.44, 178.0, 92.0 ],
-                    "presentation": 1,
-                    "presentation_rect": [ 307.0, 183.0, 178.0, 92.0 ],
-                    "varname": "EnvelopeEditor",
-                    "viewvisibility": 1
-                }
-            },
-            {
-                "box": {
                     "id": "lenadd",
                     "maxclass": "newobj",
                     "numinlets": 2,
@@ -73,11 +49,11 @@
                 "box": {
                     "comment": "Audio In",
                     "id": "audio",
-                    "index": 1,
+                    "index": 0,
                     "maxclass": "inlet",
                     "numinlets": 0,
                     "numoutlets": 1,
-                    "outlettype": [ "signal" ],
+                    "outlettype": [ "" ],
                     "patching_rect": [ 40.0, 35.0, 30.0, 30.0 ]
                 }
             },
@@ -105,40 +81,19 @@
             },
             {
                 "box": {
-                    "border": 0,
-                    "filename": "AudioReactive.js",
-                    "id": "ui",
-                    "maxclass": "v8ui",
-                    "numinlets": 1,
-                    "numoutlets": 1,
-                    "outlettype": [ "" ],
-                    "parameter_enable": 0,
-                    "patching_rect": [ 0.0, 0.0, 494.0, 323.0 ],
-                    "presentation": 1,
-                    "presentation_rect": [ -4.0, 0.0, 494.0, 323.0 ],
-                    "textfile": {
-                        "filename": "AudioReactive.js",
-                        "flags": 0,
-                        "embed": 0,
-                        "autowatch": 1
-                    },
-                    "varname": "ui"
-                }
-            },
-            {
-                "box": {
-                    "bgcolor": [ 0.126, 0.126, 0.141, 1.0 ],
-                    "elementcolor": [ 0.722, 1.0, 0.361, 1.0 ],
+                    "bgcolor": [ 0.886, 0.863, 0.808, 1.0 ],
+                    "elementcolor": [ 0.863, 0.227, 0.106, 1.0 ],
                     "id": "envlen",
-                    "knobcolor": [ 0.722, 1.0, 0.361, 1.0 ],
+                    "knobcolor": [ 0.863, 0.227, 0.106, 1.0 ],
                     "maxclass": "slider",
                     "numinlets": 1,
                     "numoutlets": 1,
                     "orientation": 1,
                     "outlettype": [ "" ],
+                    "parameter_enable": 0,
                     "patching_rect": [ 600.0, 400.0, 178.0, 16.0 ],
                     "presentation": 1,
-                    "presentation_rect": [ 307.0, 281.0, 178.0, 16.0 ],
+                    "presentation_rect": [ 306.56999999999994, 283.0, 178.0, 16.0 ],
                     "size": 1991.0,
                     "varname": "envlen"
                 }
@@ -147,7 +102,7 @@
                 "box": {
                     "comment": "Event Out",
                     "id": "event-out",
-                    "index": 1,
+                    "index": 0,
                     "maxclass": "outlet",
                     "numinlets": 1,
                     "numoutlets": 0,
@@ -158,7 +113,7 @@
                 "box": {
                     "comment": "Envelope Signal Out",
                     "id": "env-out",
-                    "index": 2,
+                    "index": 0,
                     "maxclass": "outlet",
                     "numinlets": 1,
                     "numoutlets": 0,
@@ -169,7 +124,7 @@
                 "box": {
                     "comment": "Follower Signal Out",
                     "id": "follow-out",
-                    "index": 3,
+                    "index": 0,
                     "maxclass": "outlet",
                     "numinlets": 1,
                     "numoutlets": 0,
@@ -506,10 +461,57 @@
                         "Holdoff": [ 100.0 ],
                         "Hysteresis": [ 0.05975670484456143 ],
                         "LowHz": [ 80.0 ],
-                        "Threshold": [ 0.09665718147542154 ]
+                        "Threshold": [ 0.09665718147542154 ],
+                        "envlen": [ 390 ]
                     },
                     "text": "autopattr",
                     "varname": "uAudioReactive"
+                }
+            },
+            {
+                "box": {
+                    "bgcolor": [ 0.925, 0.906, 0.863, 1.0 ],
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "envelope",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "EventEnvelope.maxpat",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "offset": [ 0.0, 0.0 ],
+                    "outlettype": [ "signal" ],
+                    "patching_rect": [ 307.14, 172.44, 176.86, 122.0 ],
+                    "presentation": 1,
+                    "presentation_rect": [ 307.14, 172.44, 176.86, 140.56 ],
+                    "varname": "EnvelopeEditor",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "border": 0,
+                    "filename": "AudioReactive.js",
+                    "id": "ui",
+                    "maxclass": "v8ui",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "parameter_enable": 0,
+                    "patching_rect": [ 0.0, 0.0, 494.0, 323.0 ],
+                    "presentation": 1,
+                    "presentation_rect": [ 0.0, 0.0, 494.0, 323.0 ],
+                    "textfile": {
+                        "filename": "AudioReactive.js",
+                        "flags": 0,
+                        "embed": 0,
+                        "autowatch": 1
+                    },
+                    "varname": "ui"
                 }
             }
         ],
@@ -519,42 +521,6 @@
                     "destination": [ "follower", 4 ],
                     "order": 1,
                     "source": [ "attack", 0 ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [ "leninit", 0 ],
-                    "source": [ "load", 0 ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [ "envlen", 0 ],
-                    "source": [ "leninit", 0 ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [ "lenadd", 0 ],
-                    "source": [ "envlen", 0 ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [ "envelope", 1 ],
-                    "source": [ "lenadd", 0 ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [ "lenpre", 0 ],
-                    "source": [ "lenadd", 0 ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [ "ui", 0 ],
-                    "source": [ "lenpre", 0 ]
                 }
             },
             {
@@ -602,6 +568,12 @@
                     "destination": [ "snap-env", 0 ],
                     "order": 0,
                     "source": [ "envelope", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "lenadd", 0 ],
+                    "source": [ "envlen", 0 ]
                 }
             },
             {
@@ -675,6 +647,32 @@
             },
             {
                 "patchline": {
+                    "destination": [ "envelope", 1 ],
+                    "order": 1,
+                    "source": [ "lenadd", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "lenpre", 0 ],
+                    "order": 0,
+                    "source": [ "lenadd", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "envlen", 0 ],
+                    "source": [ "leninit", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "ui", 0 ],
+                    "source": [ "lenpre", 0 ]
+                }
+            },
+            {
+                "patchline": {
                     "destination": [ "ui", 0 ],
                     "source": [ "level-msg", 0 ]
                 }
@@ -696,14 +694,14 @@
             {
                 "patchline": {
                     "destination": [ "fit", 0 ],
-                    "order": 9,
+                    "order": 10,
                     "source": [ "load", 0 ]
                 }
             },
             {
                 "patchline": {
                     "destination": [ "high", 0 ],
-                    "order": 7,
+                    "order": 8,
                     "source": [ "load", 0 ]
                 }
             },
@@ -723,15 +721,22 @@
             },
             {
                 "patchline": {
+                    "destination": [ "leninit", 0 ],
+                    "order": 6,
+                    "source": [ "load", 0 ]
+                }
+            },
+            {
+                "patchline": {
                     "destination": [ "low", 0 ],
-                    "order": 8,
+                    "order": 9,
                     "source": [ "load", 0 ]
                 }
             },
             {
                 "patchline": {
                     "destination": [ "order", 0 ],
-                    "order": 6,
+                    "order": 7,
                     "source": [ "load", 0 ]
                 }
             },
@@ -952,6 +957,7 @@
                     "source": [ "ui", 0 ]
                 }
             }
-        ]
+        ],
+        "autosave": 0
     }
 }
