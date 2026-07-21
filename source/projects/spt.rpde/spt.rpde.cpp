@@ -401,30 +401,35 @@ private:
 
         // Standard RPDE: For each embedded vector index i, track ALL exits and returns
         // (not just the first). This counts every recurrence period.
+        constexpr int kMaxDim = 20;  // matches the dim attribute's upper clamp
+        float yi[kMaxDim];
         for (int i = 0; i < N; ++i) {
             // Start j at i + dmin (we require j - i > dmin for returns)
             int jstart = i + dmin;
             if (jstart >= N)
                 continue;
 
+            // Hoist the reference vector y_i: the inner scan otherwise re-reads
+            // its strided components from the window on every j.
+            for (int k = 0; k < dim; ++k)
+                yi[k] = window_data[i + k * tau];
+
             // Track state: are we currently inside or outside the epsilon-ball?
             // We need to determine initial state at jstart
             float init_dist2 = 0.0f;
             for (int k = 0; k < dim; ++k) {
-                float diff = window_data[i + k * tau] - window_data[jstart + k * tau];
+                float diff = yi[k] - window_data[jstart + k * tau];
                 init_dist2 += diff * diff;
             }
             bool inside = (init_dist2 < eps2);
             bool has_exited = !inside;  // If we start outside, we've already "exited"
 
             // Scan forward looking for exits and returns
-            for (int j = jstart + 1; j < N; ++j) {
-                int lag = j - i;
-                if (lag > dmax) break;
-
+            const int jend = std::min(N, i + dmax + 1);  // hoist the lag>dmax break
+            for (int j = jstart + 1; j < jend; ++j) {
                 float dist2 = 0.0f;
                 for (int k = 0; k < dim; ++k) {
-                    float diff = window_data[i + k * tau] - window_data[j + k * tau];
+                    float diff = yi[k] - window_data[j + k * tau];
                     dist2 += diff * diff;
                 }
 
@@ -436,9 +441,9 @@ private:
                 }
                 else if (!inside && now_inside && has_exited) {
                     // Transition: outside -> inside (return) after having exited
-                    // Record this recurrence period
-                    if (lag > dmin && lag <= dmax)
-                        histogram[lag] += 1;
+                    // Record this recurrence period. j < jend caps lag at dmax;
+                    // j > jstart guarantees lag > dmin.
+                    histogram[j - i] += 1;
                     // Reset has_exited - need a fresh exit before counting next return
                     has_exited = false;
                 }

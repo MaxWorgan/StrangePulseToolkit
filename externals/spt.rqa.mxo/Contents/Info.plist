@@ -14,11 +14,11 @@
 	<key>CFBundleExecutable</key>
 	<string>spt.rqa</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.cycling74.spt-rqa</string>
+	<string>io.github.maxworgan.spt-rqa</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleLongVersionString</key>
-	<string>spt.rqa 0.0.1 - Copyright (c) 2018 Cycling '74</string>
+	<string>spt.rqa 0.0.1 - Copyright (c) 2025-2026 Max Worgan</string>
 	<key>CFBundlePackageType</key>
 	<string>iLaX</string>
 	<key>CFBundleShortVersionString</key>
@@ -54,6 +54,6 @@
 	<key>LSRequiresCarbon</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright (c) 2018 Cycling '74</string>
+	<string>Copyright (c) 2025-2026 Max Worgan</string>
 </dict>
 </plist>

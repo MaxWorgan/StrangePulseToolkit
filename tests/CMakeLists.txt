@@ -19,7 +19,9 @@ set(SPT_STANDALONE_TESTS
     spt.attractor/test/position_cache_test.cpp    # #11 cached reset position + EMA coeff rename
     spt.rpde/deferred_diag_test.cpp               # #2 deferred verbose diagnostics off the worker thread
     spt.rpde/ring_buffer_test.cpp                 # #3 real-time-safe accumulation ring buffer
+    spt.rpde/histogram_scan_test.cpp              # recurrence-period scan: hoisted y_i + jend bound
     spt.rqa/hop_size_test.cpp                     # #7 tunable, clamped hop_size
+    spt.rqa/line_stats_test.cpp                   # recurrence count + vertical-line stats rewrite
 )
 
 # Deliberately NOT registered — these are exploratory analysis harnesses, not
