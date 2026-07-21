@@ -1,0 +1,17 @@
+{
+    "pattrstorage": {
+        "name": "rhythmmakers",
+        "slots": {
+            "1": {
+                "id": 1,
+                "data": {
+                    "threshTrigger::lowerThresh": [ -0.3411764705882352 ],
+                    "threshTrigger::ui": [],
+                    "threshTrigger::upperThresh": [ 0.3647058823529412 ],
+                    "MotionLogic::combineSelect": [ 2.3743016759776534 ],
+                    "MotionLogic::ui": []
+                }
+            }
+        }
+    }
+}

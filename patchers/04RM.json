@@ -1,0 +1,42 @@
+{
+    "pattrstorage": {
+        "name": "04RM",
+        "slots": {
+            "1": {
+                "id": 1,
+                "data": {
+                    "MultiModTrigger::state": [
+                        "{\"stages\":[{\"mode\":\"modulo\",\"modulo\":2,\"prob\":100,\"euSteps\":8,\"euEvents\":5,\"euPattern\":[1,0,1,1,0,1,1,0],\"repeats\":3,\"repInterval\":200,\"repDecay\":0.72,\"quantDiv\":4,\"delay\":200,\"thresh\":0.5,\"curve\":0,\"swing\":62,\"swingDiv\":4,\"accentN\":4,\"accentLvl\":0.4,\"jitMs\":25,\"jitVel\":0.2}],\"tempo\":120}"
+                    ],
+                    "MultiModTrigger[1]::state": [
+                        "{\"stages\":[{\"mode\":\"probability\",\"modulo\":4,\"prob\":67.44186046511628,\"euSteps\":8,\"euEvents\":5,\"euPattern\":[1,0,1,1,0,1,1,0],\"repeats\":3,\"repInterval\":200,\"repDecay\":0.72,\"quantDiv\":4,\"delay\":200,\"thresh\":0.5,\"curve\":0,\"swing\":62,\"swingDiv\":4,\"accentN\":4,\"accentLvl\":0.4,\"jitMs\":25,\"jitVel\":0.2}],\"tempo\":120}"
+                    ],
+                    "MultiModTrigger[2]::state": [
+                        "{\"stages\":[{\"mode\":\"euclidean\",\"modulo\":4,\"prob\":100,\"euSteps\":8,\"euEvents\":5,\"euPattern\":[1,0,1,1,0,1,1,0],\"repeats\":3,\"repInterval\":200,\"repDecay\":0.72,\"quantDiv\":4,\"delay\":200,\"thresh\":0.5,\"curve\":0,\"swing\":62,\"swingDiv\":4,\"accentN\":4,\"accentLvl\":0.4,\"jitMs\":25,\"jitVel\":0.2}],\"tempo\":120}"
+                    ],
+                    "MultiModTrigger[3]::state": [
+                        "{\"stages\":[{\"mode\":\"repeater\",\"modulo\":4,\"prob\":100,\"euSteps\":8,\"euEvents\":5,\"euPattern\":[1,0,1,1,0,1,1,0],\"repeats\":3,\"repInterval\":130,\"repDecay\":0.72,\"quantDiv\":4,\"delay\":200,\"thresh\":0.5,\"curve\":0,\"swing\":62,\"swingDiv\":4,\"accentN\":4,\"accentLvl\":0.4,\"jitMs\":25,\"jitVel\":0.2}],\"tempo\":120}"
+                    ],
+                    "MultiModTrigger[4]::state": [
+                        "{\"stages\":[{\"mode\":\"quantize\",\"modulo\":4,\"prob\":100,\"euSteps\":8,\"euEvents\":5,\"euPattern\":[1,0,1,1,0,1,1,0],\"repeats\":3,\"repInterval\":200,\"repDecay\":0.72,\"quantDiv\":4,\"delay\":200,\"thresh\":0.5,\"curve\":0,\"swing\":62,\"swingDiv\":4,\"accentN\":4,\"accentLvl\":0.4,\"jitMs\":25,\"jitVel\":0.2}],\"tempo\":120}"
+                    ],
+                    "MultiModTrigger[5]::state": [
+                        "{\"stages\":[{\"mode\":\"delay\",\"modulo\":4,\"prob\":100,\"euSteps\":8,\"euEvents\":5,\"euPattern\":[1,0,1,1,0,1,1,0],\"repeats\":3,\"repInterval\":200,\"repDecay\":0.72,\"quantDiv\":4,\"delay\":337.2093023255814,\"thresh\":0.5,\"curve\":0,\"swing\":62,\"swingDiv\":4,\"accentN\":4,\"accentLvl\":0.4,\"jitMs\":25,\"jitVel\":0.2}],\"tempo\":120}"
+                    ],
+                    "MultiModTrigger[6]::state": [
+                        "{\"stages\":[{\"mode\":\"threshold\",\"modulo\":4,\"prob\":100,\"euSteps\":8,\"euEvents\":5,\"euPattern\":[1,0,1,1,0,1,1,0],\"repeats\":3,\"repInterval\":200,\"repDecay\":0.72,\"quantDiv\":4,\"delay\":200,\"thresh\":0.5,\"curve\":0,\"swing\":62,\"swingDiv\":4,\"accentN\":4,\"accentLvl\":0.4,\"jitMs\":25,\"jitVel\":0.2}],\"tempo\":120}"
+                    ],
+                    "MultiModTrigger[7]::state": [
+                        "{\"stages\":[{\"mode\":\"curve\",\"modulo\":4,\"prob\":100,\"euSteps\":8,\"euEvents\":5,\"euPattern\":[1,0,1,1,0,1,1,0],\"repeats\":3,\"repInterval\":200,\"repDecay\":0.72,\"quantDiv\":4,\"delay\":200,\"thresh\":0.5,\"curve\":0.7020000000000001,\"swing\":62,\"swingDiv\":4,\"accentN\":4,\"accentLvl\":0.4,\"jitMs\":25,\"jitVel\":0.2}],\"tempo\":120}"
+                    ],
+                    "MultiModTrigger[8]::state": [
+                        "{\"stages\":[{\"mode\":\"swing\",\"modulo\":4,\"prob\":100,\"euSteps\":8,\"euEvents\":5,\"euPattern\":[1,0,1,1,0,1,1,0],\"repeats\":3,\"repInterval\":200,\"repDecay\":0.72,\"quantDiv\":4,\"delay\":200,\"thresh\":0.5,\"curve\":0,\"swing\":62,\"swingDiv\":4,\"accentN\":4,\"accentLvl\":0.4,\"jitMs\":25,\"jitVel\":0.2}],\"tempo\":120}"
+                    ],
+                    "MultiModTrigger[9]::state": [
+                        "{\"stages\":[{\"mode\":\"jitter\",\"modulo\":1,\"prob\":100,\"euSteps\":8,\"euEvents\":5,\"euPattern\":[1,0,1,1,0,1,1,0],\"repeats\":3,\"repInterval\":200,\"repDecay\":0.72,\"quantDiv\":4,\"delay\":200,\"thresh\":0.5,\"curve\":0,\"swing\":62,\"swingDiv\":4,\"accentN\":4,\"accentLvl\":0.4,\"jitMs\":45.058139534883715,\"jitVel\":0.2}],\"tempo\":120}"
+                    ]
+                }
+            }
+        }
+    }
+}
