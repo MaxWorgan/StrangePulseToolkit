@@ -32,10 +32,10 @@ git clone --recurse-submodules https://github.com/MaxWorgan/StrangePulseToolkit.
 Max should pick up the package on restart; the externals live in `externals/`.
 
 2) **Explore the overview**  
-Open `extras/spt-Overview.maxpat` to jump to the attractor, rhythm, signal-shaping, and feedback patchers.
+Open `extras/spt-Overview.maxpat` to jump to the signal generators, rhythm, signal-shaping, feedback and display patchers.
 
 3) **Play with the demos**  
-Open `patchers/demo1.maxpat`  and `patchers/demo2.maxpat` to see examples of the kinds of instruments you can create. Hack them and adapt to your taste.
+Open `patchers/demos.maxpat` for an index of the five demos — sample ensembles, a wavetank feedback patch, a RAVE latent mapping and external MIDI. Each one is a working instrument; hack them and adapt to your taste.
 
 ---
 
