@@ -33,7 +33,7 @@
             },
             {
                 "box": {
-                    "code": "\r\nParam arneodo_a(-5.5);\r\nParam arneodo_b(3.5);\r\nParam arneodo_c(-1);\r\n\r\nParam x_offset(0);\r\nParam y_offset(0);\r\nParam z_offset(0);\r\nParam gain(0.1);\r\n\r\nHistory a(); \r\nHistory b();\r\nHistory c();\r\n\r\nHistory dt(0.01);\r\n\r\n\r\nHistory x(0.001);\r\nHistory y(0.001);\r\nHistory z(0.001);\r\n\r\nif (in1 != 0){\r\n\t\t\r\n\ta = arneodo_a;\r\n\tb = arneodo_b;\r\n\tc = arneodo_c;\r\n\t\t\r\n\tx = x + dt * y;\n\ty = y + dt * z;\n\tz = z + dt * (-a * x - b * y - z + c * pow(x, 3));\r\n\t\r\n\t\r\n\tif(isnan(x) || isnan(y) || isnan(z)) {\r\n\t\tx = 0.001;\r\n    \ty = 0.001;\r\n\t\tz = 0.001;\r\n\t}\r\n\t\r\n}\r\n\r\n\r\nout1 = tanh(x * gain + x_offset);\r\nout2 = tanh(y * gain + y_offset);\r\nout3 = tanh(z * gain + z_offset);\r\n",
+                    "code": "\r\nParam arneodo_a(-5.5);\r\nParam arneodo_b(3.5);\r\nParam arneodo_c(-1);\r\n\r\nParam x_offset(0);\r\nParam y_offset(0);\r\nParam z_offset(0);\r\nParam gain(0.1);\r\n\r\nHistory a(); \r\nHistory b();\r\nHistory c();\r\n\r\nHistory dt(0.01);\r\n\r\n\r\nHistory x(0.001);\r\nHistory y(0.001);\r\nHistory z(0.001);\r\n\r\nif (in1 != 0){\r\n\t\t\r\n\ta = arneodo_a;\r\n\tb = arneodo_b;\r\n\tc = arneodo_c;\r\n\t\t\r\n\tx = x + dt * y;\n\ty = y + dt * z;\n\tz = z + dt * (-a * x - b * y - z + c * pow(x, 3));\r\n\t\r\n\t\r\n\tif(isnan(x) || isnan(y) || isnan(z)) {\r\n\t\tx = 0.001;\r\n    \ty = -0.001;\r\n\t\tz = 0.001;\r\n\t}\r\n\t\r\n}\r\n\r\n\r\nout1 = tanh(x * gain + x_offset);\r\nout2 = tanh(y * gain + y_offset);\r\nout3 = tanh(z * gain + z_offset);\r\n",
                     "fontface": 0,
                     "fontname": "<Monospaced>",
                     "fontsize": 12.0,
@@ -92,6 +92,7 @@
                     "source": [ "obj-5", 2 ]
                 }
             }
-        ]
+        ],
+        "autosave": 0
     }
 }

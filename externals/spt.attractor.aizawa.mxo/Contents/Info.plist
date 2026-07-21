@@ -14,11 +14,11 @@
 	<key>CFBundleExecutable</key>
 	<string>spt.attractor.aizawa</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.cycling74.spt-attractor-aizawa</string>
+	<string>io.github.maxworgan.spt-attractor-aizawa</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleLongVersionString</key>
-	<string>spt.attractor.aizawa 0.0.1 - Copyright (c) 2018 Cycling '74</string>
+	<string>spt.attractor.aizawa 0.0.1 - Copyright (c) 2025 Max Worgan</string>
 	<key>CFBundlePackageType</key>
 	<string>iLaX</string>
 	<key>CFBundleShortVersionString</key>
@@ -54,6 +54,6 @@
 	<key>LSRequiresCarbon</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright (c) 2018 Cycling '74</string>
+	<string>Copyright (c) 2025 Max Worgan</string>
 </dict>
 </plist>

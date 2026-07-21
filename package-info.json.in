@@ -16,7 +16,7 @@
 	},
 	"package_extra" : {
 		"reverse_domain" : "io.github.maxworgan",
-		"copyright" : "Copyright (c) 2025 Max Worgan"
+		"copyright" : "Copyright (c) 2025-2026 Max Worgan"
 	},
 	"tags" : [ "strange attractors", "chaos", "rhythm", "analysis", "generative" ],
 	"version" : "@GIT_VERSION_MAJ@.@GIT_VERSION_MIN@.@GIT_VERSION_SUB@",

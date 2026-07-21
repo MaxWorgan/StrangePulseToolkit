@@ -14,11 +14,11 @@
 	<key>CFBundleExecutable</key>
 	<string>spt.rpde</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.cycling74.spt-rpde</string>
+	<string>io.github.maxworgan.spt-rpde</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleLongVersionString</key>
-	<string>spt.rpde 0.0.1 - Copyright (c) 2018 Cycling '74</string>
+	<string>spt.rpde 0.0.1 - Copyright (c) 2025-2026 Max Worgan</string>
 	<key>CFBundlePackageType</key>
 	<string>iLaX</string>
 	<key>CFBundleShortVersionString</key>
@@ -54,6 +54,6 @@
 	<key>LSRequiresCarbon</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright (c) 2018 Cycling '74</string>
+	<string>Copyright (c) 2025-2026 Max Worgan</string>
 </dict>
 </plist>

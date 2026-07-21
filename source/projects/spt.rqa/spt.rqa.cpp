@@ -270,25 +270,20 @@ public:
             }
             std::fill(R_matrix.begin(), R_matrix.begin() + N * N, 0);
 
+            // Fill R and count recurrence pairs in one pass. radiusSearch clears
+            // `matches` but keeps its capacity, so reusing the hoisted vector
+            // avoids a heap allocation per query point. Each unordered pair is
+            // found from both endpoints; counting only m.first > i counts it once.
+            size_t recurrence_count = 0;
             for (size_t i = 0; i < N; i++) {
-                std::vector< nanoflann::ResultItem<IndexType, DistanceType> > local_matches;
-                local_matches.reserve(64);
                 Vector3d query = snapshot.row(i);
-                tree.radiusSearch(query.data(), search_radius, local_matches, params);
-                for (const auto &m : local_matches) {
+                tree.radiusSearch(query.data(), search_radius, matches, params);
+                for (const auto &m : matches) {
                     if (static_cast<size_t>(m.first) != i) {
                         R_matrix[i * N + m.first] = 1;
                         R_matrix[m.first * N + i] = 1;
-                    }
-                }
-            }
-
-            // Count total recurrence points (upper triangle only, excluding diagonal)
-            size_t recurrence_count = 0;
-            for (size_t i = 0; i < N; i++) {
-                for (size_t j = i + 1; j < N; j++) {
-                    if (R_matrix[i * N + j] == 1) {
-                        recurrence_count++;
+                        if (static_cast<size_t>(m.first) > i)
+                            recurrence_count++;
                     }
                 }
             }
@@ -344,37 +339,39 @@ public:
             }
             double ENTR = entropy;
 
-            // Vertical line analysis for LAM and TT
-            std::vector<int> vert_lengths;
+            // Vertical line analysis for LAM and TT. R is symmetric, so the
+            // vertical runs of column j equal the horizontal runs of row j —
+            // scanning rows walks R_matrix sequentially instead of striding N
+            // per step (the column-wise scan was a cache miss on every access).
+            size_t vert_line_points = 0;
+            size_t vert_line_count = 0;
             int v_min_int = static_cast<int>(this->v_min);
             if (v_min_int < 2) v_min_int = 2;
 
-            for (size_t j = 0; j < N; j++) {
-                for (size_t i = 0; i < N; i++) {
-                    if (R_matrix[i * N + j] == 1) {
-                        if (i == 0 || R_matrix[(i - 1) * N + j] == 0) {
-                            int v_len = 0;
-                            size_t ii = i;
-                            while (ii < N && R_matrix[ii * N + j] == 1) {
-                                v_len++;
-                                ii++;
-                            }
-                            if (v_len >= v_min_int)
-                                vert_lengths.push_back(v_len);
+            for (size_t i = 0; i < N; i++) {
+                const char* row = &R_matrix[i * N];
+                size_t j = 0;
+                while (j < N) {
+                    if (row[j] == 1) {
+                        size_t start = j;
+                        while (j < N && row[j] == 1)
+                            j++;
+                        int v_len = static_cast<int>(j - start);
+                        if (v_len >= v_min_int) {
+                            vert_line_points += v_len;
+                            vert_line_count++;
                         }
+                    } else {
+                        j++;
                     }
                 }
             }
-
-            size_t vert_line_points = 0;
-            for (int v : vert_lengths)
-                vert_line_points += v;
 
             // LAM: Laminarity = points in vertical lines / total recurrence points
             double LAM = (recurrence_count > 0) ? static_cast<double>(vert_line_points) / (2.0 * recurrence_count) : 0.0;
 
             // TT: Trapping Time = average vertical line length
-            double TT = (vert_lengths.size() > 0) ? static_cast<double>(vert_line_points) / static_cast<double>(vert_lengths.size()) : 0.0;
+            double TT = (vert_line_count > 0) ? static_cast<double>(vert_line_points) / static_cast<double>(vert_line_count) : 0.0;
 
             atomic_RR.store(RR, std::memory_order_release);
             atomic_DET.store(DET, std::memory_order_release);

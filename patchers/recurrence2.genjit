@@ -1,0 +1,83 @@
+{
+    "patcher": {
+        "fileversion": 1,
+        "appversion": {
+            "major": 9,
+            "minor": 1,
+            "revision": 1,
+            "architecture": "x64",
+            "modernui": 1
+        },
+        "classnamespace": "jit.gen",
+        "rect": [ 34.0, 99.0, 700.0, 460.0 ],
+        "boxes": [
+            {
+                "box": {
+                    "id": "obj-in1",
+                    "maxclass": "newobj",
+                    "numinlets": 0,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 40.0, 30.0, 32.0, 22.0 ],
+                    "text": "in 1"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-in2",
+                    "maxclass": "newobj",
+                    "numinlets": 0,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 120.0, 30.0, 32.0, 22.0 ],
+                    "text": "in 2"
+                }
+            },
+            {
+                "box": {
+                    "code": "// Recurrence matrix, per-cell. in1 = window value at this column (window[x],\n// a row that varies left<->right); in2 = the transpose (window[y], varies\n// top<->bottom). Cell (x,y) is recurrent when the two window values are\n// within eps. Symmetric, with a lit diagonal (x==y).\n//\n// Metric masks (0/1), toggled from the Recurrence Lab metric grid — per-cell\n// approximations of the RQA structures via neighbour sampling:\n//   det   diagonal-run cells (>=2)          solid cobalt\n//   lmax  diagonal-run interiors (>=3)      ink emphasis (long lines)\n//   lam   vertical-run cells (>=2)          cobalt 0.4\n//   tt    vertical-run interiors (>=3)      cobalt 0.75\n//   entr  fade plain points, isolating the line structures ENTR measures\n// All default 0 so plain recurrence displays render exactly as before.\n\nParam eps(0.1, min=0, max=1);\nParam det(0, min=0, max=1);\nParam lam(0, min=0, max=1);\nParam lmax(0, min=0, max=1);\nParam tt(0, min=0, max=1);\nParam entr(0, min=0, max=1);\n\nd = abs(in1 - in2);\nhit = d < eps;\ndiag = d < 0.00001;\n\nox = 1.0 / dim.x;\noy = 1.0 / dim.y;\nw_xm = sample(in1, vec(norm.x - ox, norm.y));\nw_xp = sample(in1, vec(norm.x + ox, norm.y));\nw_ym = sample(in2, vec(norm.x, norm.y - oy));\nw_yp = sample(in2, vec(norm.x, norm.y + oy));\n\ndprev = abs(w_xm - w_ym) < eps;\ndnext = abs(w_xp - w_yp) < eps;\nondiag = hit * min(1, dprev + dnext);\ndiagint = hit * dprev * dnext;\n\nvprev = abs(in1 - w_ym) < eps;\nvnext = abs(in1 - w_yp) < eps;\nonvert = hit * min(1, vprev + vnext);\nvertint = hit * vprev * vnext;\n\nonline = min(1, ondiag + onvert);\n\n// Paper Lab: base #ECE7DC, point #DC3A1B, structures #4E7BE8, emphasis = ink\nr  = mix(0.925, 0.863, hit);\ng  = mix(0.906, 0.227, hit);\nbl = mix(0.863, 0.106, hit);\nfade = entr * hit * (1 - online) * 0.65;\nr  = mix(r, 0.925, fade);\ng  = mix(g, 0.906, fade);\nbl = mix(bl, 0.863, fade);\nr  = mix(r,  0.306, 0.4 * lam * onvert);\ng  = mix(g,  0.482, 0.4 * lam * onvert);\nbl = mix(bl, 0.910, 0.4 * lam * onvert);\nr  = mix(r,  0.306, 0.75 * tt * vertint);\ng  = mix(g,  0.482, 0.75 * tt * vertint);\nbl = mix(bl, 0.910, 0.75 * tt * vertint);\nr  = mix(r,  0.306, det * ondiag);\ng  = mix(g,  0.482, det * ondiag);\nbl = mix(bl, 0.910, det * ondiag);\nr  = mix(r,  0.094, lmax * diagint);\ng  = mix(g,  0.086, lmax * diagint);\nbl = mix(bl, 0.067, lmax * diagint);\nr  = mix(r,  0.306, diag);\ng  = mix(g,  0.482, diag);\nbl = mix(bl, 0.910, diag);\n\nout1 = vec(r, g, bl, 1.0);",
+                    "fontface": 0,
+                    "fontname": "<Monospaced>",
+                    "fontsize": 12.0,
+                    "id": "obj-code",
+                    "maxclass": "codebox",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 40.0, 70.0, 600.0, 320.0 ]
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-out",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 40.0, 410.0, 38.0, 22.0 ],
+                    "text": "out 1"
+                }
+            }
+        ],
+        "lines": [
+            {
+                "patchline": {
+                    "destination": [ "obj-code", 0 ],
+                    "source": [ "obj-in1", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-code", 1 ],
+                    "source": [ "obj-in2", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-out", 0 ],
+                    "source": [ "obj-code", 0 ]
+                }
+            }
+        ],
+        "autosave": 0
+    }
+}

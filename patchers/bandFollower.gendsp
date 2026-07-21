@@ -1,0 +1,18 @@
+{
+  "patcher": {
+    "fileversion": 1,
+    "appversion": { "major": 9, "minor": 0, "revision": 0, "architecture": "x64", "modernui": 1 },
+    "classnamespace": "dsp.gen",
+    "rect": [ 80.0, 80.0, 900.0, 600.0 ],
+    "boxes": [
+      { "box": { "id": "in", "maxclass": "newobj", "text": "in 1", "numinlets": 0, "numoutlets": 1, "outlettype": [ "" ], "patching_rect": [ 40.0, 25.0, 30.0, 22.0 ] } },
+      { "box": { "id": "code", "maxclass": "codebox", "numinlets": 1, "numoutlets": 1, "outlettype": [ "" ], "patching_rect": [ 40.0, 70.0, 760.0, 430.0 ], "code": "Param low(80, min=10, max=20000);\nParam high(8000, min=10, max=22000);\nParam order(2, min=1, max=8);\nParam attack(10, min=0.1, max=2000);\nParam release(250, min=0.1, max=5000);\nParam drive(4, min=0.01, max=100);\n\nData hp_hist(8);\nData lp_hist(8);\nHistory env(0);\n\nhp = in1;\ni = 0;\nwhile (i < order) {\n    c = clamp(sin(clamp(low, 10, samplerate * 0.45) * 2 * PI / samplerate), 0, 1);\n    lp = mix(peek(hp_hist, i), hp, c);\n    poke(hp_hist, fixdenorm(lp), i);\n    hp = hp - lp;\n    i += 1;\n}\n\nbp = hp;\ni = 0;\nwhile (i < order) {\n    c = clamp(sin(clamp(high, low + 1, samplerate * 0.45) * 2 * PI / samplerate), 0, 1);\n    bp = mix(peek(lp_hist, i), bp, c);\n    poke(lp_hist, fixdenorm(bp), i);\n    i += 1;\n}\n\nlevel = abs(bp) * drive;\nms = (level > env) ? attack : release;\ncoef = exp(-1 / (max(ms, 0.1) * 0.001 * samplerate));\nenv = fixdenorm(level + coef * (env - level));\nout1 = clamp(env, 0, 1);" } },
+      { "box": { "id": "out", "maxclass": "newobj", "text": "out 1", "numinlets": 1, "numoutlets": 0, "patching_rect": [ 40.0, 530.0, 35.0, 22.0 ] } }
+    ],
+    "lines": [
+      { "patchline": { "source": [ "in", 0 ], "destination": [ "code", 0 ] } },
+      { "patchline": { "source": [ "code", 0 ], "destination": [ "out", 0 ] } }
+    ],
+    "autosave": 0
+  }
+}

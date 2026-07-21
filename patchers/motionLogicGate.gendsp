@@ -1,0 +1,18 @@
+{
+  "patcher": {
+    "fileversion": 1,
+    "appversion": { "major": 9, "minor": 0, "revision": 0, "architecture": "x64", "modernui": 1 },
+    "classnamespace": "dsp.gen",
+    "rect": [ 80.0, 80.0, 700.0, 440.0 ],
+    "boxes": [
+      { "box": { "id": "in", "maxclass": "newobj", "text": "in 1", "numinlets": 0, "numoutlets": 1, "outlettype": [ "" ], "patching_rect": [ 40.0, 30.0, 30.0, 22.0 ] } },
+      { "box": { "id": "code", "maxclass": "codebox", "numinlets": 1, "numoutlets": 1, "outlettype": [ "" ], "patching_rect": [ 40.0, 80.0, 520.0, 220.0 ], "code": "History state(0);\nParam high(0.55);\nParam low(0.45);\n\nnext = state;\nif ((state == 0) && (in1 >= high)) { next = 1; }\nif ((state == 1) && (in1 <= low))  { next = 0; }\n\nout1 = next;\nstate = next;" } },
+      { "box": { "id": "out", "maxclass": "newobj", "text": "out 1", "numinlets": 1, "numoutlets": 0, "patching_rect": [ 40.0, 340.0, 35.0, 22.0 ] } }
+    ],
+    "lines": [
+      { "patchline": { "source": [ "in", 0 ], "destination": [ "code", 0 ] } },
+      { "patchline": { "source": [ "code", 0 ], "destination": [ "out", 0 ] } }
+    ],
+    "autosave": 0
+  }
+}

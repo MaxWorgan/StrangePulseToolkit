@@ -9,15 +9,26 @@ extensions
 support
 build/
 build-*/
-# Top-level tests dir: track its CMakeLists.txt; ignore any scratch/build output
+# Top-level tests dir: track its CMakeLists.txt and the Max test harnesses;
+# ignore any scratch/build output. The harnesses live here rather than in
+# patchers/ so they are not on Max's package search path and do not ship as if
+# they were user-facing modules.
 /tests/*
 !/tests/CMakeLists.txt
+!/tests/patchers/
+!/tests/patchers/*
 *.o
 *.dylib
 tmp
 .DS_Store
 .vs
-package-info.json
+.claude/
+
+# NOTE: package-info.json is deliberately TRACKED, not ignored. CMake regenerates
+# it from package-info.json.in at configure time, but the ReadMe tells users to
+# clone straight into Max's Packages folder without building — and without this
+# file Max cannot register the package name or the homepatcher, so the Extras
+# menu entry never appears. Commit regenerated changes along with any version bump.
 
 # Compiled standalone test executables (keep the .cpp sources)
 *_test
@@ -26,4 +37,15 @@ test_rpde
 
 # Generated test output data
 test_output/
+
+# Max/Ableton waveform-analysis sidecar files
+*.asd
+
+# Design-system handoff artefacts. The durable reference lives in docs/design/
+# (tokens.md is the source of truth for the Paper Lab palette); these are the
+# bulky exported bundles and HTML mockups it was derived from.
+Strange Pulse Toolkit Design System/
+Strange Pulse Toolkit Design System.zip
+Strange Pulse Toolkit Redesign.zip
+design_handoff_paperlab_ui/
 

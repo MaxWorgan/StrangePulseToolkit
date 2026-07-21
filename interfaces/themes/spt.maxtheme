@@ -1,0 +1,1639 @@
+{
+	"colors" : [ 		{
+			"id" : "alignmentguide",
+			"oncolor" : [ 0.668252052034861, 0.37753979111903, 0.316055506131883, 1.0 ],
+			"category" : "Patching",
+			"label" : "Alignment Guide"
+		}
+, 		{
+			"id" : "assistance_background",
+			"oncolor" : [ 0.15302081646527, 0.153020772941671, 0.153020784351525, 1.0 ],
+			"category" : "Patching",
+			"label" : "Assistance Background"
+		}
+, 		{
+			"id" : "assistance_text",
+			"oncolor" : [ 0.9, 0.9, 0.9, 1.0 ],
+			"category" : "Patching",
+			"label" : "Assistance Text"
+		}
+, 		{
+			"id" : "audiocolor",
+			"oncolor" : [ 0.0, 0.6, 1.0, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Audio Power (Global)"
+		}
+, 		{
+			"id" : "basic",
+			"oncolor" : [ 0.392157, 0.615686, 0.756863, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Basic Objects Palette"
+		}
+, 		{
+			"id" : "box_selection_background",
+			"oncolor" : [ 0.767443216480887, 0.821207365090091, 0.927970971540502, 0.25 ],
+			"category" : "Patching",
+			"label" : "Drag Selection Background"
+		}
+, 		{
+			"id" : "browser_background",
+			"oncolor" : [ 0.125, 0.125, 0.125, 1.0 ],
+			"category" : "Browser",
+			"label" : "Window Background (Browser)"
+		}
+, 		{
+			"id" : "buttoned_up",
+			"oncolor" : [ 0.392157, 0.615686, 0.756863, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Buttons Palette"
+		}
+, 		{
+			"id" : "calendar_activity",
+			"oncolor" : [ 0.325, 0.325, 0.325, 1.0 ],
+			"category" : "Calendar",
+			"label" : "Activity"
+		}
+, 		{
+			"id" : "calendar_menu_header",
+			"oncolor" : [ 0.34902, 0.34902, 0.34902, 1.0 ],
+			"category" : "Calendar",
+			"label" : "Menu Header (Calendar)"
+		}
+, 		{
+			"id" : "calendar_stripe2",
+			"oncolor" : [ 0.243137, 0.243137, 0.243137, 1.0 ],
+			"category" : "Calendar",
+			"label" : "Stream Row Stripe Background"
+		}
+, 		{
+			"id" : "calendar_success",
+			"oncolor" : [ 0.25, 0.7, 0.25, 1.0 ],
+			"category" : "Calendar",
+			"label" : "Completed Lesson"
+		}
+, 		{
+			"id" : "caption_background",
+			"oncolor" : [ 0.419608, 0.443137, 0.482353, 1.0 ],
+			"category" : "Unused"
+		}
+, 		{
+			"id" : "clue_system_background",
+			"oncolor" : [ 0.125, 0.125, 0.125, 1.0 ],
+			"category" : "Clues",
+			"label" : "Background (Clue)"
+		}
+, 		{
+			"id" : "clue_text",
+			"oncolor" : [ 0.9, 0.9, 0.9, 1.0 ],
+			"category" : "Clues",
+			"label" : "Text (Clue)"
+		}
+, 		{
+			"id" : "clue_user_background",
+			"oncolor" : [ 0.15302081646527, 0.153020772941671, 0.153020784351525, 1.0 ],
+			"category" : "Clues",
+			"label" : "Annotation Background"
+		}
+, 		{
+			"id" : "colorpopup_bright_background",
+			"oncolor" : [ 0.54902, 0.54902, 0.54902, 1.0 ],
+			"category" : "Color Popup",
+			"label" : "Background (Inspector)"
+		}
+, 		{
+			"id" : "colorpopup_bright_selected",
+			"oncolor" : [ 0.862745, 0.862745, 0.862745, 1.0 ],
+			"category" : "Color Popup",
+			"label" : "Selected (Inspector)"
+		}
+, 		{
+			"id" : "colortab1",
+			"oncolor" : [ 0.67451, 0.698039, 0.290196, 1.0 ],
+			"category" : "Unused"
+		}
+, 		{
+			"id" : "colortab10",
+			"oncolor" : [ 0.015686, 0.588235, 0.952941, 1.0 ],
+			"category" : "Unused"
+		}
+, 		{
+			"id" : "colortab2",
+			"oncolor" : [ 0.886275, 0.482353, 0.878431, 1.0 ],
+			"category" : "Unused"
+		}
+, 		{
+			"id" : "colortab3",
+			"oncolor" : [ 0.078431, 0.741176, 0.666667, 1.0 ],
+			"category" : "Unused"
+		}
+, 		{
+			"id" : "colortab4",
+			"oncolor" : [ 0.333333, 0.670588, 0.85098, 1.0 ],
+			"category" : "Unused"
+		}
+, 		{
+			"id" : "colortab5",
+			"oncolor" : [ 0.890196, 0.341176, 0.321569, 1.0 ],
+			"category" : "Unused"
+		}
+, 		{
+			"id" : "colortab6",
+			"oncolor" : [ 0.494118, 0.658824, 0.65098, 1.0 ],
+			"category" : "Unused"
+		}
+, 		{
+			"id" : "colortab7",
+			"oncolor" : [ 0.588235, 0.803922, 0.290196, 1.0 ],
+			"category" : "Unused"
+		}
+, 		{
+			"id" : "colortab8",
+			"oncolor" : [ 0.929412, 0.423529, 0.184314, 1.0 ],
+			"category" : "Unused"
+		}
+, 		{
+			"id" : "colortab9",
+			"oncolor" : [ 0.709804, 0.4, 0.862745, 1.0 ],
+			"category" : "Unused"
+		}
+, 		{
+			"id" : "comment_outline",
+			"oncolor" : [ 0.325, 0.325, 0.325, 1.0 ],
+			"category" : "Patching",
+			"label" : "Comment Box Outline"
+		}
+, 		{
+			"id" : "darkweb",
+			"oncolor" : [ 0.69, 0.702, 0.474, 1.0 ],
+			"category" : "Unused"
+		}
+, 		{
+			"id" : "dirtygreen",
+			"oncolor" : [ 0.1, 0.45, 0.2, 1.0 ],
+			"category" : "Format Palette",
+			"label" : "Changed Style Name"
+		}
+, 		{
+			"id" : "electricblue",
+			"oncolor" : [ 0.866667, 0.980392, 0.101961, 1.0 ],
+			"category" : "Unused"
+		}
+, 		{
+			"id" : "favicolor",
+			"oncolor" : [ 0.9, 0.65, 0.05, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Save Snippet"
+		}
+, 		{
+			"id" : "formatpalette_background",
+			"oncolor" : [ 0.125, 0.125, 0.125, 1.0 ],
+			"offcolor" : [ 0.392157, 0.4, 0.411765, 1.0 ],
+			"category" : "Format Palette",
+			"label" : "Window Background (Format)"
+		}
+, 		{
+			"id" : "formatpalette_disabledtext",
+			"oncolor" : [ 0.513725, 0.529412, 0.545098, 1.0 ],
+			"category" : "Unused"
+		}
+, 		{
+			"id" : "formatpalette_inherited",
+			"oncolor" : [ 0.172137147130865, 0.17213710084121, 0.172137112999252, 1.0 ],
+			"category" : "Format Palette",
+			"label" : "Inherited Attribute Indicator"
+		}
+, 		{
+			"id" : "formatpalette_inherited_background",
+			"oncolor" : [ 0.221327066888467, 0.221327006361825, 0.221327022178404, 1.0 ],
+			"category" : "Format Palette",
+			"label" : "Inherited Attribute Background"
+		}
+, 		{
+			"id" : "formatpalette_inherited_on",
+			"oncolor" : [ 0.9, 0.9, 0.9, 1.0 ],
+			"category" : "Format Palette",
+			"label" : "Inherited Attribute Indicator On"
+		}
+, 		{
+			"id" : "formatpalette_renamer_background",
+			"oncolor" : [ 0.125, 0.125, 0.125, 1.0 ],
+			"category" : "Format Palette",
+			"label" : "Rename Style Background"
+		}
+, 		{
+			"id" : "iceice",
+			"oncolor" : [ 0.0, 0.6, 1.0, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Freeze Attribute"
+		}
+, 		{
+			"id" : "inspector_background",
+			"oncolor" : [ 0.20142084234402, 0.201420791853532, 0.201420805148837, 1.0 ],
+			"category" : "Inspector",
+			"label" : "Window Background (Inspector)"
+		}
+, 		{
+			"id" : "inspector_disabled_text",
+			"oncolor" : [ 0.458595350062755, 0.458595237564901, 0.458595266962388, 1.0 ],
+			"category" : "Inspector",
+			"label" : "Disabled Text"
+		}
+, 		{
+			"id" : "inspector_header_background",
+			"oncolor" : [ 0.125, 0.125, 0.125, 1.0 ],
+			"category" : "Inspector",
+			"label" : "Header Background"
+		}
+, 		{
+			"id" : "inspector_headerline",
+			"oncolor" : [ 0.079348079365577, 0.07934804057877, 0.079348050547289, 1.0 ],
+			"category" : "Inspector",
+			"label" : "Header Line"
+		}
+, 		{
+			"id" : "inspector_menuheader",
+			"oncolor" : [ 0.9, 0.65, 0.05, 1.0 ],
+			"category" : "Inspector",
+			"label" : "Menu Header (Inspector)"
+		}
+, 		{
+			"id" : "inspector_selectedrow",
+			"oncolor" : [ 0.199150595809111, 0.346886111625164, 0.528580182086736, 1.0 ],
+			"category" : "Inspector",
+			"label" : "Selected Row Background (Inspector)"
+		}
+, 		{
+			"id" : "inspector_selection",
+			"oncolor" : [ 0.123461999716139, 0.530200595139815, 0.872492497711686, 1.0 ],
+			"category" : "Inspector",
+			"label" : "Text Editor Highlighted Background"
+		}
+, 		{
+			"id" : "inspector_tab",
+			"oncolor" : [ 0.9, 0.65, 0.05, 1.0 ],
+			"category" : "Inspector",
+			"label" : "Tab Background"
+		}
+, 		{
+			"id" : "inspector_texteditor_background",
+			"oncolor" : [ 0.20142084234402, 0.201420791853532, 0.201420805148837, 1.0 ],
+			"category" : "Inspector",
+			"label" : "Text Editor Background"
+		}
+, 		{
+			"id" : "jed_background",
+			"oncolor" : [ 0.0936600403422, 0.093660003365525, 0.093660012949313, 1.0 ],
+			"category" : "Text Editor",
+			"label" : "Background (Editor)"
+		}
+, 		{
+			"id" : "jed_cpp_preprocessor",
+			"oncolor" : [ 0.956590352327427, 0.76614891786161, 0.452834090916593, 1.0 ],
+			"category" : "Text Editor",
+			"label" : "C++ Preprocessor"
+		}
+, 		{
+			"id" : "jed_defaulttext",
+			"oncolor" : [ 0.9, 0.9, 0.9, 1.0 ],
+			"category" : "Text Editor",
+			"label" : "Text"
+		}
+, 		{
+			"id" : "jed_expr_bracket",
+			"oncolor" : [ 0.9, 0.9, 0.9, 1.0 ],
+			"category" : "Text Editor",
+			"label" : "Expr Bracket"
+		}
+, 		{
+			"id" : "jed_expr_comment",
+			"oncolor" : [ 0.490492111493893, 0.681924447885494, 0.510066951475776, 1.0 ],
+			"category" : "Text Editor",
+			"label" : "Expr Comment"
+		}
+, 		{
+			"id" : "jed_expr_corefunction",
+			"oncolor" : [ 0.956590352327427, 0.76614891786161, 0.452834090916593, 1.0 ],
+			"category" : "Text Editor",
+			"label" : "Expr Core Function"
+		}
+, 		{
+			"id" : "jed_expr_error",
+			"oncolor" : [ 1.0, 0.314039333479474, 0.223156631160668, 1.0 ],
+			"category" : "Text Editor",
+			"label" : "Expr Error"
+		}
+, 		{
+			"id" : "jed_expr_float",
+			"oncolor" : [ 0.609107905046163, 0.964746764274856, 0.961207583248212, 1.0 ],
+			"category" : "Text Editor",
+			"label" : "Expr Float"
+		}
+, 		{
+			"id" : "jed_expr_identifier",
+			"oncolor" : [ 0.52809274375648, 0.754584071489312, 0.8514219427284, 1.0 ],
+			"category" : "Text Editor",
+			"label" : "Expr Identifier"
+		}
+, 		{
+			"id" : "jed_expr_integer",
+			"oncolor" : [ 0.609107905046163, 0.964746764274856, 0.961207583248212, 1.0 ],
+			"category" : "Text Editor",
+			"label" : "Expr Integer"
+		}
+, 		{
+			"id" : "jed_expr_keyword",
+			"oncolor" : [ 0.830178358913315, 0.542014123770914, 0.678414716809363, 1.0 ],
+			"category" : "Text Editor",
+			"label" : "Expr Keyword"
+		}
+, 		{
+			"id" : "jed_expr_namedconstant",
+			"oncolor" : [ 0.574681917362067, 0.746730429372804, 1.0, 1.0 ],
+			"category" : "Text Editor",
+			"label" : "Expr Named Constant"
+		}
+, 		{
+			"id" : "jed_expr_operator",
+			"oncolor" : [ 0.9, 0.9, 0.9, 1.0 ],
+			"category" : "Text Editor",
+			"label" : "Expr Operator"
+		}
+, 		{
+			"id" : "jed_expr_preprocessor",
+			"oncolor" : [ 0.956590352327427, 0.76614891786161, 0.452834090916593, 1.0 ],
+			"category" : "Text Editor",
+			"label" : "Expr Preprocessor"
+		}
+, 		{
+			"id" : "jed_expr_punctuation",
+			"oncolor" : [ 0.9, 0.9, 0.9, 1.0 ],
+			"category" : "Text Editor",
+			"label" : "Expr Punctuation"
+		}
+, 		{
+			"id" : "jed_expr_string",
+			"oncolor" : [ 1.0, 0.639614483485446, 0.552614196111973, 1.0 ],
+			"category" : "Text Editor",
+			"label" : "Expr String"
+		}
+, 		{
+			"id" : "jed_expr_userfunction",
+			"oncolor" : [ 0.956590352327427, 0.76614891786161, 0.452834090916593, 1.0 ],
+			"category" : "Text Editor",
+			"label" : "Expr User Function"
+		}
+, 		{
+			"id" : "jed_hilite",
+			"oncolor" : [ 0.199939595146983, 0.411195388222308, 0.645027344214824, 1.0 ],
+			"category" : "Text Editor",
+			"label" : "Highlight"
+		}
+, 		{
+			"id" : "jed_js_bracket",
+			"oncolor" : [ 0.9, 0.9, 0.9, 1.0 ],
+			"category" : "Text Editor",
+			"label" : "JS Bracket"
+		}
+, 		{
+			"id" : "jed_js_comment",
+			"oncolor" : [ 0.490492111493893, 0.681924447885494, 0.510066951475776, 1.0 ],
+			"category" : "Text Editor",
+			"label" : "JS Comment"
+		}
+, 		{
+			"id" : "jed_js_corefunction",
+			"oncolor" : [ 0.956590352327427, 0.76614891786161, 0.452834090916593, 1.0 ],
+			"category" : "Text Editor",
+			"label" : "JS Core Function"
+		}
+, 		{
+			"id" : "jed_js_error",
+			"oncolor" : [ 1.0, 0.314039333479474, 0.223156631160668, 1.0 ],
+			"category" : "Text Editor",
+			"label" : "JS Error"
+		}
+, 		{
+			"id" : "jed_js_float",
+			"oncolor" : [ 0.609107905046163, 0.964746764274856, 0.961207583248212, 1.0 ],
+			"category" : "Text Editor",
+			"label" : "JS Float"
+		}
+, 		{
+			"id" : "jed_js_identifier",
+			"oncolor" : [ 0.52809274375648, 0.754584071489312, 0.8514219427284, 1.0 ],
+			"category" : "Text Editor",
+			"label" : "JS Identifier"
+		}
+, 		{
+			"id" : "jed_js_integer",
+			"oncolor" : [ 0.609107905046163, 0.964746764274856, 0.961207583248212, 1.0 ],
+			"category" : "Text Editor",
+			"label" : "JS Integer"
+		}
+, 		{
+			"id" : "jed_js_keyword",
+			"oncolor" : [ 0.830178358913315, 0.542014123770914, 0.678414716809363, 1.0 ],
+			"category" : "Text Editor",
+			"label" : "JS Keyword"
+		}
+, 		{
+			"id" : "jed_js_maxfunction",
+			"oncolor" : [ 0.956590352327427, 0.76614891786161, 0.452834090916593, 1.0 ],
+			"category" : "Text Editor",
+			"label" : "JS Max Function"
+		}
+, 		{
+			"id" : "jed_js_operator",
+			"oncolor" : [ 0.9, 0.9, 0.9, 1.0 ],
+			"category" : "Text Editor",
+			"label" : "JS Operator"
+		}
+, 		{
+			"id" : "jed_js_punctuation",
+			"oncolor" : [ 0.9, 0.9, 0.9, 1.0 ],
+			"category" : "Text Editor",
+			"label" : "JS Punctuation"
+		}
+, 		{
+			"id" : "jed_js_string",
+			"oncolor" : [ 1.0, 0.639614483485446, 0.552614196111973, 1.0 ],
+			"category" : "Text Editor",
+			"label" : "JS String"
+		}
+, 		{
+			"id" : "jed_linenumber_text",
+			"oncolor" : [ 0.807539509836209, 0.807539314333089, 0.807539365303835, 1.0 ],
+			"category" : "Text Editor",
+			"label" : "Line Numbers"
+		}
+, 		{
+			"id" : "lesson_button_background",
+			"oncolor" : [ 0.221327066888467, 0.221327006361825, 0.221327022178404, 1.0 ],
+			"category" : "Lessons",
+			"label" : "Button Background"
+		}
+, 		{
+			"id" : "lesson_downloading",
+			"oncolor" : [ 0.792294779904983, 0.561867873693578, 0.668313324973563, 1.0 ],
+			"category" : "Lessons",
+			"label" : "Downloading"
+		}
+, 		{
+			"id" : "lesson_inprogress",
+			"oncolor" : [ 0.609795304305787, 0.805124657532386, 0.576461028292266, 1.0 ],
+			"category" : "Lessons",
+			"label" : "In Progress"
+		}
+, 		{
+			"id" : "lesson_play",
+			"oncolor" : [ 0.25, 0.7, 0.25, 1.0 ],
+			"category" : "Lessons",
+			"label" : "Play Button"
+		}
+, 		{
+			"id" : "lesson_range",
+			"oncolor" : [ 0.609795304305787, 0.805124657532386, 0.576461028292266, 1.0 ],
+			"category" : "Lessons",
+			"label" : "Range Indicator"
+		}
+, 		{
+			"id" : "lesson_remote",
+			"oncolor" : [ 0.272340427295844, 0.272340355595243, 0.272340374331755, 1.0 ],
+			"category" : "Lessons",
+			"label" : "Downloadable"
+		}
+, 		{
+			"id" : "lesson_started",
+			"oncolor" : [ 0.434559006135542, 0.670817144785582, 0.977667398367262, 1.0 ],
+			"category" : "Lessons",
+			"label" : "Started"
+		}
+, 		{
+			"id" : "lesson_step_border",
+			"oncolor" : [ 0.746970796362449, 0.746970609902925, 0.746970658435034, 1.0 ],
+			"category" : "Lessons",
+			"label" : "Step Border"
+		}
+, 		{
+			"id" : "lesson_step_bottomgradient",
+			"oncolor" : [ 0.125, 0.125, 0.125, 1.0 ],
+			"category" : "Lessons",
+			"label" : "Step Gradient Bottom"
+		}
+, 		{
+			"id" : "lesson_step_circle",
+			"oncolor" : [ 0.9, 0.65, 0.05, 1.0 ],
+			"category" : "Lessons",
+			"label" : "Step Circle"
+		}
+, 		{
+			"id" : "lesson_step_titlebar",
+			"oncolor" : [ 0.221327066888467, 0.221327006361825, 0.221327022178404, 1.0 ],
+			"category" : "Lessons",
+			"label" : "Step Titlebar"
+		}
+, 		{
+			"id" : "lesson_step_topgradient",
+			"oncolor" : [ 0.172137149796092, 0.172137100044002, 0.172137113045018, 1.0 ],
+			"category" : "Lessons",
+			"label" : "Step Gradient Top"
+		}
+, 		{
+			"id" : "lesson_text_hilite",
+			"oncolor" : [ 0.123461999716139, 0.530200595139815, 0.872492497711686, 1.0 ],
+			"category" : "Lessons",
+			"label" : "Highlighted Text"
+		}
+, 		{
+			"id" : "lesson_todo",
+			"oncolor" : [ 0.599589840206136, 0.599589696824869, 0.599589734292685, 1.0 ],
+			"category" : "Lessons",
+			"label" : "Not Started"
+		}
+, 		{
+			"id" : "lessonbrowser_row1_background",
+			"oncolor" : [ 0.20142084234402, 0.201420791853532, 0.201420805148837, 1.0 ],
+			"category" : "Lessons",
+			"label" : "Browser List Background Dark"
+		}
+, 		{
+			"id" : "lessonbrowser_row2_background",
+			"oncolor" : [ 0.15302081646527, 0.153020772941671, 0.153020784351525, 1.0 ],
+			"category" : "Lessons",
+			"label" : "Browser List Background Light"
+		}
+, 		{
+			"id" : "live_active_automation",
+			"oncolor" : [ 1.0, 0.4, 0.3, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Automation"
+		}
+, 		{
+			"id" : "live_alert",
+			"oncolor" : [ 1.0, 0.490196078431373, 0.262745098039216, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Alert"
+		}
+, 		{
+			"id" : "live_arranger_grid_tiles",
+			"oncolor" : [ 0.85, 0.85, 0.85, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Arranger Grid Tiles"
+		}
+, 		{
+			"id" : "live_assignment_text_bg",
+			"oncolor" : [ 0.261531128329206, 0.261531061881087, 0.261531079296546, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Mapping Highlight"
+		}
+, 		{
+			"id" : "live_contrast_frame",
+			"oncolor" : [ 0.09782765023003, 0.097827613875914, 0.09782762332443, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Control Border"
+		}
+, 		{
+			"id" : "live_control_bg",
+			"oncolor" : [ 0.261531128329206, 0.261531061881087, 0.261531079296546, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Control Off"
+		}
+, 		{
+			"id" : "live_control_fg",
+			"oncolor" : [ 0.85, 0.85, 0.85, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Text / Icon"
+		}
+, 		{
+			"id" : "live_control_fg_off",
+			"oncolor" : [ 0.85, 0.85, 0.85, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Text / Icon Off"
+		}
+, 		{
+			"id" : "live_control_fg_off_zombie",
+			"oncolor" : [ 0.57636836783545, 0.576368229540612, 0.576368265679262, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Text / Icon Off (Inactive)"
+		}
+, 		{
+			"id" : "live_control_fg_on",
+			"oncolor" : [ 0.079348079365577, 0.07934804057877, 0.079348050547289, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Text / Icon On"
+		}
+, 		{
+			"id" : "live_control_fg_on_zombie",
+			"oncolor" : [ 0.221327066888467, 0.221327006361825, 0.221327022178404, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Text / Icon On (Inactive)"
+		}
+, 		{
+			"id" : "live_control_fg_zombie",
+			"oncolor" : [ 0.57636836783545, 0.576368229540612, 0.576368265679262, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Control Range Off (Inactive)"
+		}
+, 		{
+			"id" : "live_control_fill_handle",
+			"oncolor" : [ 0.57636836783545, 0.576368229540612, 0.576368265679262, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Control Handle"
+		}
+, 		{
+			"id" : "live_control_selection",
+			"oncolor" : [ 0.9, 0.65, 0.05, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Control On"
+		}
+, 		{
+			"id" : "live_control_selection_alt",
+			"oncolor" : [ 0.0, 0.933333, 1.0, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Control On Variant 2"
+		}
+, 		{
+			"id" : "live_control_selection_variant",
+			"oncolor" : [ 0.0, 0.933333, 1.0, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Control On Variant 2"
+		}
+, 		{
+			"id" : "live_control_text_bg",
+			"oncolor" : [ 0.235, 0.235, 0.235, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Text Background"
+		}
+, 		{
+			"id" : "live_control_text_selection",
+			"oncolor" : [ 0.85, 0.85, 0.85, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Text Highlight"
+		}
+, 		{
+			"id" : "live_control_text_selection_standby",
+			"oncolor" : [ 0.765878792816128, 0.765878607028534, 0.765878655470994, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Text / Icon On Standby"
+		}
+, 		{
+			"id" : "live_control_text_zombie",
+			"oncolor" : [ 0.57636836783545, 0.576368229540612, 0.576368265679262, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Text / Icon On (Inactive)"
+		}
+, 		{
+			"id" : "live_control_zombie",
+			"oncolor" : [ 0.57636836783545, 0.576368229540612, 0.576368265679262, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Control On (Inactive)"
+		}
+, 		{
+			"id" : "live_desktop",
+			"oncolor" : [ 0.235, 0.235, 0.235, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Desktop"
+		}
+, 		{
+			"id" : "live_dial_fg",
+			"oncolor" : [ 0.57636836783545, 0.576368229540612, 0.576368265679262, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Control Range On"
+		}
+, 		{
+			"id" : "live_dial_fg_zombie",
+			"oncolor" : [ 0.57636836783545, 0.576368229540612, 0.576368265679262, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Control Range Off"
+		}
+, 		{
+			"id" : "live_dial_needle",
+			"oncolor" : [ 0.85, 0.85, 0.85, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Control Needle On"
+		}
+, 		{
+			"id" : "live_dial_needle_zombie",
+			"oncolor" : [ 0.57636836783545, 0.576368229540612, 0.576368265679262, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Control Needle Off"
+		}
+, 		{
+			"id" : "live_dial_triangle",
+			"oncolor" : [ 0.85, 0.85, 0.85, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Control Triangle"
+		}
+, 		{
+			"id" : "live_display_handle_one",
+			"oncolor" : [ 1.0, 0.725490196078431, 0.003921568627451, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "LCD Handle"
+		}
+, 		{
+			"id" : "live_display_handle_two",
+			"oncolor" : [ 0.972549019607843, 0.462745098039216, 0.501960784313725, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "LCD Handle Variant"
+		}
+, 		{
+			"id" : "live_display_line_one",
+			"oncolor" : [ 1.0, 0.725490196078431, 0.003921568627451, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "LCD Shape"
+		}
+, 		{
+			"id" : "live_display_line_two",
+			"oncolor" : [ 0.0, 0.933333333333333, 1.0, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "LCD Shape Variant"
+		}
+, 		{
+			"id" : "live_display_scale_text",
+			"oncolor" : [ 0.657821949875413, 0.657821776867812, 0.657821821776255, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "LCD Background Text"
+		}
+, 		{
+			"id" : "live_focus_frame",
+			"oncolor" : [ 0.447518749806177, 0.44751863973454, 0.447518668498017, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Control Selection Frame"
+		}
+, 		{
+			"id" : "live_freeze_color",
+			"oncolor" : [ 0.262745098039216, 0.568627450980392, 0.901960784313726, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Freeze"
+		}
+, 		{
+			"id" : "live_gain_reduction_line_color",
+			"oncolor" : [ 1.0, 0.725490196078431, 0.003921568627451, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Gain Reduction Line"
+		}
+, 		{
+			"id" : "live_inactive_automation",
+			"oncolor" : [ 0.668252052034861, 0.37753979111903, 0.316055506131883, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Automation Override"
+		}
+, 		{
+			"id" : "live_input_curve_color",
+			"oncolor" : [ 0.737254901960784, 0.737254901960784, 0.737254901960784, 0.329411764705882 ],
+			"category" : "Live Theme Colors",
+			"label" : "Input Curve"
+		}
+, 		{
+			"id" : "live_input_curve_outline_color",
+			"oncolor" : [ 0.0, 0.0, 0.0, 0.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Input Curve Outline"
+		}
+, 		{
+			"id" : "live_key_assignment",
+			"oncolor" : [ 1.0, 0.392156862745098, 0.0, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Mapping Key"
+		}
+, 		{
+			"id" : "live_lcd_bg",
+			"oncolor" : [ 0.079348079365577, 0.07934804057877, 0.079348050547289, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "LCD Background"
+		}
+, 		{
+			"id" : "live_lcd_control_fg",
+			"oncolor" : [ 0.931948395395052, 0.771744459193783, 0.523883756405412, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "LCD Text / Icon"
+		}
+, 		{
+			"id" : "live_lcd_control_fg_alt",
+			"oncolor" : [ 0.618934978328545, 0.744701397656435, 0.953750108255376, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "LCD Text / Icon Variant"
+		}
+, 		{
+			"id" : "live_lcd_control_fg_zombie",
+			"oncolor" : [ 0.325, 0.325, 0.325, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "LCD Text / Icon (Inactive)"
+		}
+, 		{
+			"id" : "live_lcd_frame",
+			"oncolor" : [ 0.172137147130865, 0.17213710084121, 0.172137112999252, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "LCD Line"
+		}
+, 		{
+			"id" : "live_lcd_title",
+			"oncolor" : [ 0.746970796362449, 0.746970609902925, 0.746970658435034, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "LCD Title"
+		}
+, 		{
+			"id" : "live_led_bg",
+			"oncolor" : [ 0.257038688706909, 0.257038620357998, 0.25703863821866, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "LED Background"
+		}
+, 		{
+			"id" : "live_macro_assigned",
+			"oncolor" : [ 0.0, 0.854901960784314, 0.282352941176471, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Mapping Macro"
+		}
+, 		{
+			"id" : "live_macro_assignment",
+			"oncolor" : [ 0.0, 0.854901960784314, 0.282352941176471, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Mapping Macro"
+		}
+, 		{
+			"id" : "live_macro_title",
+			"oncolor" : [ 0.261531128329206, 0.261531061881087, 0.261531079296546, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Control Header"
+		}
+, 		{
+			"id" : "live_meter_bg",
+			"oncolor" : [ 0.079348079365577, 0.07934804057877, 0.079348050547289, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Control Background"
+		}
+, 		{
+			"id" : "live_midi_assignment",
+			"oncolor" : [ 0.250980392156863, 0.203921568627451, 0.937254901960784, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Mapping Midi"
+		}
+, 		{
+			"id" : "live_modulation",
+			"oncolor" : [ 0.0, 0.549019607843137, 0.67843137254902, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Modulation"
+		}
+, 		{
+			"id" : "live_numbox_triangle",
+			"oncolor" : [ 0.618934978328545, 0.744701397656435, 0.953750108255376, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Numbox Triangle"
+		}
+, 		{
+			"id" : "live_output_curve_color",
+			"oncolor" : [ 0.807843137254902, 0.807843137254902, 0.807843137254902, 0.247058823529412 ],
+			"category" : "Live Theme Colors",
+			"label" : "Output Curve"
+		}
+, 		{
+			"id" : "live_output_curve_outline_color",
+			"oncolor" : [ 0.811764705882353, 0.811764705882353, 0.811764705882353, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Output Curve Outline"
+		}
+, 		{
+			"id" : "live_play",
+			"oncolor" : [ 0.0, 0.980392156862745, 0.63921568627451, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Play"
+		}
+, 		{
+			"id" : "live_prelisten",
+			"oncolor" : [ 0.101960784313725, 0.490196078431373, 0.945098039215686, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "PreListen"
+		}
+, 		{
+			"id" : "live_record",
+			"oncolor" : [ 1.0, 0.349019607843137, 0.372549019607843, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Record"
+		}
+, 		{
+			"id" : "live_scale_awareness",
+			"oncolor" : [ 0.745098, 0.596078, 1.0, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Scale Awareness"
+		}
+, 		{
+			"id" : "live_selection",
+			"oncolor" : [ 0.269595890603871, 0.408853959740371, 0.595943257030903, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Control Highlight"
+		}
+, 		{
+			"id" : "live_selection_standby",
+			"oncolor" : [ 0.670588235294118, 0.776470588235294, 0.796078431372549, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Control Highlight Standby"
+		}
+, 		{
+			"id" : "live_spectrum_alternative_color",
+			"oncolor" : [ 0.101960784313725, 0.490196078431373, 0.945098039215686, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Spectrum Variant"
+		}
+, 		{
+			"id" : "live_spectrum_default_color",
+			"oncolor" : [ 0.737254901960784, 0.737254901960784, 0.737254901960784, 0.329411764705882 ],
+			"category" : "Live Theme Colors",
+			"label" : "Spectrum"
+		}
+, 		{
+			"id" : "live_spectrum_grid_lines",
+			"oncolor" : [ 0.650980392156863, 0.650980392156863, 0.650980392156863, 0.247058823529412 ],
+			"category" : "Live Theme Colors",
+			"label" : "Spectrum Grid"
+		}
+, 		{
+			"id" : "live_surface_bg",
+			"oncolor" : [ 0.279471418544607, 0.279471350143365, 0.279471368104493, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Device Background"
+		}
+, 		{
+			"id" : "live_surface_frame",
+			"oncolor" : [ 0.710731077798712, 0.710730910073084, 0.71073095390247, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Line"
+		}
+, 		{
+			"id" : "live_surface_frame_focus",
+			"oncolor" : [ 0.431372549019608, 0.431372549019608, 0.431372549019608, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Surface Frame Focus"
+		}
+, 		{
+			"id" : "live_threshold_line_color",
+			"oncolor" : [ 0.0, 0.933333333333333, 1.0, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Threshold Line"
+		}
+, 		{
+			"id" : "live_value_arc",
+			"oncolor" : [ 0.594473705410263, 0.720560630419913, 0.928309050695498, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Control On Variant"
+		}
+, 		{
+			"id" : "live_value_arc_zombie",
+			"oncolor" : [ 0.57636836783545, 0.576368229540612, 0.576368265679262, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Control Range On (Inactive)"
+		}
+, 		{
+			"id" : "live_value_bar",
+			"oncolor" : [ 0.594473705410263, 0.720560630419913, 0.928309050695498, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Slider Range Value"
+		}
+, 		{
+			"id" : "live_value_bar2",
+			"oncolor" : [ 0.972549, 0.462745, 0.501961, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Slider Range Value Variant 2"
+		}
+, 		{
+			"id" : "live_value_bar3",
+			"oncolor" : [ 0.945098, 0.67451, 0.0, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Slider Range Value Variant 3"
+		}
+, 		{
+			"id" : "live_value_bar_three",
+			"oncolor" : [ 0.945098, 0.67451, 0.0, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Slider Range Value Variant 3"
+		}
+, 		{
+			"id" : "live_value_bar_two",
+			"oncolor" : [ 0.972549, 0.462745, 0.501961, 1.0 ],
+			"category" : "Live Theme Colors",
+			"label" : "Slider Range Value Variant 2"
+		}
+, 		{
+			"id" : "lively",
+			"oncolor" : [ 0.392157, 0.615686, 0.756863, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Live Objects Palette"
+		}
+, 		{
+			"id" : "local_audiocolor",
+			"oncolor" : [ 0.9, 0.65, 0.05, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Audio Power (Local)"
+		}
+, 		{
+			"id" : "maxwindow_bugtext",
+			"oncolor" : [ 0.434559006135542, 0.670817144785582, 0.977667398367262, 1.0 ],
+			"category" : "Max Console",
+			"label" : "Bug Text"
+		}
+, 		{
+			"id" : "maxwindow_errorbackground",
+			"oncolor" : [ 0.540608779695709, 0.266739312054313, 0.212020285159219, 1.0 ],
+			"category" : "Max Console",
+			"label" : "Error Background"
+		}
+, 		{
+			"id" : "maxwindow_errorbackground2",
+			"oncolor" : [ 0.328764512508144, 0.197365992442431, 0.16845979953183, 1.0 ],
+			"category" : "Max Console",
+			"label" : "Error Background (Odd)"
+		}
+, 		{
+			"id" : "maxwindow_errortext",
+			"oncolor" : [ 0.9, 0.9, 0.9, 1.0 ],
+			"category" : "Max Console",
+			"label" : "Error Text"
+		}
+, 		{
+			"id" : "maxwindow_postobject",
+			"oncolor" : [ 0.9, 0.9, 0.9, 1.0 ],
+			"category" : "Max Console",
+			"label" : "Print Object Name Text"
+		}
+, 		{
+			"id" : "maxwindow_postobject_hilite",
+			"oncolor" : [ 0.617771055414186, 0.481737362565557, 0.24917365258311, 1.0 ],
+			"category" : "Max Console",
+			"label" : "Highlighted Print Object Name Text"
+		}
+, 		{
+			"id" : "maxwindow_posttext",
+			"oncolor" : [ 0.9, 0.9, 0.9, 1.0 ],
+			"category" : "Max Console",
+			"label" : "Print Text"
+		}
+, 		{
+			"id" : "maxwindow_selection_background",
+			"oncolor" : [ 0.199150595809111, 0.346886111625164, 0.528580182086736, 1.0 ],
+			"category" : "Max Console",
+			"label" : "Selected Row Background (Console)"
+		}
+, 		{
+			"id" : "maxwindow_successtext",
+			"oncolor" : [ 0.49803921568, 0.67450980392, 0.38823529411, 1.0 ],
+			"category" : "Max Console",
+			"label" : "Success Text"
+		}
+, 		{
+			"id" : "maxwindow_warningbackground1",
+			"oncolor" : [ 0.493575268671359, 0.370062527968368, 0.142027933477764, 1.0 ],
+			"category" : "Max Console",
+			"label" : "Warning Background 1"
+		}
+, 		{
+			"id" : "maxwindow_warningbackground2",
+			"oncolor" : [ 0.305731621285422, 0.242120919251655, 0.14052034676399, 1.0 ],
+			"category" : "Max Console",
+			"label" : "Warning Background 2"
+		}
+, 		{
+			"id" : "maxwindow_warningtext",
+			"oncolor" : [ 0.925956436031862, 0.835055348163586, 0.711276651627816, 1.0 ],
+			"category" : "Max Console",
+			"label" : "Warning Text"
+		}
+, 		{
+			"id" : "menu_background",
+			"oncolor" : [ 0.15302081646527, 0.153020772941671, 0.153020784351525, 1.0 ],
+			"category" : "Menus",
+			"label" : "Menu Background"
+		}
+, 		{
+			"id" : "menu_disabled_text",
+			"oncolor" : [ 0.458595350062755, 0.458595237564901, 0.458595266962388, 1.0 ],
+			"category" : "Menus",
+			"label" : "Disabled Item Text"
+		}
+, 		{
+			"id" : "menu_headertext",
+			"oncolor" : [ 0.221327066888467, 0.221327006361825, 0.221327022178404, 1.0 ],
+			"category" : "Menus",
+			"label" : "Header Text"
+		}
+, 		{
+			"id" : "menu_highlighted_background",
+			"oncolor" : [ 0.221327066888467, 0.221327006361825, 0.221327022178404, 1.0 ],
+			"category" : "Menus",
+			"label" : "Highlighted Item Background"
+		}
+, 		{
+			"id" : "menu_highlighted_text",
+			"oncolor" : [ 0.807539509836209, 0.807539314333089, 0.807539365303835, 1.0 ],
+			"category" : "Menus",
+			"label" : "Highlighted Item Text"
+		}
+, 		{
+			"id" : "menu_text",
+			"oncolor" : [ 0.807539509836209, 0.807539314333089, 0.807539365303835, 1.0 ],
+			"category" : "Menus",
+			"label" : "Menu Text"
+		}
+, 		{
+			"id" : "mute_on",
+			"oncolor" : [ 0.231373, 0.560784, 1.0, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Audio Mute"
+		}
+, 		{
+			"id" : "number_one",
+			"oncolor" : [ 0.392157, 0.615686, 0.756863, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Number Boxes Palette"
+		}
+, 		{
+			"id" : "object_bogus_color",
+			"oncolor" : [ 0.328764512508144, 0.197365992442431, 0.16845979953183, 1.0 ],
+			"offcolor" : [ 0.737255, 0.611765, 0.466667, 1.0 ],
+			"category" : "Patching",
+			"label" : "Bogus Object Color"
+		}
+, 		{
+			"id" : "objectfiles_header",
+			"oncolor" : [ 1.0, 0.572549, 0.180392, 1.0 ],
+			"category" : "Box Menu",
+			"label" : "Files Menu Header"
+		}
+, 		{
+			"id" : "objectified",
+			"oncolor" : [ 0.647059, 0.745098, 0.0, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Recent Object Menu Title"
+		}
+, 		{
+			"id" : "objectprototypes_header",
+			"oncolor" : [ 0.415686, 0.819608, 1.0, 1.0 ],
+			"category" : "Box Menu",
+			"label" : "Prototypes Menu Header"
+		}
+, 		{
+			"id" : "parchment",
+			"oncolor" : [ 0.301961, 0.698039, 0.94902, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Left Toolbar Items"
+		}
+, 		{
+			"id" : "parchment_dull",
+			"oncolor" : [ 0.72549, 0.701961, 0.631373, 1.0 ],
+			"category" : "Unused"
+		}
+, 		{
+			"id" : "parchmentbright",
+			"oncolor" : [ 1.0, 0.894118, 0.580392, 1.0 ],
+			"category" : "Unused"
+		}
+, 		{
+			"id" : "patcher_active_tab",
+			"oncolor" : [ 0.15302081646527, 0.153020772941671, 0.153020784351525, 1.0 ],
+			"offcolor" : [ 0.32549, 0.345098, 0.372549, 1.0 ],
+			"category" : "Patcher Tabs",
+			"label" : "Active Background"
+		}
+, 		{
+			"id" : "patcher_box_selection",
+			"oncolor" : [ 0.199150595809111, 0.346886111625164, 0.528580182086736, 1.0 ],
+			"offcolor" : [ 0.203922, 0.47451, 0.780392, 1.0 ],
+			"category" : "Patching",
+			"label" : "Selected Box Frame"
+		}
+, 		{
+			"id" : "patcher_circle_fill",
+			"oncolor" : [ 0.449627188745413, 0.753877504288877, 0.416857431792641, 1.0 ],
+			"category" : "Box Menu",
+			"label" : "Mouseover Button Fill"
+		}
+, 		{
+			"id" : "patcher_circle_outline",
+			"oncolor" : [ 0.172137147130865, 0.17213710084121, 0.172137112999252, 1.0 ],
+			"category" : "Box Menu",
+			"label" : "Mouseover Button Outline"
+		}
+, 		{
+			"id" : "patcher_cool_inlet",
+			"oncolor" : [ 0.639216, 0.898039, 0.941176, 1.0 ],
+			"offcolor" : [ 0.411765, 0.862745, 0.941176, 1.0 ],
+			"category" : "Inlets + Outlets",
+			"label" : "Cool Inlet Circle Color"
+		}
+, 		{
+			"id" : "patcher_hot_inlet",
+			"oncolor" : [ 1.0, 0.717647, 0.658824, 1.0 ],
+			"offcolor" : [ 1.0, 0.576471, 0.498039, 1.0 ],
+			"category" : "Inlets + Outlets",
+			"label" : "Hot Inlet Circle Color"
+		}
+, 		{
+			"id" : "patcher_inactive_tab",
+			"oncolor" : [ 0.20142084234402, 0.201420791853532, 0.201420805148837, 1.0 ],
+			"offcolor" : [ 0.415686, 0.439216, 0.47451, 1.0 ],
+			"category" : "Patcher Tabs",
+			"label" : "Inactive Background"
+		}
+, 		{
+			"id" : "patcher_io_connected_inside",
+			"oncolor" : [ 0.269932258800055, 0.26993220750285, 0.26993222126248, 1.0 ],
+			"category" : "Inlets + Outlets",
+			"label" : "Connected (Center)"
+		}
+, 		{
+			"id" : "patcher_io_connected_outside",
+			"oncolor" : [ 0.221327066888467, 0.221327006361825, 0.221327022178404, 1.0 ],
+			"category" : "Inlets + Outlets",
+			"label" : "Connected (Circle)"
+		}
+, 		{
+			"id" : "patcher_io_unconnected",
+			"oncolor" : [ 0.662513668585741, 0.662513595185244, 0.662513615861426, 1.0 ],
+			"category" : "Inlets + Outlets",
+			"label" : "Unconnected"
+		}
+, 		{
+			"id" : "patcher_outlet",
+			"oncolor" : [ 0.839216, 0.866667, 0.423529, 1.0 ],
+			"offcolor" : [ 0.886275, 0.937255, 0.019608, 1.0 ],
+			"category" : "Inlets + Outlets",
+			"label" : "Outlet Circle Color"
+		}
+, 		{
+			"id" : "patcher_tab_bottom_line",
+			"oncolor" : [ 0.172137147130865, 0.17213710084121, 0.172137112999252, 1.0 ],
+			"category" : "Patcher Tabs",
+			"label" : "Bottom Line Color"
+		}
+, 		{
+			"id" : "patcher_tab_text_active",
+			"oncolor" : [ 0.0, 0.6, 1.0, 1.0 ],
+			"category" : "Patcher Tabs",
+			"label" : "Active Text Color"
+		}
+, 		{
+			"id" : "patcher_tab_text_inactive",
+			"oncolor" : [ 0.746970796362449, 0.746970609902925, 0.746970658435034, 1.0 ],
+			"category" : "Patcher Tabs",
+			"label" : "Inactive Text Color"
+		}
+, 		{
+			"id" : "patcher_tab_top_line",
+			"oncolor" : [ 0.15302081646527, 0.153020772941671, 0.153020784351525, 1.0 ],
+			"category" : "Patcher Tabs",
+			"label" : "Top Line Color"
+		}
+, 		{
+			"id" : "patcher_tinge_hilite",
+			"oncolor" : [ 0.094079721284036, 0.557927234735914, 0.923103203259352, 1.0 ],
+			"category" : "Patching",
+			"label" : "Tinge Highlight"
+		}
+, 		{
+			"id" : "patcher_tinge_object",
+			"oncolor" : [ 0.824138412091458, 0.595538994470283, 0.06397720672122, 1.0 ],
+			"category" : "Patching",
+			"label" : "Tinge Object"
+		}
+, 		{
+			"id" : "patcherbrowser_results_background",
+			"oncolor" : [ 0.125, 0.125, 0.125, 1.0 ],
+			"category" : "Unused"
+		}
+, 		{
+			"id" : "patcherbrowser_results_darkrowbg",
+			"oncolor" : [ 0.20142084234402, 0.201420791853532, 0.201420805148837, 1.0 ],
+			"category" : "Browser",
+			"label" : "Results Background Dark"
+		}
+, 		{
+			"id" : "patcherbrowser_results_lightrowbg",
+			"oncolor" : [ 0.15302081646527, 0.153020772941671, 0.153020784351525, 1.0 ],
+			"category" : "Browser",
+			"label" : "Results Background Light"
+		}
+, 		{
+			"id" : "patcherbrowser_results_selected",
+			"oncolor" : [ 0.199150595809111, 0.346886111625164, 0.528580182086736, 1.0 ],
+			"offcolor" : [ 0.203922, 0.47451, 0.780392, 1.0 ],
+			"category" : "Browser",
+			"label" : "Selected Results Background"
+		}
+, 		{
+			"id" : "patcherbrowser_results_textcolor",
+			"oncolor" : [ 0.9, 0.9, 0.9, 1.0 ],
+			"category" : "Browser",
+			"label" : "Results Text"
+		}
+, 		{
+			"id" : "patchline_badge_break",
+			"oncolor" : [ 0.866666666666667, 0.274509803921569, 0.32156862745098, 1.0 ],
+			"category" : "Patching",
+			"label" : "Break Watchpoint"
+		}
+, 		{
+			"id" : "patchline_badge_disabled",
+			"oncolor" : [ 0.8, 0.8, 0.8, 1.0 ],
+			"category" : "Patching",
+			"label" : "Disabled Watchpoint"
+		}
+, 		{
+			"id" : "patchline_badge_monitor",
+			"oncolor" : [ 0.917647058823529, 0.631372549019608, 0.345098039215686, 1.0 ],
+			"category" : "Patching",
+			"label" : "Monitor Watchpoint"
+		}
+, 		{
+			"id" : "patchline_badge_post",
+			"oncolor" : [ 0.372549019607843, 0.67843137254902, 0.823529411764706, 1.0 ],
+			"category" : "Patching",
+			"label" : "Print Watchpoint"
+		}
+, 		{
+			"id" : "pattrstorage_active",
+			"oncolor" : [ 0.584314, 0.682353, 0.172549, 1.0 ],
+			"category" : "Pattrstorage",
+			"label" : "Current Preset"
+		}
+, 		{
+			"id" : "plugintoolbar_background",
+			"oncolor" : [ 0.443137, 0.447059, 0.47451, 1.0 ],
+			"category" : "Unused"
+		}
+, 		{
+			"id" : "plugintoolbar_header_background",
+			"oncolor" : [ 0.4, 0.396078, 0.415686, 1.0 ],
+			"category" : "Unused"
+		}
+, 		{
+			"id" : "presentation_frame",
+			"oncolor" : [ 0.505882, 0.247059, 0.356863, 0.24 ],
+			"category" : "Patching",
+			"label" : "Box Presentation Mode Frame"
+		}
+, 		{
+			"id" : "projectwindow_background",
+			"oncolor" : [ 0.125, 0.125, 0.125, 1.0 ],
+			"category" : "Project Window",
+			"label" : "Window Background (Project)"
+		}
+, 		{
+			"id" : "projectwindow_divider",
+			"oncolor" : [ 0.172137147130865, 0.17213710084121, 0.172137112999252, 1.0 ],
+			"category" : "Project Window",
+			"label" : "Divider"
+		}
+, 		{
+			"id" : "quickref_attribute_header",
+			"oncolor" : [ 0.847059, 0.729412, 0.388235, 1.0 ],
+			"category" : "Box Menu",
+			"label" : "Attributes Menu Header"
+		}
+, 		{
+			"id" : "quickref_message_header",
+			"oncolor" : [ 0.423529, 0.733333, 0.690196, 1.0 ],
+			"category" : "Box Menu",
+			"label" : "Messages Menu Header"
+		}
+, 		{
+			"id" : "refbar_details_background",
+			"oncolor" : [ 0.09782765023003, 0.097827613875914, 0.09782762332443, 1.0 ],
+			"category" : "Reference Sidebar",
+			"label" : "Item Details Background"
+		}
+, 		{
+			"id" : "refbar_details_linkcolor",
+			"oncolor" : [ 0.618934978328545, 0.744701397656435, 0.953750108255376, 1.0 ],
+			"category" : "Reference Sidebar",
+			"label" : "Link Text"
+		}
+, 		{
+			"id" : "refbar_stripe2",
+			"oncolor" : [ 0.15302081646527, 0.153020772941671, 0.153020784351525, 1.0 ],
+			"category" : "Reference Sidebar",
+			"label" : "Background Stripe"
+		}
+, 		{
+			"id" : "scrollbar_fading_mouseover",
+			"oncolor" : [ 0.450980392156863, 0.450980392156863, 0.450980392156863, 0.67 ],
+			"category" : "Scrollbar",
+			"label" : "Fading Mouseover"
+		}
+, 		{
+			"id" : "scrollbar_fading_nonmouseover",
+			"oncolor" : [ 0.450980392156863, 0.450980392156863, 0.450980392156863, 0.6 ],
+			"category" : "Scrollbar",
+			"label" : "Fading Non-Mouseover"
+		}
+, 		{
+			"id" : "scrollbar_nonfading_mouseover",
+			"oncolor" : [ 0.490196078431373, 0.490196078431373, 0.490196078431373, 1.0 ],
+			"category" : "Scrollbar",
+			"label" : "Non-Fading Mouseover"
+		}
+, 		{
+			"id" : "scrollbar_nonfading_nonmouseover",
+			"oncolor" : [ 0.756862745098039, 0.756862745098039, 0.756862745098039, 1.0 ],
+			"category" : "Scrollbar",
+			"label" : "Non-Fading Non-Mouseover"
+		}
+, 		{
+			"id" : "sidebarblues",
+			"oncolor" : [ 0.301961, 0.698039, 0.94902, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Sidebar Commands Enabled"
+		}
+, 		{
+			"id" : "sliderweb",
+			"oncolor" : [ 0.392157, 0.615686, 0.756863, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Sliders Palette"
+		}
+, 		{
+			"id" : "solo_on",
+			"oncolor" : [ 1.0, 0.290196, 0.411765, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Audio Solo"
+		}
+, 		{
+			"id" : "standardappletexthilite",
+			"oncolor" : [ 0.713725, 0.839216, 0.992157, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Text Editor Highlight"
+		}
+, 		{
+			"id" : "text_editingcolor",
+			"oncolor" : [ 0.199150595809111, 0.346886111625164, 0.528580182086736, 1.0 ],
+			"category" : "Patching",
+			"label" : "Dark Text Editor Highlight"
+		}
+, 		{
+			"id" : "toolbar_active_unique",
+			"oncolor" : [ 0.434559006135542, 0.670817144785582, 0.977667398367262, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Selected Choice"
+		}
+, 		{
+			"id" : "toolbar_background_active",
+			"oncolor" : [ 0.125, 0.125, 0.125, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Active Toolbar Background"
+		}
+, 		{
+			"id" : "toolbar_background_inactive",
+			"oncolor" : [ 0.15302081646527, 0.153020772941671, 0.153020784351525, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Inactive Toolbar Background"
+		}
+, 		{
+			"id" : "toolbar_background_inactive_old",
+			"oncolor" : [ 0.529412, 0.54902, 0.572549, 1.0 ],
+			"category" : "Unused"
+		}
+, 		{
+			"id" : "toolbar_badge",
+			"oncolor" : [ 1.0, 0.4, 0.3, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Badge Color"
+		}
+, 		{
+			"id" : "toolbar_disabled_active",
+			"oncolor" : [ 0.458595350062755, 0.458595237564901, 0.458595266962388, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Disabled Item in Active Toolbar"
+		}
+, 		{
+			"id" : "toolbar_disabled_inactive",
+			"oncolor" : [ 0.458595350062755, 0.458595237564901, 0.458595266962388, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Disabled Item in Inctive Toolbar"
+		}
+, 		{
+			"id" : "toolbar_disabled_inactive_old",
+			"oncolor" : [ 0.611765, 0.631373, 0.670588, 1.0 ],
+			"category" : "Unused"
+		}
+, 		{
+			"id" : "toolbar_divider_active",
+			"oncolor" : [ 0.15302081646527, 0.153020772941671, 0.153020784351525, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Active Toolbar Divider"
+		}
+, 		{
+			"id" : "toolbar_divider_inactive",
+			"oncolor" : [ 0.172137147130865, 0.17213710084121, 0.172137112999252, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Inactive Toolbar Divider"
+		}
+, 		{
+			"id" : "toolbar_enabled_modified",
+			"oncolor" : [ 0.746970796362449, 0.746970609902925, 0.746970658435034, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Modified Value"
+		}
+, 		{
+			"id" : "toolbar_enabled_off",
+			"oncolor" : [ 0.9, 0.9, 0.9, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Enabled Item (Off State)"
+		}
+, 		{
+			"id" : "toolbar_enabled_on",
+			"oncolor" : [ 0.9, 0.65, 0.05, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Enabled Item (On State)"
+		}
+, 		{
+			"id" : "toolbar_overlay_background",
+			"oncolor" : [ 0.15302081646527, 0.153020772941671, 0.153020784351525, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Overlay Background"
+		}
+, 		{
+			"id" : "toolbar_searchbar_background",
+			"oncolor" : [ 0.172137147130865, 0.17213710084121, 0.172137112999252, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Search Bar Background"
+		}
+, 		{
+			"id" : "toolbar_searchbar_emptytext",
+			"oncolor" : [ 0.599589840206136, 0.599589696824869, 0.599589734292685, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Search Bar Empty Text"
+		}
+, 		{
+			"id" : "toolbar_searchbar_hilite",
+			"oncolor" : [ 0.199150595809111, 0.346886111625164, 0.528580182086736, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Search Bar Hilite"
+		}
+, 		{
+			"id" : "toolbar_searchbar_text",
+			"oncolor" : [ 0.9, 0.9, 0.9, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Search Bar Text"
+		}
+, 		{
+			"id" : "transform_header",
+			"oncolor" : [ 0.415686, 0.819608, 1.0, 1.0 ],
+			"category" : "Box Menu",
+			"label" : "Transform Menu Header"
+		}
+, 		{
+			"id" : "transport_green",
+			"oncolor" : [ 0.609795304305787, 0.805124657532386, 0.576461028292266, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Transport Play Button"
+		}
+, 		{
+			"id" : "urgentmessage",
+			"oncolor" : [ 0.463, 0.733, 0.663, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Recent Messages Menu Title"
+		}
+, 		{
+			"id" : "verylively",
+			"oncolor" : [ 0.525, 0.839, 0.286, 1.0 ],
+			"category" : "Unused"
+		}
+, 		{
+			"id" : "wolfsburg",
+			"oncolor" : [ 0.933333, 0.686275, 0.647059, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Error / Conflict"
+		}
+, 		{
+			"id" : "yellowpin",
+			"oncolor" : [ 0.9, 0.65, 0.05, 1.0 ],
+			"category" : "Toolbar",
+			"label" : "Pin Gadget"
+		}
+ ],
+	"styledefaults" : 	{
+		"bgcolor" : [ 0.125, 0.125, 0.125, 1 ],
+		"color" : [ 0.618934978328545, 0.744701397656435, 0.953750108255376, 1 ],
+		"elementcolor" : [ 0.221327066888467, 0.221327006361825, 0.221327022178404, 1 ],
+		"accentcolor" : [ 0.458595350062755, 0.458595237564901, 0.458595266962388, 1 ],
+		"selectioncolor" : [ 0.922234290352602, 0.71007200526417, 0.329758341965716, 1 ],
+		"textcolor" : [ 0.85, 0.85, 0.85, 1 ],
+		"darkcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
+		"textcolor_inverse" : [ 0.9, 0.9, 0.9, 1 ],
+		"lightcolor" : [ 0.92156862745098, 0.917647058823529, 0.933333333333333, 1.0 ],
+		"patchlinecolor" : [ 0.447518749806177, 0.44751863973454, 0.447518668498017, 1 ],
+		"clearcolor" : [ 1.0, 1.0, 1.0, 0.0 ],
+		"locked_bgcolor" : [ 0.235, 0.235, 0.235, 1 ],
+		"bubble_outlinecolor" : [ 0.85, 0.85, 0.85, 1 ],
+		"bubble_bgcolor" : [ 0.235, 0.235, 0.235, 1 ],
+		"stripecolor" : [ 0.172137149796092, 0.172137100044002, 0.172137113045018, 1 ],
+		"editing_bgcolor" : [ 0.235, 0.235, 0.235, 1 ],
+		"syntax_objectcolor" : [ 0.956590352327427, 0.76614891786161, 0.452834090916593, 1 ],
+		"syntax_attributecolor" : [ 0.574681917362067, 0.746730429372804, 1, 1 ],
+		"syntax_attrargcolor" : [ 0.987719444392034, 0.772809765725725, 0.723525810589731, 1 ],
+		"syntax_objargcolor" : [ 0.9, 0.9, 0.9, 1 ],
+		"bgfillcolor_type" : "gradient",
+		"bgfillcolor_color1" : [ 0.172137149796092, 0.172137100044002, 0.172137113045018, 1 ],
+		"bgfillcolor_color2" : [ 0.172137149796092, 0.172137100044002, 0.172137113045018, 1 ],
+		"bgfillcolor_color" : [ 0.172137149796092, 0.172137100044002, 0.172137113045018, 1 ],
+		"bgfillcolor_angle" : 270.0,
+		"bgfillcolor_proportion" : 0.39
+	}
+
+}
