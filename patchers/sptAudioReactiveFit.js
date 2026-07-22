@@ -1,4 +1,4 @@
-// AudioReactiveFit.js — resize the main v8ui to fill the bpatcher and place the
+// sptAudioReactiveFit.js — resize the main v8ui to fill the bpatcher and place the
 // native envelope editor + LENGTH slider in the jsui's reserved right-hand panel.
 //
 // NOTE: Max's JS rect/presentation_rect take [left, top, right, bottom] — NOT
@@ -35,7 +35,7 @@ function fit() {
 
     place(ui, 0, 0, w, h);
 
-    // mirror AudioReactive.js drawControls: envelope panel = right 39% of the control grid
+    // mirror sptAudioReactive.js drawControls: envelope panel = right 39% of the control grid
     var pad = clamp(Math.round(w * 0.02), 6, 12),
         scopeH = Math.max(54, Math.min(92, h * 0.28)),
         controlsY = 24 + scopeH + 7 + 35,

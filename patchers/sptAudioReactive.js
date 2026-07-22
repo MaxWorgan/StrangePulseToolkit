@@ -1,4 +1,6 @@
-// AudioReactive.js — resizable UI for band-followed audio event extraction.
+// sptAudioReactive.js — resizable UI for band-followed audio event extraction.
+// (Renamed from AudioReactive.js to avoid a global search-path clash with
+//  FluCoMa's audioreactive example on case-insensitive filesystems.)
 autowatch=1; inlets=1; outlets=1;
 mgraphics.init(); mgraphics.relative_coords=0; mgraphics.autofill=0;
 // Paper Lab — light lab-instrument palette (see design_handoff_paperlab_ui/tokens.md)

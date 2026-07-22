@@ -83,7 +83,7 @@ index below; those are the ones to read when the spec and the code disagree.
 | 08 | MIDI Out | `patchers/ToExternalMidi.js` | existing jsui |
 | 09 | Signal Morph | `patchers/SignalMorph.js` | existing jsui — 1 in / 2 out |
 | 10 | Motion Logic | `patchers/MotionLogic.js` | existing jsui — 1 in / 1 out |
-| 11 | Audio Reactive | `patchers/AudioReactive.js` | existing jsui |
+| 11 | Audio Reactive | `patchers/sptAudioReactive.js` | existing jsui |
 | 12 | Recurrence (RQA) | display for `spt.rqa` external | new display; external = 3 sig in / 6 sig out |
 | 13 | RPDE | display for `spt.rpde` external | new display; external = 1 in / 3 sig out |
 | 14 | Recurrence Plot | your own patcher | reusable display, embedded in RQA |

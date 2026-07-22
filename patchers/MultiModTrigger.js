@@ -270,7 +270,7 @@ function hit(px, py) {
   return null;
 }
 
-// self-resize (mirrors attractorFit.js / AudioReactiveFit.js idiom)
+// self-resize (mirrors attractorFit.js / sptAudioReactiveFit.js idiom)
 function selfBox() {
   var b = null;
   try {

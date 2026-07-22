@@ -108,7 +108,7 @@ Reference visual: the matching `components/Sp<Name>.dc.html` file.
 - **Interaction:** click/drag the op rail → `outlet(0, opValue)` (0..5, continuous). Existing logic.
 
 ## 11 · Audio Reactive
-- **Source:** `patchers/AudioReactive.js` (existing jsui). **Reference:** `SpAudioReactive.dc.html`.
+- **Source:** `patchers/sptAudioReactive.js` (existing jsui). **Reference:** `SpAudioReactive.dc.html`.
 - **Contract (from source — preserve exactly):**
   - `inlets = 1`, `outlets = 1`. Messages in: `level(v)`, `env(v)` (0..1, ring buffer), `event()` (flashes an EVENT indicator ~90ms). Attribute-style setters (each also `outlet(0, name, value)` when dragged): `low`, `high` (Hz, log range 20–20000), `order` (1–8), `attack` (0.5–500 ms), `release` (10–3000 ms), `drive` (0.25–32 ×), `threshold` (0.01–0.99), `hysteresis` (0–0.3), `holdoff` (0–1000 ms), `length` (envelope ms).
 - **Canvas:** ~384×296 (native 494×323, resizable).
